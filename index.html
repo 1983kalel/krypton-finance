@@ -612,8 +612,9 @@ document.getElementById('btn-google-login').addEventListener('click', async () =
   try {
     await signInWithPopup(auth, provider);
   } catch(e) {
+    console.error('LOGIN ERROR:', e.code, e.message);
     document.getElementById('login-error').style.display = 'block';
-    document.getElementById('login-error').textContent = 'Error al iniciar sesión. Inténtalo de nuevo.';
+    document.getElementById('login-error').textContent = e.code + ': ' + e.message;
   }
 });
 
