@@ -768,9 +768,7 @@ function loadState() {
   } catch(e){}
   return JSON.parse(JSON.stringify(DEFAULTS));
 }
-function save() {
-  try { localStorage.setItem('krypton_v1', JSON.stringify(S)); } catch(e){}
-}
+// save() definida arriba via Firebase
 
 // ==========================================
 // CÁLCULOS CORE
