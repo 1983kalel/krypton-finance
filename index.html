@@ -1366,6 +1366,34 @@ function f1(n) { return (Math.round(n*10)/10).toFixed(1); }
 function f2(n) { return (Math.round(n*100)/100).toFixed(2).replace('.',','); }
 function sum(a) { return (a||[]).reduce((s,v)=>s+v,0); }
 
+
+// Exponer funciones al scope global para los onclick del HTML
+window.nav = nav;
+window.navMes = navMes;
+window.toggleGasto = toggleGasto;
+window.toggleIngreso = toggleIngreso;
+window.addExtra = addExtra;
+window.delExtra = delExtra;
+window.addFuel = addFuel;
+window.delFuel = delFuel;
+window.addPago = addPago;
+window.delPago = delPago;
+window.editPago = editPago;
+window.togglePago = togglePago;
+window.editProy = editProy;
+window.delProyMes = delProyMes;
+window.addProyMes = addProyMes;
+window.setEdit = setEdit;
+window.setDel = setDel;
+window.setAddGasto = setAddGasto;
+window.setAddSub = setAddSub;
+window.setEditIngreso = setEditIngreso;
+window.setDelIngreso = setDelIngreso;
+window.setAddIngreso = setAddIngreso;
+window.saveFuelPresupuesto = saveFuelPresupuesto;
+window.cerrarMes = cerrarMes;
+window.exportData = exportData;
+
 // INIT
 updateHeader();
 renders.dashboard();
