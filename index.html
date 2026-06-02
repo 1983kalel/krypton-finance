@@ -357,13 +357,22 @@ body::before{content:'';position:fixed;inset:0;background:repeating-linear-gradi
 
   <div class="card" style="margin-bottom:12px">
     <div class="ct">🏦 Ahorro</div>
-    <div class="fr" style="align-items:center">
-      <span style="font-size:13px;color:var(--text2);min-width:120px">% sobre ingresos:</span>
+    <div class="fr" style="align-items:center;margin-bottom:8px">
+      <span style="font-size:13px;color:var(--text2);min-width:140px">% base sobre ingresos:</span>
       <input class="pct-inp" type="number" id="ahorro-pct" value="10" min="0" max="100" onchange="updateAhorro()">
       <span style="font-size:12px;color:var(--text3)">%</span>
-      <span style="font-family:var(--display);font-size:16px;font-weight:800;color:var(--accent2);margin-left:auto" id="ahorro-importe">—</span>
     </div>
-    <div style="font-size:11px;color:var(--text3);margin-top:6px">* Si el 50% se supera, el exceso se descuenta automáticamente del ahorro.</div>
+    <div style="display:flex;justify-content:space-between;align-items:center;background:var(--bg3);border-radius:8px;padding:10px 14px;margin-bottom:8px">
+      <div>
+        <div style="font-size:10px;color:var(--text3);margin-bottom:3px">% real este mes</div>
+        <div style="font-family:var(--display);font-size:16px;font-weight:800;color:var(--accent2)" id="ahorro-pct-real">—</div>
+      </div>
+      <div style="text-align:right">
+        <div style="font-size:10px;color:var(--text3);margin-bottom:3px">Importe real</div>
+        <div style="font-family:var(--display);font-size:20px;font-weight:800;color:var(--accent2)" id="ahorro-importe">—</div>
+      </div>
+    </div>
+    <div id="ahorro-nota" style="font-size:11px;color:var(--text3)"></div>
   </div>
 
   <div class="card">
@@ -687,12 +696,32 @@ function calcMes(md) {
   const fuel = sumFuel(md.fuel);
   const total50 = gastos + S.presupuesto_fuel;
   const p50 = ing*0.5, p30 = ing*0.3, p10 = ing*0.1;
-  const exceso = Math.max(0, total50 - p50);
-  const ahorro_teo = ing * (S.ahorro_pct/100);
-  const ahorro = Math.max(0, ahorro_teo - exceso);
-  const inversion = ing * 0.10;
   const pct50 = ing>0 ? total50/ing*100 : 0;
-  return {ing, gastos, fuel, total50, p50, p30, p10, exceso, ahorro, inversion, pct50, ahorro_teo};
+
+  const exceso = Math.max(0, total50 - p50);   // cuánto se pasa del 50%
+  const margen = Math.max(0, p50 - total50);   // cuánto sobra del 50%
+
+  // Ahorro base menos exceso si se pasa
+  const ahorro_base = ing * (S.ahorro_pct/100);
+  let ahorro = Math.max(0, ahorro_base - exceso);
+
+  // Inversión base
+  let inversion = p10;
+
+  // Si hay margen (no se llega al 50%), se reparte a partes iguales entre ahorro e inversión
+  if (margen > 0) {
+    const extra = margen / 2;
+    ahorro = ahorro_base + extra;
+    inversion = p10 + extra;
+  }
+
+  // Porcentajes reales
+  const ahorro_pct_real = ing>0 ? ahorro/ing*100 : 0;
+  const inv_pct_real = ing>0 ? inversion/ing*100 : 0;
+
+  return {ing, gastos, fuel, total50, p50, p30, p10, exceso, margen,
+          ahorro, inversion, pct50, ahorro_base,
+          ahorro_pct_real, inv_pct_real};
 }
 
 function calcActual() { return calcMes(getMesActual()); }
@@ -771,8 +800,8 @@ const renders = {
     document.getElementById('dash-barras').innerHTML =
       barra('50% Gastos',c.total50,c.p50,Math.min(100,c.pct50),b50c,f1(c.pct50)+'%')+
       barra('30% Ocio',c.p30,c.p30,30,'var(--accent2)','30%')+
-      barra('10% Inversión',c.inversion,c.p10,10,'var(--accent3)','10%')+
-      barra('Ahorro',c.ahorro,c.ahorro_teo,Math.min(10,bap),bap<5?'var(--red)':bap<8?'var(--yellow)':'var(--accent)',f1(bap)+'%');
+      barra('Inversión',c.inversion,c.p10,Math.min(15,c.inv_pct_real),'var(--accent3)',f1(c.inv_pct_real)+'%')+
+      barra('Ahorro',c.ahorro,c.ahorro_base,Math.min(15,c.ahorro_pct_real),c.ahorro_pct_real<5?'var(--red)':c.ahorro_pct_real<8?'var(--yellow)':'var(--accent)',f1(c.ahorro_pct_real)+'%');
 
     // Fuel
     const ft = sumFuel(md.fuel);
@@ -911,13 +940,13 @@ const renders = {
 
     document.getElementById('cards-ai').innerHTML=`
       <div class="card"><div class="cal" style="background:var(--accent3)"></div>
-        <div class="ct">Inversión (10%)</div>
+        <div class="ct">Inversión</div>
         <div class="cv cp">€${f2(invTotal)}</div>
-        <div class="cs">10% de €${f2(c.ing)}</div></div>
+        <div class="cs">${f1(c.inv_pct_real)}% real · base 10%${c.margen>0?' + margen':''}</div></div>
       <div class="card"><div class="cal" style="background:var(--accent2)"></div>
-        <div class="ct">Ahorro (${S.ahorro_pct}%)</div>
+        <div class="ct">Ahorro</div>
         <div class="cv cb">€${f2(c.ahorro)}</div>
-        <div class="cs">${c.exceso>0?'⚠️ Reducido por exceso 50%':'Sin reducción'}</div></div>`;
+        <div class="cs">${f1(c.ahorro_pct_real)}% real · base ${S.ahorro_pct}%${c.exceso>0?' ⚠️ reducido':c.margen>0?' + margen':''}</div></div>`;
 
     document.getElementById('cartera-items').innerHTML=S.cartera.map((a,i)=>`
       <div class="cartera-item">
@@ -942,6 +971,18 @@ const renders = {
 
     document.getElementById('ahorro-pct').value = S.ahorro_pct;
     document.getElementById('ahorro-importe').textContent = '€'+f2(c.ahorro);
+    document.getElementById('ahorro-pct-real').textContent = f1(c.ahorro_pct_real)+'%';
+    const notaEl = document.getElementById('ahorro-nota');
+    if (c.exceso > 0) {
+      notaEl.innerHTML = `⚠️ El 50% se superó en €${f2(c.exceso)} — descontado del ahorro. Base: €${f2(c.ahorro_base)}`;
+      notaEl.style.color = 'var(--yellow)';
+    } else if (c.margen > 0) {
+      notaEl.innerHTML = `✅ Sobran €${f2(c.margen)} del 50% — €${f2(c.margen/2)} extra a ahorro y €${f2(c.margen/2)} extra a inversión.`;
+      notaEl.style.color = 'var(--green)';
+    } else {
+      notaEl.innerHTML = '✅ El 50% se cumple exacto — ahorro e inversión al porcentaje base.';
+      notaEl.style.color = 'var(--text3)';
+    }
 
     // Histórico acumulado
     const mesesCerrados = Object.entries(S.meses)
