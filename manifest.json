@@ -1,0 +1,22 @@
+{
+  "name": "KRYPTON FINANCE'S",
+  "short_name": "Krypton",
+  "start_url": "/krypton-finance/",
+  "display": "standalone",
+  "background_color": "#080810",
+  "theme_color": "#00f0c8",
+  "icons": [
+    {
+      "src": "logo.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "logo.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
