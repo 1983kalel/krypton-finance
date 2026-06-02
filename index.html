@@ -4,351 +4,211 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 <title>KRYPTON FINANCE'S</title>
+<link rel="icon" type="image/png" href="logo.png">
+<link rel="apple-touch-icon" href="logo.png">
+<link rel="manifest" href="data:application/json,{&quot;name&quot;:&quot;KRYPTON FINANCE'S&quot;,&quot;short_name&quot;:&quot;Krypton&quot;,&quot;icons&quot;:[{&quot;src&quot;:&quot;logo.png&quot;,&quot;sizes&quot;:&quot;512x512&quot;,&quot;type&quot;:&quot;image/png&quot;}],&quot;start_url&quot;:&quot;/&quot;,&quot;display&quot;:&quot;standalone&quot;,&quot;background_color&quot;:&quot;#080810&quot;,&quot;theme_color&quot;:&quot;#00f0c8&quot;}">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Krypton">
+<meta name="theme-color" content="#080810">
 <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Unbounded:wght@300;400;600;800;900&display=swap" rel="stylesheet">
 <style>
 :root {
-  --bg: #080810;
-  --bg2: #0e0e1a;
-  --bg3: #161626;
-  --bg4: #1e1e30;
-  --border: #252538;
-  --border2: #2e2e48;
-  --accent: #00f0c8;
-  --accent2: #2979ff;
-  --accent3: #ff6b9d;
-  --accent4: #f7c948;
-  --text: #eeeef8;
-  --text2: #8888aa;
-  --text3: #444466;
-  --green: #00f0c8;
-  --red: #ff4d6d;
-  --yellow: #f7c948;
-  --mono: 'Space Mono', monospace;
-  --display: 'Unbounded', sans-serif;
-  --r: 10px;
-  --r2: 16px;
+  --bg:#080810; --bg2:#0e0e1a; --bg3:#161626; --bg4:#1e1e30;
+  --border:#252538; --border2:#2e2e48;
+  --accent:#00f0c8; --accent2:#2979ff; --accent3:#ff6b9d; --accent4:#f7c948;
+  --text:#eeeef8; --text2:#8888aa; --text3:#444466;
+  --green:#00f0c8; --red:#ff4d6d; --yellow:#f7c948;
+  --mono:'Space Mono',monospace; --display:'Unbounded',sans-serif;
+  --r:10px; --r2:16px;
 }
-* { margin:0; padding:0; box-sizing:border-box; }
-html { scroll-behavior: smooth; }
-body {
-  background: var(--bg);
-  color: var(--text);
-  font-family: var(--mono);
-  min-height: 100vh;
-  overflow-x: hidden;
-}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--bg);color:var(--text);font-family:var(--mono);min-height:100vh;overflow-x:hidden;}
+body::before{content:'';position:fixed;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,240,200,0.012) 2px,rgba(0,240,200,0.012) 4px);pointer-events:none;z-index:1000;}
 
-/* SCANLINE EFFECT */
-body::before {
-  content: '';
-  position: fixed;
-  inset: 0;
-  background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,240,200,0.015) 2px, rgba(0,240,200,0.015) 4px);
-  pointer-events: none;
-  z-index: 1000;
-}
+/* LOGIN */
+#login-screen{position:fixed;inset:0;background:var(--bg);z-index:999;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:20px;}
+.login-logo{width:90px;height:90px;border-radius:20px;box-shadow:0 0 40px rgba(0,240,200,0.3);}
+.login-title{font-family:var(--display);font-size:18px;font-weight:900;color:var(--accent);letter-spacing:3px;text-shadow:0 0 30px rgba(0,240,200,0.4);}
+.login-sub{font-size:11px;color:var(--text3);}
+.btn-google{display:flex;align-items:center;gap:10px;background:white;color:#1a1a1a;border:none;border-radius:10px;padding:13px 24px;font-family:var(--display);font-size:11px;font-weight:700;letter-spacing:1px;cursor:pointer;margin-top:8px;transition:opacity 0.2s;}
+.btn-google:hover{opacity:0.9;}
+.login-err{font-size:11px;color:var(--red);display:none;text-align:center;max-width:280px;}
 
 /* HEADER */
-.header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 20px;
-  height: 56px;
-  border-bottom: 1px solid var(--border);
-  position: sticky;
-  top: 0;
-  z-index: 100;
-  background: rgba(8,8,16,0.95);
-  backdrop-filter: blur(12px);
-}
-.logo {
-  font-family: var(--display);
-  font-size: 13px;
-  font-weight: 900;
-  letter-spacing: 2px;
-  color: var(--accent);
-  text-shadow: 0 0 20px rgba(0,240,200,0.4);
-}
-.header-right { display: flex; align-items: center; gap: 10px; }
-.mes-badge {
-  font-size: 11px;
-  background: var(--bg3);
-  border: 1px solid var(--border2);
-  padding: 5px 12px;
-  border-radius: 20px;
-  color: var(--text2);
-  cursor: pointer;
-  transition: border-color 0.2s;
-}
-.mes-badge:hover { border-color: var(--accent); }
-.mes-badge strong { color: var(--accent); }
+.header{display:flex;align-items:center;justify-content:space-between;padding:0 16px;height:52px;border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100;background:rgba(8,8,16,0.96);backdrop-filter:blur(12px);}
+.logo-header{display:flex;align-items:center;gap:10px;}
+.logo-img{width:28px;height:28px;border-radius:6px;}
+.logo-text{font-family:var(--display);font-size:11px;font-weight:900;color:var(--accent);letter-spacing:2px;}
+.header-right{display:flex;align-items:center;gap:8px;}
+.mes-pill{font-size:11px;background:var(--bg3);border:1px solid var(--border2);padding:4px 10px;border-radius:16px;color:var(--text2);}
+.mes-pill strong{color:var(--accent);}
 
 /* NAV */
-.nav {
-  display: flex;
-  gap: 2px;
-  padding: 8px 16px;
-  border-bottom: 1px solid var(--border);
-  overflow-x: auto;
-  scrollbar-width: none;
-  background: var(--bg);
-}
-.nav::-webkit-scrollbar { display: none; }
-.nav-btn {
-  font-family: var(--display);
-  font-size: 9px;
-  font-weight: 600;
-  letter-spacing: 1.5px;
-  padding: 7px 14px;
-  border-radius: 6px;
-  border: 1px solid transparent;
-  cursor: pointer;
-  background: transparent;
-  color: var(--text3);
-  white-space: nowrap;
-  transition: all 0.2s;
-  text-transform: uppercase;
-}
-.nav-btn:hover { color: var(--text2); border-color: var(--border2); }
-.nav-btn.active { background: var(--bg3); border-color: var(--accent); color: var(--accent); }
+.nav{display:flex;gap:2px;padding:6px 12px;border-bottom:1px solid var(--border);overflow-x:auto;scrollbar-width:none;background:var(--bg);}
+.nav::-webkit-scrollbar{display:none;}
+.nav-btn{font-family:var(--display);font-size:8px;font-weight:600;letter-spacing:1.5px;padding:6px 12px;border-radius:5px;border:1px solid transparent;cursor:pointer;background:transparent;color:var(--text3);white-space:nowrap;transition:all 0.2s;text-transform:uppercase;}
+.nav-btn:hover{color:var(--text2);border-color:var(--border2);}
+.nav-btn.active{background:var(--bg3);border-color:var(--accent);color:var(--accent);}
 
 /* MAIN */
-.main { padding: 16px; max-width: 960px; margin: 0 auto; }
-.section { display: none; animation: fadeUp 0.2s ease; }
-.section.active { display: block; }
-@keyframes fadeUp { from { opacity:0; transform:translateY(6px); } to { opacity:1; transform:none; } }
+.main{padding:14px;max-width:960px;margin:0 auto;}
+.section{display:none;animation:fu 0.2s ease;}
+.section.active{display:block;}
+@keyframes fu{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:none}}
 
-/* GRID */
-.g2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
-.g3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin-bottom: 12px; }
-.g4 { display: grid; grid-template-columns: repeat(4,1fr); gap: 12px; margin-bottom: 12px; }
-@media(max-width:640px) { .g2,.g3,.g4 { grid-template-columns:1fr 1fr; } }
-@media(max-width:400px) { .g2,.g3,.g4 { grid-template-columns:1fr; } }
+/* GRIDS */
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px;}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:12px;}
+.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:12px;}
+@media(max-width:600px){.g3,.g4{grid-template-columns:1fr 1fr;}.g2{grid-template-columns:1fr 1fr;}}
+@media(max-width:380px){.g2,.g3,.g4{grid-template-columns:1fr;}}
 
 /* CARD */
-.card {
-  background: var(--bg2);
-  border: 1px solid var(--border);
-  border-radius: var(--r2);
-  padding: 18px;
-  position: relative;
-  overflow: hidden;
-}
-.card-accent-line {
-  position: absolute;
-  top: 0; left: 0; right: 0;
-  height: 2px;
-}
-.card-title {
-  font-family: var(--display);
-  font-size: 9px;
-  font-weight: 600;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  color: var(--text3);
-  margin-bottom: 14px;
-}
-.card-val {
-  font-family: var(--display);
-  font-size: 26px;
-  font-weight: 800;
-  line-height: 1;
-  margin-bottom: 6px;
-}
-.card-sub { font-size: 11px; color: var(--text2); }
-.c-green { color: var(--green); }
-.c-red { color: var(--red); }
-.c-yellow { color: var(--yellow); }
-.c-accent { color: var(--accent); }
-.c-purple { color: var(--accent2); }
-.c-pink { color: var(--accent3); }
-.c-dim { color: var(--text2); }
+.card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r2);padding:16px;position:relative;overflow:hidden;}
+.cal{position:absolute;top:0;left:0;right:0;height:2px;}
+.ct{font-family:var(--display);font-size:8px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--text3);margin-bottom:12px;}
+.cv{font-family:var(--display);font-size:24px;font-weight:800;line-height:1;margin-bottom:5px;}
+.cs{font-size:11px;color:var(--text2);}
+.cg{color:var(--green);} .cr{color:var(--red);} .cy{color:var(--yellow);}
+.ca{color:var(--accent);} .cb{color:var(--accent2);} .cp{color:var(--accent3);}
 
-/* SECTION TITLE */
-.stitle {
-  font-family: var(--display);
-  font-size: 18px;
-  font-weight: 800;
-  letter-spacing: -0.5px;
-  margin-bottom: 16px;
-}
-.stitle span { color: var(--accent); }
+/* STITLE */
+.stitle{font-family:var(--display);font-size:17px;font-weight:800;letter-spacing:-0.5px;margin-bottom:14px;}
+.stitle span{color:var(--accent);}
 
 /* BARRAS */
-.bar-wrap { margin-bottom: 14px; }
-.bar-head { display: flex; justify-content: space-between; margin-bottom: 6px; font-size: 12px; }
-.bar-label { color: var(--text2); }
-.bar-pct { font-family: var(--display); font-size: 11px; font-weight: 700; }
-.bar-track { height: 8px; background: var(--bg4); border-radius: 4px; overflow: hidden; }
-.bar-fill { height: 100%; border-radius: 4px; transition: width 0.6s cubic-bezier(.4,0,.2,1); }
-.bar-meta { display: flex; justify-content: space-between; font-size: 10px; color: var(--text3); margin-top: 4px; }
+.bw{margin-bottom:12px;}
+.bh{display:flex;justify-content:space-between;margin-bottom:5px;font-size:11px;}
+.bl{color:var(--text2);}
+.bp{font-family:var(--display);font-size:10px;font-weight:700;}
+.bt{height:7px;background:var(--bg4);border-radius:4px;overflow:hidden;}
+.bf{height:100%;border-radius:4px;transition:width 0.6s cubic-bezier(.4,0,.2,1);}
+.bm{display:flex;justify-content:space-between;font-size:10px;color:var(--text3);margin-top:3px;}
 
 /* TABLA */
-.tbl { width: 100%; border-collapse: collapse; }
-.tbl th { font-family: var(--display); font-size: 8px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; color: var(--text3); padding: 8px 10px; border-bottom: 1px solid var(--border); text-align: left; }
-.tbl td { padding: 9px 10px; font-size: 13px; border-bottom: 1px solid var(--border); vertical-align: middle; }
-.tbl tr:last-child td { border-bottom: none; }
-.tbl tbody tr { transition: background 0.1s; }
-.tbl tbody tr:hover td { background: var(--bg3); }
-.tbl .amt { font-family: var(--mono); font-size: 13px; text-align: right; }
-.tbl .name { font-weight: 700; font-size: 13px; }
+.tbl{width:100%;border-collapse:collapse;}
+.tbl th{font-family:var(--display);font-size:8px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--text3);padding:7px 9px;border-bottom:1px solid var(--border);text-align:left;}
+.tbl td{padding:8px 9px;font-size:13px;border-bottom:1px solid var(--border);vertical-align:middle;}
+.tbl tr:last-child td{border-bottom:none;}
+.tbl tbody tr:hover td{background:var(--bg3);}
+.tbl .amt{font-family:var(--mono);font-size:12px;text-align:right;}
+.tbl .nm{font-weight:700;font-size:13px;}
 
 /* BADGES */
-.badge { display: inline-block; font-family: var(--display); font-size: 9px; font-weight: 700; padding: 3px 8px; border-radius: 4px; letter-spacing: 0.5px; cursor: pointer; transition: opacity 0.2s; }
-.badge:hover { opacity: 0.75; }
-.badge-si { background: rgba(0,240,200,0.12); color: var(--green); border: 1px solid rgba(0,240,200,0.25); }
-.badge-no { background: rgba(255,77,109,0.1); color: var(--red); border: 1px solid rgba(255,77,109,0.2); }
-.chip { display: inline-block; font-family: var(--display); font-size: 8px; font-weight: 600; padding: 2px 7px; border-radius: 3px; letter-spacing: 0.5px; }
-.chip-teal { background: rgba(0,240,200,0.1); color: var(--accent); }
-.chip-purple { background: rgba(41,121,255,0.15); color: var(--accent2); }
-.chip-pink { background: rgba(255,107,157,0.12); color: var(--accent3); }
-.chip-yellow { background: rgba(247,201,72,0.12); color: var(--yellow); }
-.chip-dim { background: var(--bg4); color: var(--text2); }
+.badge{display:inline-block;font-family:var(--display);font-size:8px;font-weight:700;padding:3px 7px;border-radius:4px;cursor:pointer;transition:opacity 0.2s;}
+.badge:hover{opacity:0.7;}
+.bsi{background:rgba(0,240,200,0.1);color:var(--green);border:1px solid rgba(0,240,200,0.2);}
+.bno{background:rgba(255,77,109,0.08);color:var(--red);border:1px solid rgba(255,77,109,0.18);}
+.chip{display:inline-block;font-family:var(--display);font-size:7px;font-weight:600;padding:2px 6px;border-radius:3px;}
+.cht{background:rgba(0,240,200,0.08);color:var(--accent);}
+.chb{background:rgba(41,121,255,0.1);color:var(--accent2);}
+.chp{background:rgba(255,107,157,0.1);color:var(--accent3);}
+.chy{background:rgba(247,201,72,0.1);color:var(--yellow);}
+.chd{background:var(--bg4);color:var(--text2);}
 
 /* TOTAL ROW */
-.total-row {
-  display: flex; justify-content: space-between; align-items: center;
-  padding: 12px 14px; border-radius: 10px;
-  margin-top: 6px; font-size: 14px; font-weight: 700;
-}
-.total-row .amt { font-family: var(--display); font-size: 16px; font-weight: 800; }
-.total-highlight { background: rgba(0,240,200,0.06); border: 1px solid rgba(0,240,200,0.15); }
+.tr-total{display:flex;justify-content:space-between;align-items:center;padding:10px 13px;border-radius:9px;margin-top:5px;font-size:13px;font-weight:700;}
+.tr-total .amt{font-family:var(--display);font-size:15px;font-weight:800;}
+.tr-hi{background:rgba(0,240,200,0.05);border:1px solid rgba(0,240,200,0.12);}
 
 /* FORMS */
-.form-row { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 10px; }
-.inp {
-  flex: 1; min-width: 110px;
-  background: var(--bg4); border: 1px solid var(--border2);
-  border-radius: 8px; padding: 9px 12px;
-  font-family: var(--mono); font-size: 13px; color: var(--text);
-  outline: none; transition: border-color 0.2s;
-}
-.inp:focus { border-color: var(--accent); }
-.sel {
-  flex: 1; min-width: 110px;
-  background: var(--bg4); border: 1px solid var(--border2);
-  border-radius: 8px; padding: 9px 12px;
-  font-family: var(--mono); font-size: 13px; color: var(--text);
-  outline: none; cursor: pointer; appearance: none;
-}
-.btn {
-  background: var(--accent); color: var(--bg);
-  border: none; border-radius: 8px; padding: 9px 18px;
-  font-family: var(--display); font-size: 10px; font-weight: 800;
-  letter-spacing: 1px; cursor: pointer; transition: opacity 0.2s, transform 0.1s;
-  white-space: nowrap;
-}
-.btn:hover { opacity: 0.85; }
-.btn:active { transform: scale(0.97); }
-.btn-ghost { background: var(--bg4); color: var(--text2); border: 1px solid var(--border2); }
-.btn-ghost:hover { color: var(--text); border-color: var(--accent); }
-.btn-red { background: var(--red); color: white; }
-.btn-sm { padding: 6px 12px; font-size: 9px; }
-.btn-icon { background: var(--bg4); color: var(--text3); border: 1px solid var(--border); padding: 5px 9px; border-radius: 6px; font-size: 13px; cursor: pointer; transition: all 0.2s; }
-.btn-icon:hover { color: var(--text); border-color: var(--accent); }
+.fr{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:8px;}
+.inp{flex:1;min-width:100px;background:var(--bg4);border:1px solid var(--border2);border-radius:7px;padding:8px 11px;font-family:var(--mono);font-size:13px;color:var(--text);outline:none;transition:border-color 0.2s;}
+.inp:focus{border-color:var(--accent);}
+.sel{flex:1;min-width:100px;background:var(--bg4);border:1px solid var(--border2);border-radius:7px;padding:8px 11px;font-family:var(--mono);font-size:13px;color:var(--text);outline:none;cursor:pointer;appearance:none;}
+.btn{background:var(--accent);color:var(--bg);border:none;border-radius:7px;padding:8px 16px;font-family:var(--display);font-size:9px;font-weight:800;letter-spacing:1px;cursor:pointer;transition:opacity 0.2s,transform 0.1s;white-space:nowrap;}
+.btn:hover{opacity:0.85;} .btn:active{transform:scale(0.97);}
+.bg{background:var(--bg4);color:var(--text2);border:1px solid var(--border2);}
+.bg:hover{color:var(--text);border-color:var(--accent);}
+.br{background:var(--red);color:white;}
+.bsm{padding:5px 11px;font-size:8px;}
+.bi{background:var(--bg4);color:var(--text3);border:1px solid var(--border);padding:4px 8px;border-radius:5px;font-size:12px;cursor:pointer;transition:all 0.2s;}
+.bi:hover{color:var(--text);border-color:var(--accent);}
 
-/* SEPARATOR */
-.sep { height: 1px; background: var(--border); margin: 16px 0; }
+/* SEP / LABEL */
+.sep{height:1px;background:var(--border);margin:14px 0;}
+.slabel{font-family:var(--display);font-size:8px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--text3);padding:10px 0 7px;border-bottom:1px solid var(--border);margin-bottom:10px;}
 
-/* INGRESO ROW */
-.ing-row {
-  display: flex; justify-content: space-between; align-items: center;
-  padding: 10px 12px; border-radius: 8px; margin-bottom: 4px;
-  background: var(--bg3); border: 1px solid var(--border);
-  transition: border-color 0.2s;
-}
-.ing-row:hover { border-color: var(--border2); }
-.ing-name { font-size: 13px; font-weight: 700; }
-.ing-right { display: flex; align-items: center; gap: 10px; }
-.ing-amt { font-family: var(--display); font-size: 14px; font-weight: 700; color: var(--green); }
+/* ING ROW */
+.ir{display:flex;justify-content:space-between;align-items:center;padding:9px 11px;border-radius:7px;margin-bottom:3px;background:var(--bg3);border:1px solid var(--border);}
+.ir:hover{border-color:var(--border2);}
+.in{font-size:13px;font-weight:700;}
+.irr{display:flex;align-items:center;gap:9px;}
+.ia{font-family:var(--display);font-size:13px;font-weight:700;color:var(--green);}
 
 /* FUEL */
-.fuel-card { background: var(--bg3); border: 1px solid var(--border); border-radius: var(--r); padding: 14px; }
-.fuel-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
-.fuel-name { font-family: var(--display); font-size: 11px; font-weight: 700; }
-.fuel-amt { font-size: 16px; font-weight: 700; font-family: var(--display); }
-.fuel-bar { height: 5px; background: var(--bg4); border-radius: 3px; overflow: hidden; margin-bottom: 5px; }
-.fuel-fill { height: 100%; border-radius: 3px; transition: width 0.5s; }
-.fuel-meta { font-size: 10px; color: var(--text3); }
-.fuel-list { margin-top: 8px; max-height: 120px; overflow-y: auto; scrollbar-width: thin; }
-.fuel-item { display: flex; justify-content: space-between; align-items: center; padding: 4px 0; border-bottom: 1px solid var(--border); font-size: 12px; }
-.fuel-item:last-child { border-bottom: none; }
+.fc{background:var(--bg3);border:1px solid var(--border);border-radius:var(--r);padding:13px;}
+.fh{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;}
+.fn{font-family:var(--display);font-size:10px;font-weight:700;}
+.fa{font-size:15px;font-weight:700;font-family:var(--display);}
+.fb{height:5px;background:var(--bg4);border-radius:3px;overflow:hidden;margin-bottom:4px;}
+.ff{height:100%;border-radius:3px;transition:width 0.5s;}
+.fm{font-size:10px;color:var(--text3);}
+.fl{margin-top:7px;max-height:110px;overflow-y:auto;scrollbar-width:thin;}
+.fi{display:flex;justify-content:space-between;align-items:center;padding:4px 0;border-bottom:1px solid var(--border);font-size:12px;}
+.fi:last-child{border-bottom:none;}
 
-/* SETTINGS ITEM */
-.set-item {
-  display: flex; justify-content: space-between; align-items: center;
-  padding: 11px 14px; background: var(--bg3); border-radius: 8px;
-  margin-bottom: 5px; border: 1px solid var(--border);
-  transition: border-color 0.2s;
-}
-.set-item:hover { border-color: var(--border2); }
-.set-name { font-size: 13px; font-weight: 700; }
-.set-meta { font-size: 11px; color: var(--text2); margin-top: 2px; }
-.set-actions { display: flex; gap: 6px; align-items: center; }
-
-/* SECTION LABEL */
-.section-label {
-  font-family: var(--display);
-  font-size: 9px; font-weight: 700;
-  letter-spacing: 2px; text-transform: uppercase;
-  color: var(--text3); padding: 12px 0 8px;
-  border-bottom: 1px solid var(--border);
-  margin-bottom: 12px;
-}
-
-/* PROYECCIÓN BARRAS */
-.proy-row { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
-.proy-label { font-size: 11px; color: var(--text2); width: 65px; flex-shrink: 0; }
-.proy-track { flex: 1; height: 24px; background: var(--bg4); border-radius: 5px; overflow: hidden; position: relative; }
-.proy-inv { position: absolute; left: 0; top: 0; height: 100%; opacity: 0.9; }
-.proy-aho { position: absolute; top: 0; height: 100%; opacity: 0.9; }
-.proy-val { font-size: 11px; color: var(--text2); width: 75px; text-align: right; flex-shrink: 0; }
-
-/* PAGO ANUAL ROW */
-.pago-row {
-  display: flex; justify-content: space-between; align-items: center;
-  padding: 10px 12px; background: var(--bg3); border-radius: 8px;
-  margin-bottom: 4px; border: 1px solid var(--border);
-}
-.pago-name { font-size: 13px; font-weight: 700; }
-.pago-right { display: flex; align-items: center; gap: 12px; }
-.pago-anual { font-family: var(--display); font-size: 13px; font-weight: 700; }
-.pago-mes { font-size: 11px; color: var(--text3); }
+/* SET ITEM */
+.si{display:flex;justify-content:space-between;align-items:center;padding:10px 12px;background:var(--bg3);border-radius:7px;margin-bottom:4px;border:1px solid var(--border);}
+.si:hover{border-color:var(--border2);}
+.sn{font-size:13px;font-weight:700;}
+.sm{font-size:11px;color:var(--text2);margin-top:2px;}
+.sa{display:flex;gap:5px;align-items:center;}
 
 /* ALERT */
-.alert { padding: 10px 14px; border-radius: 8px; font-size: 12px; margin-bottom: 12px; }
-.alert-warn { background: rgba(247,201,72,0.08); border: 1px solid rgba(247,201,72,0.25); color: var(--yellow); }
-.alert-ok { background: rgba(0,240,200,0.06); border: 1px solid rgba(0,240,200,0.2); color: var(--green); }
-.alert-info { background: rgba(41,121,255,0.1); border: 1px solid rgba(41,121,255,0.25); color: var(--accent2); }
+.alert{padding:9px 13px;border-radius:7px;font-size:12px;margin-bottom:10px;}
+.aw{background:rgba(247,201,72,0.07);border:1px solid rgba(247,201,72,0.2);color:var(--yellow);}
+.ao{background:rgba(0,240,200,0.05);border:1px solid rgba(0,240,200,0.18);color:var(--green);}
+.ai{background:rgba(41,121,255,0.08);border:1px solid rgba(41,121,255,0.2);color:var(--accent2);}
 
 /* MES NAV */
-.mes-nav { display: flex; align-items: center; gap: 12px; }
-.mes-nav-btn { background: var(--bg4); border: 1px solid var(--border2); color: var(--text2); padding: 6px 14px; border-radius: 6px; font-family: var(--display); font-size: 10px; font-weight: 700; cursor: pointer; transition: all 0.2s; }
-.mes-nav-btn:hover { border-color: var(--accent); color: var(--accent); }
-.mes-nav-label { font-family: var(--display); font-size: 14px; font-weight: 800; color: var(--accent); min-width: 140px; text-align: center; }
+.mnav{display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
+.mnb{background:var(--bg4);border:1px solid var(--border2);color:var(--text2);padding:5px 12px;border-radius:5px;font-family:var(--display);font-size:9px;font-weight:700;cursor:pointer;transition:all 0.2s;}
+.mnb:hover{border-color:var(--accent);color:var(--accent);}
+.mnl{font-family:var(--display);font-size:13px;font-weight:800;color:var(--accent);min-width:120px;text-align:center;}
+
+/* CARTERA */
+.cartera-item{background:var(--bg3);border:1px solid var(--border);border-radius:var(--r);padding:14px;margin-bottom:8px;}
+.cartera-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;}
+.cartera-nombre{font-family:var(--display);font-size:12px;font-weight:700;}
+.cartera-importe{font-family:var(--display);font-size:16px;font-weight:800;}
+.cartera-pct-row{display:flex;align-items:center;gap:10px;}
+.cartera-pct-label{font-size:11px;color:var(--text2);width:80px;}
+.pct-inp{width:70px;background:var(--bg4);border:1px solid var(--border2);border-radius:5px;padding:5px 8px;font-family:var(--mono);font-size:12px;color:var(--text);outline:none;text-align:center;}
+.pct-inp:focus{border-color:var(--accent);}
+
+/* ANUAL */
+.anual-row{display:flex;justify-content:space-between;align-items:center;padding:11px 14px;background:var(--bg3);border-radius:8px;margin-bottom:5px;border:1px solid var(--border);}
+.anual-label{font-size:13px;font-weight:700;}
+.anual-val{font-family:var(--display);font-size:15px;font-weight:800;}
 </style>
 </head>
 <body>
 
-
 <!-- LOGIN -->
-<div id="login-screen" style="display:none; position:fixed; inset:0; background:var(--bg); z-index:999; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:24px;">
-  <div style="font-family:var(--display); font-size:22px; font-weight:900; color:var(--accent); text-shadow:0 0 30px rgba(0,240,200,0.4); letter-spacing:3px;">KRYPTON FINANCE'S</div>
-  <div style="font-size:13px; color:var(--text3); font-family:var(--mono);">Tu economía. Siempre contigo.</div>
-  <button id="btn-google-login" style="display:flex; align-items:center; gap:12px; background:white; color:#1a1a1a; border:none; border-radius:10px; padding:14px 28px; font-family:var(--display); font-size:12px; font-weight:700; letter-spacing:1px; cursor:pointer; transition:opacity 0.2s; margin-top:8px;">
-    <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" style="width:20px; height:20px;" />
+<div id="login-screen">
+  <img src="logo.png" class="login-logo" onerror="this.style.display='none'">
+  <div class="login-title">KRYPTON FINANCE'S</div>
+  <div class="login-sub">Tu economía. Siempre contigo.</div>
+  <button class="btn-google" id="btn-login">
+    <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" style="width:18px;height:18px;">
     ENTRAR CON GOOGLE
   </button>
-  <div id="login-error" style="font-size:12px; color:var(--red); display:none;"></div>
+  <div class="login-err" id="login-err"></div>
 </div>
 
-<!-- APP (oculta hasta login) -->
-<div id="app-screen" style="display:none;">
+<!-- APP -->
+<div id="app-screen" style="display:none">
+
 <div class="header">
-  <div class="logo">KRYPTON FINANCE'S</div>
+  <div class="logo-header">
+    <img src="logo.png" class="logo-img" onerror="this.style.display='none'">
+    <div class="logo-text">KRYPTON FINANCE'S</div>
+  </div>
   <div class="header-right">
-    <div class="mes-badge" onclick="showSection('ajustes')">Mes: <strong id="mes-label">—</strong></div>
+    <div class="mes-pill">Mes: <strong id="mes-label">—</strong></div>
+    <button class="btn bg bsm" id="btn-logout">Salir</button>
   </div>
 </div>
 
@@ -358,7 +218,8 @@ body::before {
   <button class="nav-btn" onclick="nav(this,'ingresos')">Ingresos</button>
   <button class="nav-btn" onclick="nav(this,'combustible')">Comida/Gas</button>
   <button class="nav-btn" onclick="nav(this,'pagos')">Pagos Anuales</button>
-  <button class="nav-btn" onclick="nav(this,'proyeccion')">Proyección</button>
+  <button class="nav-btn" onclick="nav(this,'cartera')">Ahorro/Inversión</button>
+  <button class="nav-btn" onclick="nav(this,'anual')">Vista Anual</button>
   <button class="nav-btn" onclick="nav(this,'ajustes')">Ajustes</button>
 </nav>
 
@@ -369,17 +230,17 @@ body::before {
   <div id="dash-alert"></div>
   <div class="g3" id="dash-cards"></div>
   <div class="card" style="margin-bottom:12px">
-    <div class="card-title">Regla 50 · 30 · 20</div>
+    <div class="ct">Regla 50 · 30 · 20</div>
     <div id="dash-barras"></div>
   </div>
   <div class="g2">
     <div class="card">
-      <div class="card-title">Comida + Gasolina</div>
+      <div class="ct">Comida + Gasolina</div>
       <div id="dash-fuel"></div>
     </div>
     <div class="card">
-      <div class="card-title">Proyección 20% · Año</div>
-      <div id="dash-proy"></div>
+      <div class="ct">Ahorro · Inversión este mes</div>
+      <div id="dash-cartera"></div>
     </div>
   </div>
 </div>
@@ -387,38 +248,29 @@ body::before {
 <!-- GASTOS -->
 <div class="section" id="s-gastos">
   <div class="stitle">Gastos <span>del mes</span></div>
-
-  <div class="card" style="margin-bottom:12px">
-    <div class="card-title">Fijos + Variables</div>
-    <div style="overflow:hidden">
-      <table class="tbl" id="tbl-gastos-fijos"></table>
-    </div>
+  <div class="card" style="margin-bottom:10px">
+    <div class="ct">Fijos + Variables</div>
+    <table class="tbl" id="tbl-gf"></table>
   </div>
-
-  <div class="card" style="margin-bottom:12px">
-    <div class="card-title">🏠 Ingenio — desglose</div>
-    <table class="tbl" id="tbl-ingenio"></table>
-    <div style="margin-top:8px; font-size:12px; color:var(--text3)">* Seg. Hogar e IBI van al Sinking Fund</div>
+  <div class="card" style="margin-bottom:10px">
+    <div class="ct">🏠 Ingenio</div>
+    <table class="tbl" id="tbl-ing"></table>
   </div>
-
-  <div class="card" style="margin-bottom:12px">
-    <div class="card-title">🏘️ Arinaga — desglose</div>
-    <table class="tbl" id="tbl-arinaga"></table>
-    <div style="margin-top:8px; font-size:12px; color:var(--text3)">* Seg. Hogar, IBI y Seg. Alquiler van al Sinking Fund</div>
+  <div class="card" style="margin-bottom:10px">
+    <div class="ct">🏘️ Arinaga</div>
+    <table class="tbl" id="tbl-ari"></table>
   </div>
-
-  <div class="card" style="margin-bottom:12px">
-    <div class="card-title">🔒 Sinking Fund — desglose (prorrateado mensual)</div>
-    <table class="tbl" id="tbl-sinking"></table>
+  <div class="card" style="margin-bottom:10px">
+    <div class="ct">🔒 Sinking Fund (mensual)</div>
+    <table class="tbl" id="tbl-sf"></table>
   </div>
-
-  <div class="total-row" style="background:var(--bg3); border:1px solid var(--border)">
+  <div class="tr-total" style="background:var(--bg3);border:1px solid var(--border)">
     <span>Total gastos (sin comida/gas)</span>
     <span class="amt" id="total-gastos"></span>
   </div>
-  <div class="total-row total-highlight" style="margin-top:6px">
+  <div class="tr-total tr-hi" style="margin-top:5px">
     <span>Total 50% (gastos + presupuesto comida/gas)</span>
-    <span class="amt c-accent" id="total-50"></span>
+    <span class="amt ca" id="total-50"></span>
   </div>
 </div>
 
@@ -426,15 +278,15 @@ body::before {
 <div class="section" id="s-ingresos">
   <div class="stitle">Ingresos <span>del mes</span></div>
   <div id="lista-ingresos"></div>
-  <div class="total-row total-highlight" style="margin-top:8px">
+  <div class="tr-total tr-hi" style="margin-top:7px">
     <span>Total ingresos</span>
-    <span class="amt c-green" id="total-ingresos"></span>
+    <span class="amt cg" id="total-ingresos"></span>
   </div>
   <div class="sep"></div>
-  <div class="section-label">Añadir ingreso extra (apuestas, balonmano...)</div>
-  <div class="form-row">
-    <input class="inp" id="extra-nombre" placeholder="Concepto" />
-    <input class="inp" type="number" id="extra-importe" placeholder="€ importe" />
+  <div class="slabel">Añadir ingreso extra</div>
+  <div class="fr">
+    <input class="inp" id="extra-nombre" placeholder="Concepto (ej. Apuestas, Balonmano)">
+    <input class="inp" type="number" id="extra-importe" placeholder="€ importe">
     <button class="btn" onclick="addExtra()">+ Añadir</button>
   </div>
   <div id="lista-extras"></div>
@@ -443,19 +295,19 @@ body::before {
 <!-- COMBUSTIBLE -->
 <div class="section" id="s-combustible">
   <div class="stitle">Comida <span>& Gasolina</span></div>
-  <div class="card" style="margin-bottom:12px">
-    <div class="card-title">Presupuesto: <span id="fuel-presupuesto-label" style="color:var(--accent)"></span></div>
+  <div class="card" style="margin-bottom:10px">
+    <div class="ct">Presupuesto: <span id="fuel-pres-label" style="color:var(--accent)"></span></div>
     <div id="fuel-resumen"></div>
   </div>
-  <div class="section-label">Registrar gasto</div>
-  <div class="form-row">
+  <div class="slabel">Registrar gasto</div>
+  <div class="fr">
     <select class="sel" id="fuel-tipo">
       <option value="comida">🛒 Comida</option>
       <option value="yaris">🚗 Yaris</option>
       <option value="honda">🏍️ Honda</option>
       <option value="berlingo">🚐 Berlingo</option>
     </select>
-    <input class="inp" type="number" id="fuel-importe" placeholder="€ importe" />
+    <input class="inp" type="number" id="fuel-imp" placeholder="€ importe">
     <button class="btn" onclick="addFuel()">+ Añadir</button>
   </div>
   <div class="g2" id="fuel-tarjetas"></div>
@@ -464,128 +316,134 @@ body::before {
 <!-- PAGOS ANUALES -->
 <div class="section" id="s-pagos">
   <div class="stitle">Pagos <span>Anuales</span></div>
-  <div class="alert alert-info" style="margin-bottom:12px">
-    💡 Cada pago anual se prorratea automáticamente y se suma al Sinking Fund mensual.
-  </div>
-  <div class="card" style="margin-bottom:12px">
-    <div class="card-title">Sinking Fund mensual total: <span id="sinking-total-label" style="color:var(--accent)"></span></div>
+  <div class="alert ai">💡 Cada pago anual se prorratea ÷12 y suma al Sinking Fund mensual automáticamente.</div>
+  <div class="card" style="margin-bottom:10px">
+    <div class="ct">Sinking Fund mensual total: <span id="sf-total-label" style="color:var(--accent)"></span></div>
     <div id="lista-pagos"></div>
   </div>
-  <div class="section-label">Añadir / editar pago anual</div>
-  <div class="form-row">
-    <input class="inp" id="pago-nombre" placeholder="Concepto (ej. Seguro Yaris)" />
-    <input class="inp" type="number" id="pago-importe" placeholder="Importe anual €" />
+  <div class="slabel">Añadir pago anual</div>
+  <div class="fr">
+    <input class="inp" id="pago-nombre" placeholder="Concepto (ej. Seguro Yaris)">
+    <input class="inp" type="number" id="pago-imp" placeholder="Importe anual €">
     <button class="btn" onclick="addPago()">+ Añadir</button>
   </div>
   <div class="sep"></div>
-  <div class="section-label">Marcar pagado este año</div>
-  <div id="lista-pagos-estado"></div>
+  <div class="slabel">Estado pagos este año</div>
+  <div id="pagos-estado"></div>
 </div>
 
-<!-- PROYECCIÓN -->
-<div class="section" id="s-proyeccion">
-  <div class="stitle">Proyección <span>20%</span></div>
-  <div class="g2" id="proy-cards"></div>
+<!-- CARTERA / AHORRO INVERSIÓN -->
+<div class="section" id="s-cartera">
+  <div class="stitle">Ahorro <span>& Inversión</span></div>
+
   <div class="card" style="margin-bottom:12px">
-    <div class="card-title">Acumulado por mes</div>
-    <div id="proy-grafico"></div>
+    <div class="ct">Distribución este mes</div>
+    <div class="g2" style="margin-bottom:0" id="cards-ai"></div>
   </div>
+
   <div class="card" style="margin-bottom:12px">
-    <div class="card-title">Proyección próximos 6 meses al ritmo actual</div>
-    <div id="proy-futuro"></div>
+    <div class="ct">💼 Cartera de inversión</div>
+    <div class="alert ai" style="margin-bottom:12px">Los porcentajes suman 100%. Modifícalos y los importes se recalculan solos.</div>
+    <div id="cartera-items"></div>
+    <div class="tr-total tr-hi" style="margin-top:5px">
+      <span>Total inversión este mes</span>
+      <span class="amt ca" id="cartera-total"></span>
+    </div>
   </div>
-  <div class="section-label">Editar meses registrados</div>
-  <div id="proy-edit"></div>
-  <div class="form-row" style="margin-top:10px">
-    <select class="sel" id="proy-mes-sel">
-      <option>Enero</option><option>Febrero</option><option>Marzo</option>
-      <option>Abril</option><option>Mayo</option><option>Junio</option>
-      <option>Julio</option><option>Agosto</option><option>Septiembre</option>
-      <option>Octubre</option><option>Noviembre</option><option>Diciembre</option>
-    </select>
-    <input class="inp" type="number" id="proy-inv" placeholder="Inversión €" />
-    <input class="inp" type="number" id="proy-aho" placeholder="Ahorro €" />
-    <button class="btn" onclick="addProyMes()">+ Mes</button>
+
+  <div class="card" style="margin-bottom:12px">
+    <div class="ct">🏦 Ahorro</div>
+    <div class="fr" style="align-items:center">
+      <span style="font-size:13px;color:var(--text2);min-width:120px">% sobre ingresos:</span>
+      <input class="pct-inp" type="number" id="ahorro-pct" value="10" min="0" max="100" onchange="updateAhorro()">
+      <span style="font-size:12px;color:var(--text3)">%</span>
+      <span style="font-family:var(--display);font-size:16px;font-weight:800;color:var(--accent2);margin-left:auto" id="ahorro-importe">—</span>
+    </div>
+    <div style="font-size:11px;color:var(--text3);margin-top:6px">* Si el 50% se supera, el exceso se descuenta automáticamente del ahorro.</div>
   </div>
+
+  <div class="card">
+    <div class="ct">Acumulado anual</div>
+    <div id="cartera-historico"></div>
+  </div>
+</div>
+
+<!-- VISTA ANUAL -->
+<div class="section" id="s-anual">
+  <div class="stitle">Vista <span>Anual</span></div>
+  <div class="alert ai">Acumulado de todos los meses registrados hasta hoy.</div>
+  <div id="anual-content"></div>
 </div>
 
 <!-- AJUSTES -->
 <div class="section" id="s-ajustes">
   <div class="stitle">Ajustes <span>& Conceptos</span></div>
 
-  <!-- NAVEGACIÓN MESES -->
   <div class="card" style="margin-bottom:12px">
-    <div class="card-title">Mes económico activo</div>
-    <div style="display:flex; align-items:center; gap:12px; flex-wrap:wrap">
-      <div class="mes-nav">
-        <button class="mes-nav-btn" onclick="navMes(-1)">← Anterior</button>
-        <div class="mes-nav-label" id="ajustes-mes-label"></div>
-        <button class="mes-nav-btn" onclick="navMes(1)">Siguiente →</button>
-      </div>
-      <button class="btn btn-sm" onclick="cerrarMes()">Cerrar mes → nuevo</button>
+    <div class="ct">Mes económico activo</div>
+    <div class="mnav">
+      <button class="mnb" onclick="navMes(-1)">← Anterior</button>
+      <div class="mnl" id="ajustes-mes-label"></div>
+      <button class="mnb" onclick="navMes(1)">Siguiente →</button>
+      <button class="btn bsm" onclick="cerrarMes()">Cerrar mes → nuevo</button>
     </div>
   </div>
 
-  <!-- GASTOS FIJOS -->
-  <div class="section-label">⬛ Gastos Fijos</div>
-  <div id="set-gastos-fijos"></div>
-  <div class="form-row" style="margin-top:8px">
-    <input class="inp" id="set-gf-nombre" placeholder="Nombre concepto" />
-    <input class="inp" type="number" id="set-gf-importe" placeholder="€/mes" />
-    <select class="sel" id="set-gf-cat" style="max-width:130px">
+  <div class="slabel">⬛ Gastos Fijos del mes</div>
+  <div id="set-gf"></div>
+  <div class="fr" style="margin-top:7px">
+    <input class="inp" id="sgf-n" placeholder="Nombre">
+    <input class="inp" type="number" id="sgf-v" placeholder="€/mes">
+    <select class="sel" style="max-width:120px" id="sgf-cat">
       <option value="fijo">Fijo</option>
       <option value="variable">Variable</option>
     </select>
-    <button class="btn" onclick="setAddGasto()">+ Añadir</button>
+    <button class="btn" onclick="setAddGF()">+ Añadir</button>
   </div>
 
-  <!-- INGENIO -->
-  <div class="section-label" style="margin-top:16px">🏠 Componentes Ingenio</div>
-  <div id="set-ingenio"></div>
-  <div class="form-row" style="margin-top:8px">
-    <input class="inp" id="set-ing-nombre" placeholder="Concepto (ej. Agua)" />
-    <input class="inp" type="number" id="set-ing-importe" placeholder="€ estimado" />
-    <button class="btn" onclick="setAddSub('ingenio_items','set-ing-nombre','set-ing-importe')">+ Añadir</button>
+  <div class="slabel" style="margin-top:14px">🏠 Componentes Ingenio</div>
+  <div id="set-ing"></div>
+  <div class="fr" style="margin-top:7px">
+    <input class="inp" id="si-n" placeholder="Concepto">
+    <input class="inp" type="number" id="si-v" placeholder="€">
+    <button class="btn" onclick="setAddSub('ingenio_items','si-n','si-v')">+ Añadir</button>
   </div>
 
-  <!-- ARINAGA -->
-  <div class="section-label" style="margin-top:16px">🏘️ Componentes Arinaga</div>
-  <div id="set-arinaga"></div>
-  <div class="form-row" style="margin-top:8px">
-    <input class="inp" id="set-ari-nombre" placeholder="Concepto (ej. Derrama)" />
-    <input class="inp" type="number" id="set-ari-importe" placeholder="€/mes" />
-    <button class="btn" onclick="setAddSub('arinaga_items','set-ari-nombre','set-ari-importe')">+ Añadir</button>
+  <div class="slabel" style="margin-top:14px">🏘️ Componentes Arinaga</div>
+  <div id="set-ari"></div>
+  <div class="fr" style="margin-top:7px">
+    <input class="inp" id="sa-n" placeholder="Concepto">
+    <input class="inp" type="number" id="sa-v" placeholder="€">
+    <button class="btn" onclick="setAddSub('arinaga_items','sa-n','sa-v')">+ Añadir</button>
   </div>
 
-  <!-- INGRESOS FIJOS -->
-  <div class="section-label" style="margin-top:16px">📥 Ingresos Fijos</div>
-  <div id="set-ingresos"></div>
-  <div class="form-row" style="margin-top:8px">
-    <input class="inp" id="set-i-nombre" placeholder="Nombre ingreso" />
-    <input class="inp" type="number" id="set-i-importe" placeholder="€/mes" />
+  <div class="slabel" style="margin-top:14px">📥 Ingresos Fijos</div>
+  <div id="set-ing2"></div>
+  <div class="fr" style="margin-top:7px">
+    <input class="inp" id="si2-n" placeholder="Nombre ingreso">
+    <input class="inp" type="number" id="si2-v" placeholder="€/mes">
     <button class="btn" onclick="setAddIngreso()">+ Añadir</button>
   </div>
 
-  <!-- CONFIG -->
-  <div class="section-label" style="margin-top:16px">⚙️ Configuración</div>
-  <div class="set-item" style="margin-bottom:10px">
+  <div class="slabel" style="margin-top:14px">⚙️ Configuración</div>
+  <div class="si" style="margin-bottom:10px">
     <div>
-      <div class="set-name">Presupuesto Comida + Gasolina</div>
-      <div class="set-meta">Actualmente <span id="cfg-fuel-actual"></span> €/mes</div>
+      <div class="sn">Presupuesto Comida + Gasolina</div>
+      <div class="sm">Actualmente <span id="cfg-fuel-lbl"></span> €/mes</div>
     </div>
-    <div class="set-actions">
-      <input class="inp" type="number" id="cfg-fuel-inp" style="width:100px" />
-      <button class="btn btn-sm" onclick="saveFuelPresupuesto()">Guardar</button>
+    <div class="sa">
+      <input class="inp" type="number" id="cfg-fuel-inp" style="width:90px">
+      <button class="btn bsm" onclick="saveFuelPres()">Guardar</button>
     </div>
   </div>
-  <div style="display:flex; gap:8px; flex-wrap:wrap">
-    <button class="btn btn-ghost btn-sm" onclick="exportData()">📤 Exportar JSON</button>
-    <button class="btn btn-red btn-sm" onclick="if(confirm('¿Reiniciar todos los datos?')) { localStorage.clear(); location.reload(); }">⚠️ Reiniciar</button>
+  <div style="display:flex;gap:7px;flex-wrap:wrap">
+    <button class="btn bg bsm" onclick="exportData()">📤 Exportar JSON</button>
+    <button class="btn br bsm" onclick="if(confirm('¿Reiniciar todos los datos?')){resetAll();}">⚠️ Reiniciar</button>
   </div>
-
 </div>
 
 </div><!-- /main -->
+</div><!-- /app-screen -->
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-app.js";
@@ -601,32 +459,134 @@ const firebaseConfig = {
   appId: "1:675598632103:web:ea44ccbfd8fb1ab13bc782"
 };
 
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-const db = getFirestore(app);
+const fbApp = initializeApp(firebaseConfig);
+const auth = getAuth(fbApp);
+const db = getFirestore(fbApp);
 let currentUser = null;
 
-// LOGIN
-document.getElementById('btn-google-login').addEventListener('click', async () => {
+// ============================================================
+// ESTADO — estructura por mes
+// ============================================================
+const MESES = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
+
+// Plantilla base de conceptos (siempre disponible para nuevos meses)
+const PLANTILLA = {
+  gastos_fijos: [
+    {id:'clases',nombre:'Clases Asier',importe:29,cobrado:false,cat:'fijo'},
+    {id:'ingles',nombre:'Inglés Zoe',importe:60,cobrado:false,cat:'fijo'},
+    {id:'gull',nombre:'Gull Telvi',importe:10,cobrado:false,cat:'fijo'},
+    {id:'ninjitsu',nombre:'Ninjitsu Asier',importe:40,cobrado:false,cat:'fijo'},
+    {id:'comedor',nombre:'Comedor',importe:70.45,cobrado:false,cat:'fijo'},
+    {id:'heriberto',nombre:'Heriberto',importe:40,cobrado:false,cat:'fijo'},
+    {id:'limpieza',nombre:'Limpieza',importe:120,cobrado:false,cat:'fijo'},
+    {id:'yaris',nombre:'Yaris',importe:318.16,cobrado:false,cat:'fijo'},
+    {id:'dkv',nombre:'DKV Telvi',importe:57.73,cobrado:false,cat:'fijo'},
+    {id:'balonmano',nombre:'Balonmano Zoe',importe:25,cobrado:false,cat:'fijo'},
+    {id:'amb',nombre:'AMB',importe:15,cobrado:false,cat:'fijo'},
+    {id:'gimnasio',nombre:'Gimnasio',importe:80,cobrado:false,cat:'variable'}
+  ],
+  ingenio_items: [
+    {id:'hip_i',nombre:'Hipoteca',importe:432.60,cobrado:false},
+    {id:'com_i',nombre:'Comunidad',importe:30,cobrado:false},
+    {id:'jaz_i',nombre:'Jazztel',importe:83.92,cobrado:false},
+    {id:'luz_i',nombre:'Luz',importe:51.97,cobrado:false},
+    {id:'agu_i',nombre:'Agua',importe:0,cobrado:false}
+  ],
+  arinaga_items: [
+    {id:'hip_a',nombre:'Hipoteca',importe:374.19,cobrado:false},
+    {id:'com_a',nombre:'Comunidad',importe:47.03,cobrado:false},
+    {id:'der_a',nombre:'Derrama',importe:33.78,cobrado:false},
+    {id:'agu_a',nombre:'Agua',importe:38.60,cobrado:false},
+    {id:'luz_a',nombre:'Luz',importe:29.88,cobrado:false}
+  ],
+  ingresos: [
+    {id:'telvi',nombre:'Nómina Telvi',importe:2293.21,cobrado:false,fijo:true},
+    {id:'edu',nombre:'Nómina Eduardo',importe:2514.24,cobrado:false,fijo:true},
+    {id:'alq',nombre:'Alquiler Arinaga',importe:800,cobrado:false,fijo:true},
+    {id:'alq_agua',nombre:'Agua Arinaga (inquilina)',importe:38.60,cobrado:false,fijo:false},
+    {id:'alq_luz',nombre:'Luz Arinaga (inquilina)',importe:29.88,cobrado:false,fijo:false}
+  ]
+};
+
+const PAGOS_ANUALES_DEFAULT = [
+  {id:'seg_ari',nombre:'Seguro Arinaga',importe:249,pagado:true},
+  {id:'seg_yar',nombre:'Seguro Yaris',importe:249.02,pagado:false},
+  {id:'seg_ber',nombre:'Seguro Berlingo',importe:239,pagado:false},
+  {id:'seg_hon',nombre:'Seguro Honda',importe:199,pagado:false},
+  {id:'vid_tel',nombre:'Vida Telvi',importe:95.65,pagado:false},
+  {id:'vid_edu',nombre:'Vida Eduardo',importe:106.51,pagado:false},
+  {id:'hog_ing',nombre:'Seg. Hogar Ingenio',importe:156.60,pagado:false},
+  {id:'alq_seg',nombre:'Seg. Alquiler Arinaga',importe:455.04,pagado:false},
+  {id:'ibi_ari',nombre:'IBI Arinaga',importe:165.04,pagado:false},
+  {id:'ibi_ing',nombre:'IBI Ingenio',importe:247,pagado:false},
+  {id:'bas_ing',nombre:'Basura Municipal Ingenio',importe:37.50,pagado:true},
+  {id:'imp_ber',nombre:'Impuesto Berlingo',importe:50.10,pagado:true},
+  {id:'imp_hon',nombre:'Impuesto Honda',importe:28.33,pagado:true},
+  {id:'fun',nombre:'Funeraria',importe:137.89,pagado:false}
+];
+
+const CARTERA_DEFAULT = [
+  {id:'msci',nombre:'MSCI World',pct:50,color:'#00f0c8'},
+  {id:'btc',nombre:'Bitcoin',pct:30,color:'#f7c948'},
+  {id:'emer',nombre:'Emergentes',pct:15,color:'#2979ff'},
+  {id:'oro',nombre:'Oro',pct:5,color:'#ff6b9d'}
+];
+
+// S = estado global
+let S = {
+  mes_activo: {m:5, a:2026}, // junio 2026 (0-based)
+  presupuesto_fuel: 1100,
+  pagos_anuales: JSON.parse(JSON.stringify(PAGOS_ANUALES_DEFAULT)),
+  cartera: JSON.parse(JSON.stringify(CARTERA_DEFAULT)),
+  ahorro_pct: 10,
+  meses: {} // clave: "2026-5" → datos del mes
+};
+
+function mesKey(m, a) { return `${a}-${m}`; }
+function mesActualKey() { return mesKey(S.mes_activo.m, S.mes_activo.a); }
+
+function getMes(m, a) {
+  const k = mesKey(m, a);
+  if (!S.meses[k]) {
+    // Crear mes nuevo basado en plantilla
+    S.meses[k] = {
+      gastos_fijos: JSON.parse(JSON.stringify(PLANTILLA.gastos_fijos)),
+      ingenio_items: JSON.parse(JSON.stringify(PLANTILLA.ingenio_items)),
+      arinaga_items: JSON.parse(JSON.stringify(PLANTILLA.arinaga_items)),
+      ingresos: JSON.parse(JSON.stringify(PLANTILLA.ingresos)),
+      ingresos_extra: [],
+      fuel: {comida:[], yaris:[], honda:[], berlingo:[]},
+      cerrado: false
+    };
+  }
+  return S.meses[k];
+}
+
+function getMesActual() { return getMes(S.mes_activo.m, S.mes_activo.a); }
+
+// ============================================================
+// FIREBASE
+// ============================================================
+document.getElementById('btn-login').addEventListener('click', async () => {
   const provider = new GoogleAuthProvider();
   try {
     await signInWithPopup(auth, provider);
   } catch(e) {
-    console.error('LOGIN ERROR:', e.code, e.message);
-    document.getElementById('login-error').style.display = 'block';
-    document.getElementById('login-error').textContent = e.code + ': ' + e.message;
+    const err = document.getElementById('login-err');
+    err.style.display = 'block';
+    err.textContent = e.code + ': ' + e.message;
   }
 });
 
-// AUTH STATE
+document.getElementById('btn-logout').addEventListener('click', () => signOut(auth));
+
 onAuthStateChanged(auth, async (user) => {
   if (user) {
     currentUser = user;
     document.getElementById('login-screen').style.display = 'none';
     document.getElementById('app-screen').style.display = 'block';
-    await loadFromFirestore();
-    updateHeader();
-    renders.dashboard();
+    await loadData();
+    init();
   } else {
     currentUser = null;
     document.getElementById('login-screen').style.display = 'flex';
@@ -634,770 +594,627 @@ onAuthStateChanged(auth, async (user) => {
   }
 });
 
-// FIRESTORE: cargar datos
-async function loadFromFirestore() {
+async function loadData() {
   try {
     const ref = doc(db, 'usuarios', currentUser.uid, 'datos', 'estado');
     const snap = await getDoc(ref);
     if (snap.exists()) {
-      S = snap.data();
+      const d = snap.data();
+      S = {...S, ...d};
+      // Asegurar que pagos y cartera existen
+      if (!S.pagos_anuales) S.pagos_anuales = JSON.parse(JSON.stringify(PAGOS_ANUALES_DEFAULT));
+      if (!S.cartera) S.cartera = JSON.parse(JSON.stringify(CARTERA_DEFAULT));
+      if (!S.meses) S.meses = {};
+      if (!S.ahorro_pct) S.ahorro_pct = 10;
     } else {
-      S = JSON.parse(JSON.stringify(DEFAULTS));
-      await saveToFirestore();
+      await saveData();
     }
-  } catch(e) {
-    console.error('Error cargando datos:', e);
-    S = JSON.parse(JSON.stringify(DEFAULTS));
-  }
+  } catch(e) { console.error('loadData:', e); }
 }
 
-// FIRESTORE: guardar datos
-async function saveToFirestore() {
+async function saveData() {
   if (!currentUser) return;
   try {
     const ref = doc(db, 'usuarios', currentUser.uid, 'datos', 'estado');
-    await setDoc(ref, S);
-  } catch(e) {
-    console.error('Error guardando datos:', e);
-  }
+    await setDoc(ref, JSON.parse(JSON.stringify(S)));
+  } catch(e) { console.error('saveData:', e); }
 }
 
-// Sobrescribir save() para usar Firestore
-function save() {
-  saveToFirestore();
-}
+function save() { saveData(); }
 
-// Añadir botón logout al header
-window.addEventListener('DOMContentLoaded', () => {
-  const hr = document.querySelector('.header-right');
-  if (hr) {
-    const btn = document.createElement('button');
-    btn.className = 'btn btn-ghost btn-sm';
-    btn.textContent = 'Salir';
-    btn.onclick = () => signOut(auth);
-    hr.appendChild(btn);
-  }
-});
+// ============================================================
+// CÁLCULOS
+// ============================================================
+function sumArr(arr, key='importe') { return (arr||[]).reduce((s,i)=>s+(+i[key]||0),0); }
+function sumFuel(f) { return sum(f.comida)+sum(f.yaris)+sum(f.honda)+sum(f.berlingo); }
+function sumSinking() { return S.pagos_anuales.reduce((s,p)=>s+p.importe/12,0); }
 
-// ==========================================
-// DATOS INICIALES (TU ECONOMÍA - JUNIO 2026)
-// ==========================================
-const DEFAULTS = {
-  mes: 5, anio: 2026, // 0-based: 5=junio
-  presupuesto_fuel: 1100,
-
-  ingresos: [
-    { id:'telvi', nombre:'Nómina Telvi', importe:2293.21, cobrado:true, fijo:true },
-    { id:'edu', nombre:'Nómina Eduardo', importe:2514.24, cobrado:true, fijo:true },
-    { id:'alq', nombre:'Alquiler Arinaga', importe:800.00, cobrado:true, fijo:true },
-    { id:'alq_agua', nombre:'Agua Arinaga (inquilina)', importe:38.60, cobrado:true, fijo:false },
-    { id:'alq_luz', nombre:'Luz Arinaga (inquilina)', importe:31.83, cobrado:true, fijo:false },
-    { id:'apuestas', nombre:'Matched Betting', importe:477.48, cobrado:true, fijo:false }
-  ],
-  ingresos_extra: [],
-
-  gastos_fijos: [
-    { id:'clases', nombre:'Clases Asier', importe:29.00, cobrado:false, cat:'fijo' },
-    { id:'ingles', nombre:'Inglés Zoe', importe:60.00, cobrado:false, cat:'fijo' },
-    { id:'gull', nombre:'Gull Telvi', importe:10.00, cobrado:false, cat:'fijo' },
-    { id:'ninjitsu', nombre:'Ninjitsu Asier', importe:40.00, cobrado:false, cat:'fijo' },
-    { id:'comedor', nombre:'Comedor', importe:70.45, cobrado:false, cat:'fijo' },
-    { id:'heriberto', nombre:'Heriberto', importe:40.00, cobrado:true, cat:'fijo' },
-    { id:'limpieza', nombre:'Limpieza', importe:120.00, cobrado:true, cat:'fijo' },
-    { id:'yaris', nombre:'Yaris', importe:318.16, cobrado:false, cat:'fijo' },
-    { id:'dkv', nombre:'DKV Telvi', importe:57.73, cobrado:false, cat:'fijo' },
-    { id:'balonmano', nombre:'Balonmano Zoe', importe:25.00, cobrado:false, cat:'fijo' },
-    { id:'amb', nombre:'AMB', importe:15.00, cobrado:false, cat:'fijo' },
-    { id:'gimnasio', nombre:'Gimnasio', importe:80.00, cobrado:false, cat:'variable' }
-  ],
-
-  ingenio_items: [
-    { id:'hip_ing', nombre:'Hipoteca', importe:432.60, cobrado:false },
-    { id:'com_ing', nombre:'Comunidad', importe:30.00, cobrado:false },
-    { id:'jaz_ing', nombre:'Jazztel', importe:83.92, cobrado:true },
-    { id:'luz_ing', nombre:'Luz', importe:51.97, cobrado:true },
-    { id:'agu_ing', nombre:'Agua', importe:0, cobrado:false }
-  ],
-
-  arinaga_items: [
-    { id:'hip_ari', nombre:'Hipoteca', importe:374.19, cobrado:false },
-    { id:'com_ari', nombre:'Comunidad', importe:47.03, cobrado:false },
-    { id:'der_ari', nombre:'Derrama', importe:33.78, cobrado:false },
-    { id:'agu_ari', nombre:'Agua', importe:38.60, cobrado:false },
-    { id:'luz_ari', nombre:'Luz', importe:31.83, cobrado:false }
-  ],
-
-  // Pagos anuales → sinking fund (importe = anual)
-  pagos_anuales: [
-    { id:'seg_ari', nombre:'Seguro Arinaga', importe:249.00, pagado:true },
-    { id:'seg_yar', nombre:'Seguro Yaris', importe:249.02, pagado:false },
-    { id:'seg_ber', nombre:'Seguro Berlingo', importe:239.00, pagado:false },
-    { id:'seg_hon', nombre:'Seguro Honda', importe:199.00, pagado:false },
-    { id:'vid_tel', nombre:'Vida Telvi', importe:95.65, pagado:false },
-    { id:'vid_edu', nombre:'Vida Eduardo', importe:106.51, pagado:false },
-    { id:'hog_ing', nombre:'Seg. Hogar Ingenio', importe:156.60, pagado:false },
-    { id:'alq_seg', nombre:'Seg. Alquiler Arinaga', importe:455.04, pagado:false },
-    { id:'ibi_ari', nombre:'IBI Arinaga', importe:165.04, pagado:false },
-    { id:'ibi_ing', nombre:'IBI Ingenio', importe:247.00, pagado:false },
-    { id:'bas_ing', nombre:'Basura Municipal Ingenio', importe:37.50, pagado:true },
-    { id:'imp_ber', nombre:'Impuesto Berlingo', importe:50.10, pagado:true },
-    { id:'imp_hon', nombre:'Impuesto Honda', importe:28.33, pagado:true },
-    { id:'fun', nombre:'Funeraria', importe:137.89, pagado:false }
-  ],
-
-  fuel: { comida:[196.63,58.79], yaris:[37.01], honda:[13.01], berlingo:[15.00] },
-
-  historial: [
-    { mes:'Enero', inversion:0, ahorro:0 },
-    { mes:'Febrero', inversion:0, ahorro:0 },
-    { mes:'Marzo', inversion:0, ahorro:0 },
-    { mes:'Abril', inversion:460.12, ahorro:0 },
-    { mes:'Mayo', inversion:555.84, ahorro:483.13 }
-  ]
-};
-
-// ==========================================
-// ESTADO
-// ==========================================
-let S = loadState();
-const MESES = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
-
-function loadState() {
-  try {
-    const d = localStorage.getItem('krypton_v1');
-    if (d) return JSON.parse(d);
-  } catch(e){}
-  return JSON.parse(JSON.stringify(DEFAULTS));
-}
-// save() definida arriba via Firebase
-
-// ==========================================
-// CÁLCULOS CORE
-// ==========================================
-function mesNombre() { return MESES[S.mes] + ' ' + S.anio; }
-
-function sumSinking() {
-  return S.pagos_anuales.reduce((s,p) => s + p.importe/12, 0);
-}
-
-function sumIngenio() {
-  return S.ingenio_items.reduce((s,i) => s + i.importe, 0);
-}
-
-function sumArinaga() {
-  return S.arinaga_items.reduce((s,i) => s + i.importe, 0);
-}
-
-function sumGastosFijos() {
-  return S.gastos_fijos.reduce((s,g) => s + g.importe, 0);
-}
-
-function sumTotalGastos() {
-  return sumGastosFijos() + sumIngenio() + sumArinaga() + sumSinking();
-}
-
-function sumIngresos() {
-  const fijos = S.ingresos.reduce((s,i) => s + i.importe, 0);
-  const extras = S.ingresos_extra.reduce((s,i) => s + i.importe, 0);
-  return fijos + extras;
-}
-
-function sumFuel() {
-  return sum(S.fuel.comida) + sum(S.fuel.yaris) + sum(S.fuel.honda) + sum(S.fuel.berlingo);
-}
-
-function calc() {
-  const ing = sumIngresos();
-  const gastos = sumTotalGastos();
-  const fuel = sumFuel();
+function calcMes(md) {
+  const ing = sumArr(md.ingresos) + sumArr(md.ingresos_extra);
+  const gastos = sumArr(md.gastos_fijos) + sumArr(md.ingenio_items) + sumArr(md.arinaga_items) + sumSinking();
+  const fuel = sumFuel(md.fuel);
   const total50 = gastos + S.presupuesto_fuel;
-  const p50 = ing * 0.5, p30 = ing * 0.3, p10 = ing * 0.1;
+  const p50 = ing*0.5, p30 = ing*0.3, p10 = ing*0.1;
   const exceso = Math.max(0, total50 - p50);
-  const ahorro = Math.max(0, p10 - exceso);
-  const pct50 = ing > 0 ? total50/ing*100 : 0;
-  return { ing, gastos, fuel, total50, p50, p30, p10, exceso, ahorro, pct50 };
+  const ahorro_teo = ing * (S.ahorro_pct/100);
+  const ahorro = Math.max(0, ahorro_teo - exceso);
+  const inversion = ing * 0.10;
+  const pct50 = ing>0 ? total50/ing*100 : 0;
+  return {ing, gastos, fuel, total50, p50, p30, p10, exceso, ahorro, inversion, pct50, ahorro_teo};
 }
 
-// ==========================================
-// NAVEGACIÓN
-// ==========================================
-function nav(btn, id) {
-  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
-  btn.classList.add('active');
-  document.getElementById('s-'+id).classList.add('active');
-  renders[id]();
-}
+function calcActual() { return calcMes(getMesActual()); }
 
-function navMes(dir) {
-  S.mes += dir;
-  if (S.mes > 11) { S.mes = 0; S.anio++; }
-  if (S.mes < 0) { S.mes = 11; S.anio--; }
-  save();
+function mesNombre(m, a) { return MESES[m] + ' ' + a; }
+function mesActualNombre() { return mesNombre(S.mes_activo.m, S.mes_activo.a); }
+
+// ============================================================
+// INIT
+// ============================================================
+function init() {
   updateHeader();
-  renders.ajustes();
   renders.dashboard();
 }
 
 function updateHeader() {
-  document.getElementById('mes-label').textContent = mesNombre();
-  const el = document.getElementById('ajustes-mes-label');
-  if (el) el.textContent = mesNombre();
+  const n = mesActualNombre();
+  document.getElementById('mes-label').textContent = n;
+  const al = document.getElementById('ajustes-mes-label');
+  if (al) al.textContent = n;
 }
 
-// ==========================================
+// ============================================================
+// NAVEGACIÓN
+// ============================================================
+function nav(btn, id) {
+  document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('s-'+id).classList.add('active');
+  renders[id]?.();
+}
+
+function navMes(dir) {
+  let {m, a} = S.mes_activo;
+  m += dir;
+  if (m>11){m=0;a++;} if(m<0){m=11;a--;}
+  S.mes_activo = {m, a};
+  save();
+  updateHeader();
+  renders.ajustes?.();
+  renders.dashboard?.();
+}
+
+// ============================================================
 // RENDERS
-// ==========================================
+// ============================================================
 const renders = {
   dashboard() {
-    const c = calc();
+    const md = getMesActual();
+    const c = calcMes(md);
+
     // Alerta
-    const aEl = document.getElementById('dash-alert');
-    if (c.pct50 > 55) aEl.innerHTML = `<div class="alert alert-warn">⚠️ El 50% está en ${f1(c.pct50)}% — ahorro comprometido este mes.</div>`;
-    else if (c.pct50 <= 50) aEl.innerHTML = `<div class="alert alert-ok">✅ Dentro del 50% con €${f2(c.p50-c.total50)} de margen.</div>`;
-    else aEl.innerHTML = `<div class="alert alert-info">📊 50% en ${f1(c.pct50)}% — exceso de €${f2(c.total50-c.p50)} absorbido por ahorro.</div>`;
+    const ae = document.getElementById('dash-alert');
+    if (c.pct50>55) ae.innerHTML=`<div class="alert aw">⚠️ El 50% está en ${f1(c.pct50)}% — ahorro comprometido.</div>`;
+    else if (c.pct50<=50) ae.innerHTML=`<div class="alert ao">✅ Dentro del 50% · margen €${f2(c.p50-c.total50)}.</div>`;
+    else ae.innerHTML=`<div class="alert ai">📊 50% en ${f1(c.pct50)}% · exceso €${f2(c.total50-c.p50)} absorbido por ahorro.</div>`;
 
-    document.getElementById('dash-cards').innerHTML = `
-      <div class="card"><div class="card-accent-line" style="background:var(--green)"></div>
-        <div class="card-title">Ingresos</div>
-        <div class="card-val c-green">€${f2(c.ing)}</div>
-        <div class="card-sub">${mesNombre()}</div>
-      </div>
-      <div class="card"><div class="card-accent-line" style="background:${c.pct50>55?'var(--red)':c.pct50>50?'var(--yellow)':'var(--accent)'}"></div>
-        <div class="card-title">Total 50%</div>
-        <div class="card-val ${c.pct50>55?'c-red':c.pct50>50?'c-yellow':'c-accent'}">€${f2(c.total50)}</div>
-        <div class="card-sub">${f1(c.pct50)}% de ingresos</div>
-      </div>
-      <div class="card"><div class="card-accent-line" style="background:var(--accent2)"></div>
-        <div class="card-title">Ahorro real</div>
-        <div class="card-val ${c.ahorro<50?'c-red':'c-purple'}">€${f2(c.ahorro)}</div>
-        <div class="card-sub">${f1(c.ing>0?c.ahorro/c.ing*100:0)}% · inv €${f2(c.p10)}</div>
-      </div>`;
+    document.getElementById('dash-cards').innerHTML=`
+      <div class="card"><div class="cal" style="background:var(--green)"></div>
+        <div class="ct">Ingresos</div><div class="cv cg">€${f2(c.ing)}</div>
+        <div class="cs">${mesActualNombre()}</div></div>
+      <div class="card"><div class="cal" style="background:${c.pct50>55?'var(--red)':c.pct50>50?'var(--yellow)':'var(--accent)'}"></div>
+        <div class="ct">Total 50%</div><div class="cv ${c.pct50>55?'cr':c.pct50>50?'cy':'ca'}">€${f2(c.total50)}</div>
+        <div class="cs">${f1(c.pct50)}% ingresos</div></div>
+      <div class="card"><div class="cal" style="background:var(--accent2)"></div>
+        <div class="ct">Ahorro real</div><div class="cv ${c.ahorro<50?'cr':'cb'}">€${f2(c.ahorro)}</div>
+        <div class="cs">${f1(c.ing>0?c.ahorro/c.ing*100:0)}%</div></div>`;
 
-    // Barras
     const b50c = c.pct50>55?'var(--red)':c.pct50>50?'var(--yellow)':'var(--green)';
-    const bAhoPct = c.ing>0?c.ahorro/c.ing*100:0;
+    const bap = c.ing>0?c.ahorro/c.ing*100:0;
     document.getElementById('dash-barras').innerHTML =
-      barra('50% Gastos', c.total50, c.p50, Math.min(100,c.pct50), b50c, f1(c.pct50)+'%') +
-      barra('30% Ocio', c.p30, c.p30, 30, 'var(--accent2)', '30%') +
-      barra('10% Inversión', c.p10, c.p10, 10, 'var(--accent3)', '10%') +
-      barra('10% Ahorro', c.ahorro, c.p10, Math.min(10,bAhoPct), bAhoPct<5?'var(--red)':bAhoPct<8?'var(--yellow)':'var(--accent)', f1(bAhoPct)+'%');
+      barra('50% Gastos',c.total50,c.p50,Math.min(100,c.pct50),b50c,f1(c.pct50)+'%')+
+      barra('30% Ocio',c.p30,c.p30,30,'var(--accent2)','30%')+
+      barra('10% Inversión',c.inversion,c.p10,10,'var(--accent3)','10%')+
+      barra('Ahorro',c.ahorro,c.ahorro_teo,Math.min(10,bap),bap<5?'var(--red)':bap<8?'var(--yellow)':'var(--accent)',f1(bap)+'%');
 
-    // Fuel mini
-    const fPct = Math.min(100, c.fuel/S.presupuesto_fuel*100);
-    const fCol = fPct>95?'var(--red)':fPct>80?'var(--yellow)':'var(--green)';
-    document.getElementById('dash-fuel').innerHTML = `
+    // Fuel
+    const ft = sumFuel(md.fuel);
+    const fp = Math.min(100,ft/S.presupuesto_fuel*100);
+    const fc = fp>95?'var(--red)':fp>80?'var(--yellow)':'var(--green)';
+    document.getElementById('dash-fuel').innerHTML=`
       <div style="display:flex;justify-content:space-between;margin-bottom:8px">
-        <span style="font-size:18px;font-family:var(--display);font-weight:800">€${f2(c.fuel)}</span>
-        <span style="font-size:13px;color:${fCol}">Quedan €${f2(Math.max(0,S.presupuesto_fuel-c.fuel))}</span>
+        <span style="font-family:var(--display);font-size:20px;font-weight:800">€${f2(ft)}</span>
+        <span style="color:${fc};font-size:13px">Quedan €${f2(Math.max(0,S.presupuesto_fuel-ft))}</span>
       </div>
-      <div class="bar-track" style="height:8px;margin-bottom:8px"><div class="bar-fill" style="width:${fPct}%;background:${fCol}"></div></div>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:4px;font-size:11px;color:var(--text3)">
-        <span>🛒 €${f2(sum(S.fuel.comida))}</span><span>🚗 €${f2(sum(S.fuel.yaris))}</span>
-        <span>🏍️ €${f2(sum(S.fuel.honda))}</span><span>🚐 €${f2(sum(S.fuel.berlingo))}</span>
-      </div>`;
+      <div class="bt" style="height:8px;margin-bottom:8px"><div class="bf" style="width:${fp}%;background:${fc}"></div></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:3px;font-size:11px;color:var(--text3)">
+        <span>🛒 €${f2(sum(md.fuel.comida))}</span><span>🚗 €${f2(sum(md.fuel.yaris))}</span>
+        <span>🏍️ €${f2(sum(md.fuel.honda))}</span><span>🚐 €${f2(sum(md.fuel.berlingo))}</span>
+      </div>
+      <div style="margin-top:8px;font-size:11px;color:var(--text3)">Presupuesto: €${f2(S.presupuesto_fuel)}</div>`;
 
-    // Proyección dash
-    const hist = S.historial||[];
-    const totInv = hist.reduce((s,m)=>s+m.inversion,0)+c.p10;
-    const totAho = hist.reduce((s,m)=>s+m.ahorro,0)+c.ahorro;
-    document.getElementById('dash-proy').innerHTML = `
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
-        <div><div style="font-size:10px;color:var(--text3);margin-bottom:4px">Inversión acum.</div>
-          <div style="font-family:var(--display);font-size:20px;font-weight:800;color:var(--accent3)">€${f2(totInv)}</div></div>
-        <div><div style="font-size:10px;color:var(--text3);margin-bottom:4px">Ahorro acum.</div>
-          <div style="font-family:var(--display);font-size:20px;font-weight:800;color:var(--accent2)">€${f2(totAho)}</div></div>
+    // Cartera dash
+    const invTotal = c.inversion;
+    document.getElementById('dash-cartera').innerHTML=`
+      <div style="margin-bottom:10px">
+        <div style="font-size:10px;color:var(--text3);margin-bottom:3px">Inversión</div>
+        <div style="font-family:var(--display);font-size:20px;font-weight:800;color:var(--accent3)">€${f2(invTotal)}</div>
       </div>
-      <div style="margin-top:10px;font-size:11px;color:var(--text3)">Total 20% acumulado: <span style="color:var(--text)">€${f2(totInv+totAho)}</span> · ${hist.length+1} meses</div>`;
+      <div style="margin-bottom:10px">
+        <div style="font-size:10px;color:var(--text3);margin-bottom:3px">Ahorro</div>
+        <div style="font-family:var(--display);font-size:20px;font-weight:800;color:var(--accent2)">€${f2(c.ahorro)}</div>
+      </div>
+      ${S.cartera.map(a=>`<div style="display:flex;justify-content:space-between;font-size:11px;padding:3px 0;border-bottom:1px solid var(--border)">
+        <span style="color:var(--text2)">${a.nombre}</span>
+        <span style="color:${a.color};font-family:var(--display);font-size:11px;font-weight:700">€${f2(invTotal*a.pct/100)}</span>
+      </div>`).join('')}`;
   },
 
   gastos() {
-    // Fijos
-    document.getElementById('tbl-gastos-fijos').innerHTML = tablaCabecera() +
-      '<tbody>' + S.gastos_fijos.map((g,i) => filaGasto(g, i, 'gastos_fijos')).join('') + '</tbody>';
+    const md = getMesActual();
+    document.getElementById('tbl-gf').innerHTML = tblHead()+
+      '<tbody>'+md.gastos_fijos.map((g,i)=>filaG(g,i,'gastos_fijos')).join('')+'</tbody>';
 
-    // Ingenio
-    const totIng = sumIngenio();
-    document.getElementById('tbl-ingenio').innerHTML = tablaCabecera() +
-      '<tbody>' + S.ingenio_items.map((g,i) => filaGasto(g, i, 'ingenio_items')).join('') +
-      `<tr><td colspan="3" style="font-weight:700;padding:10px;color:var(--accent)">Total Ingenio</td><td class="amt" style="font-weight:800;color:var(--accent)">€${f2(totIng)}</td><td></td></tr>` +
-      '</tbody>';
+    const tI = sumArr(md.ingenio_items);
+    document.getElementById('tbl-ing').innerHTML = tblHead()+
+      '<tbody>'+md.ingenio_items.map((g,i)=>filaG(g,i,'ingenio_items')).join('')+
+      `<tr><td colspan="3" style="font-weight:700;padding:8px;color:var(--accent)">Total</td><td class="amt ca" style="font-weight:800">€${f2(tI)}</td><td></td></tr></tbody>`;
 
-    // Arinaga
-    const totAri = sumArinaga();
-    document.getElementById('tbl-arinaga').innerHTML = tablaCabecera() +
-      '<tbody>' + S.arinaga_items.map((g,i) => filaGasto(g, i, 'arinaga_items')).join('') +
-      `<tr><td colspan="3" style="font-weight:700;padding:10px;color:var(--accent3)">Total Arinaga</td><td class="amt" style="font-weight:800;color:var(--accent3)">€${f2(totAri)}</td><td></td></tr>` +
-      '</tbody>';
+    const tA = sumArr(md.arinaga_items);
+    document.getElementById('tbl-ari').innerHTML = tblHead()+
+      '<tbody>'+md.arinaga_items.map((g,i)=>filaG(g,i,'arinaga_items')).join('')+
+      `<tr><td colspan="3" style="font-weight:700;padding:8px;color:var(--accent3)">Total</td><td class="amt cp" style="font-weight:800">€${f2(tA)}</td><td></td></tr></tbody>`;
 
-    // Sinking
-    const totSink = sumSinking();
-    document.getElementById('tbl-sinking').innerHTML =
-      `<thead><tr><th>Concepto</th><th>Anual</th><th>Mensual</th><th></th></tr></thead><tbody>` +
-      S.pagos_anuales.map((p,i) => `<tr>
-        <td class="name">${p.nombre}</td>
-        <td class="amt" style="color:var(--text2)">€${f2(p.importe)}</td>
-        <td class="amt">€${f2(p.importe/12)}</td>
-        <td></td>
-      </tr>`).join('') +
-      `<tr><td colspan="2" style="font-weight:700;padding:10px;color:var(--yellow)">Total Sinking/mes</td>
-        <td class="amt" style="font-weight:800;color:var(--yellow)">€${f2(totSink)}</td><td></td></tr></tbody>`;
+    const tS = sumSinking();
+    document.getElementById('tbl-sf').innerHTML=
+      `<thead><tr><th>Concepto</th><th>Anual</th><th>Mensual</th><th></th></tr></thead><tbody>`+
+      S.pagos_anuales.map(p=>`<tr><td class="nm">${p.nombre}</td><td class="amt" style="color:var(--text2)">€${f2(p.importe)}</td><td class="amt">€${f2(p.importe/12)}</td><td></td></tr>`).join('')+
+      `<tr><td colspan="2" style="font-weight:700;padding:8px;color:var(--yellow)">Total/mes</td><td class="amt cy" style="font-weight:800">€${f2(tS)}</td><td></td></tr></tbody>`;
 
-    document.getElementById('total-gastos').textContent = '€' + f2(sumTotalGastos());
-    document.getElementById('total-50').textContent = '€' + f2(sumTotalGastos() + S.presupuesto_fuel);
+    const tot = sumArr(md.gastos_fijos)+sumArr(md.ingenio_items)+sumArr(md.arinaga_items)+tS;
+    document.getElementById('total-gastos').textContent='€'+f2(tot);
+    document.getElementById('total-50').textContent='€'+f2(tot+S.presupuesto_fuel);
   },
 
   ingresos() {
-    const todos = [...S.ingresos, ...S.ingresos_extra.map((e,i)=>({...e, _extra:true, _idx:i}))];
-    document.getElementById('lista-ingresos').innerHTML = todos.map((ing,idx) => `
-      <div class="ing-row">
-        <div><div class="ing-name">${ing.nombre} ${!ing.fijo?`<span class="chip chip-teal">Variable</span>`:''}</div></div>
-        <div class="ing-right">
-          <span class="ing-amt">€${f2(ing.importe)}</span>
-          <span class="badge ${ing.cobrado?'badge-si':'badge-no'}" onclick="toggleIngreso(${idx},${!!ing._extra})">${ing.cobrado?'SI':'NO'}</span>
-          ${ing._extra?`<button class="btn-icon" onclick="delExtra(${ing._idx})">✕</button>`:''}
+    const md = getMesActual();
+    const todos=[...md.ingresos, ...md.ingresos_extra.map((e,i)=>({...e,_extra:true,_idx:i}))];
+    document.getElementById('lista-ingresos').innerHTML=todos.map((ing,idx)=>`
+      <div class="ir">
+        <div><div class="in">${ing.nombre} ${!ing.fijo?'<span class="chip cht">Variable</span>':''}</div></div>
+        <div class="irr">
+          <span class="ia">€${f2(ing.importe)}</span>
+          <span class="badge ${ing.cobrado?'bsi':'bno'}" onclick="toggleIngreso(${idx},${!!ing._extra})">${ing.cobrado?'SI':'NO'}</span>
+          ${ing._extra?`<button class="bi" onclick="delExtra(${ing._idx})">✕</button>`:''}
         </div>
       </div>`).join('');
-    document.getElementById('total-ingresos').textContent = '€' + f2(sumIngresos());
-
-    const extras = S.ingresos_extra;
-    document.getElementById('lista-extras').innerHTML = extras.length===0 ? '' :
-      `<div style="margin-top:8px;font-size:11px;color:var(--text3)">${extras.length} ingreso(s) extra registrado(s) este mes</div>`;
+    document.getElementById('total-ingresos').textContent='€'+f2(sumArr(md.ingresos)+sumArr(md.ingresos_extra));
+    document.getElementById('lista-extras').innerHTML=md.ingresos_extra.length?
+      `<div style="margin-top:6px;font-size:11px;color:var(--text3)">${md.ingresos_extra.length} ingreso(s) extra</div>`:'';
   },
 
   combustible() {
-    document.getElementById('fuel-presupuesto-label').textContent = '€' + f2(S.presupuesto_fuel);
-    const total = sumFuel();
-    const rest = S.presupuesto_fuel - total;
-    const pct = Math.min(100, total/S.presupuesto_fuel*100);
-    const col = pct>95?'var(--red)':pct>80?'var(--yellow)':'var(--green)';
-    document.getElementById('fuel-resumen').innerHTML = `
-      <div style="display:flex;justify-content:space-between;margin-bottom:10px">
-        <span style="font-family:var(--display);font-size:22px;font-weight:800">€${f2(total)}</span>
-        <span style="color:${col};font-family:var(--display);font-size:15px;font-weight:700">Quedan €${f2(Math.max(0,rest))}</span>
+    const md = getMesActual();
+    document.getElementById('fuel-pres-label').textContent='€'+f2(S.presupuesto_fuel);
+    const ft=sumFuel(md.fuel), rest=S.presupuesto_fuel-ft;
+    const fp=Math.min(100,ft/S.presupuesto_fuel*100), fc=fp>95?'var(--red)':fp>80?'var(--yellow)':'var(--green)';
+    document.getElementById('fuel-resumen').innerHTML=`
+      <div style="display:flex;justify-content:space-between;margin-bottom:9px">
+        <span style="font-family:var(--display);font-size:21px;font-weight:800">€${f2(ft)}</span>
+        <span style="color:${fc};font-family:var(--display);font-size:14px;font-weight:700">Quedan €${f2(Math.max(0,rest))}</span>
       </div>
-      <div class="bar-track" style="height:10px;margin-bottom:6px"><div class="bar-fill" style="width:${pct}%;background:${col}"></div></div>
-      <div style="font-size:11px;color:var(--text3)">${f1(pct)}% del presupuesto utilizado</div>`;
+      <div class="bt" style="height:9px;margin-bottom:5px"><div class="bf" style="width:${fp}%;background:${fc}"></div></div>
+      <div style="font-size:11px;color:var(--text3)">${f1(fp)}% utilizado</div>`;
 
-    const tipos = [
-      {key:'comida',icon:'🛒',nombre:'Comida',col:'var(--green)'},
-      {key:'yaris',icon:'🚗',nombre:'Yaris',col:'var(--accent2)'},
-      {key:'honda',icon:'🏍️',nombre:'Honda',col:'var(--accent3)'},
-      {key:'berlingo',icon:'🚐',nombre:'Berlingo',col:'var(--yellow)'}
+    const tipos=[
+      {k:'comida',i:'🛒',n:'Comida',c:'var(--green)'},
+      {k:'yaris',i:'🚗',n:'Yaris',c:'var(--accent2)'},
+      {k:'honda',i:'🏍️',n:'Honda',c:'var(--accent3)'},
+      {k:'berlingo',i:'🚐',n:'Berlingo',c:'var(--yellow)'}
     ];
-    document.getElementById('fuel-tarjetas').innerHTML = tipos.map(t => {
-      const items = S.fuel[t.key]||[];
-      const tot = sum(items);
-      const p = Math.min(100, tot/S.presupuesto_fuel*100);
-      return `<div class="fuel-card">
-        <div class="fuel-head">
-          <span class="fuel-name">${t.icon} ${t.nombre}</span>
-          <span class="fuel-amt" style="color:${t.col}">€${f2(tot)}</span>
-        </div>
-        <div class="fuel-bar"><div class="fuel-fill" style="width:${p}%;background:${t.col}"></div></div>
-        <div class="fuel-meta">${f1(p)}% del presupuesto</div>
-        <div class="fuel-list">
-          ${items.length===0?'<div style="color:var(--text3);font-size:11px;padding:4px 0">Sin apuntes</div>':
-            items.map((v,i)=>`<div class="fuel-item">
-              <span style="color:var(--text2)">Apunte ${i+1}</span>
-              <div style="display:flex;gap:8px;align-items:center">
-                <span>€${f2(v)}</span>
-                <button class="btn-icon" style="padding:2px 7px;font-size:11px" onclick="delFuel('${t.key}',${i})">✕</button>
-              </div>
-            </div>`).join('')}
-        </div>
+    document.getElementById('fuel-tarjetas').innerHTML=tipos.map(t=>{
+      const items=md.fuel[t.k]||[], tot=sum(items), p=Math.min(100,tot/S.presupuesto_fuel*100);
+      return `<div class="fc">
+        <div class="fh"><span class="fn">${t.i} ${t.n}</span><span class="fa" style="color:${t.c}">€${f2(tot)}</span></div>
+        <div class="fb"><div class="ff" style="width:${p}%;background:${t.c}"></div></div>
+        <div class="fm">${f1(p)}% del presupuesto</div>
+        <div class="fl">${items.length===0?'<div style="color:var(--text3);font-size:11px;padding:4px 0">Sin apuntes</div>':
+          items.map((v,i)=>`<div class="fi"><span style="color:var(--text2)">Apunte ${i+1}</span>
+            <div style="display:flex;gap:7px;align-items:center"><span>€${f2(v)}</span>
+              <button class="bi" style="padding:2px 6px;font-size:11px" onclick="delFuel('${t.k}',${i})">✕</button>
+            </div></div>`).join('')}</div>
       </div>`;
     }).join('');
   },
 
   pagos() {
-    const totSink = sumSinking();
-    document.getElementById('sinking-total-label').textContent = '€' + f2(totSink) + '/mes';
-
-    document.getElementById('lista-pagos').innerHTML = S.pagos_anuales.map((p,i) => `
-      <div class="pago-row">
-        <div>
-          <div class="pago-name">${p.nombre}</div>
-          <div style="font-size:11px;color:var(--text3);margin-top:2px">€${f2(p.importe/12)}/mes prorrateado</div>
-        </div>
-        <div class="pago-right">
-          <div style="text-align:right">
-            <div class="pago-anual">€${f2(p.importe)}</div>
-            <div class="pago-mes">anual</div>
-          </div>
-          <button class="btn-icon btn-sm" onclick="editPago(${i})" title="Editar">✏️</button>
-          <button class="btn-icon btn-sm" onclick="delPago(${i})" title="Eliminar">✕</button>
+    document.getElementById('sf-total-label').textContent='€'+f2(sumSinking())+'/mes';
+    document.getElementById('lista-pagos').innerHTML=S.pagos_anuales.map((p,i)=>`
+      <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 12px;background:var(--bg3);border-radius:7px;margin-bottom:3px;border:1px solid var(--border)">
+        <div><div style="font-weight:700;font-size:13px">${p.nombre}</div>
+          <div style="font-size:11px;color:var(--text3)">€${f2(p.importe/12)}/mes</div></div>
+        <div style="display:flex;align-items:center;gap:8px">
+          <div style="text-align:right"><div style="font-family:var(--display);font-size:13px;font-weight:700">€${f2(p.importe)}</div>
+            <div style="font-size:10px;color:var(--text3)">anual</div></div>
+          <button class="bi" onclick="editPago(${i})">✏️</button>
+          <button class="bi" onclick="delPago(${i})">✕</button>
         </div>
       </div>`).join('');
 
-    document.getElementById('lista-pagos-estado').innerHTML = S.pagos_anuales.map((p,i) => `
-      <div class="ing-row">
-        <span class="ing-name">${p.nombre} — €${f2(p.importe)}</span>
-        <span class="badge ${p.pagado?'badge-si':'badge-no'}" onclick="togglePago(${i})">${p.pagado?'Pagado':'Pendiente'}</span>
+    document.getElementById('pagos-estado').innerHTML=S.pagos_anuales.map((p,i)=>`
+      <div class="ir"><span style="font-weight:700;font-size:13px">${p.nombre} — €${f2(p.importe)}</span>
+        <span class="badge ${p.pagado?'bsi':'bno'}" onclick="togglePago(${i})">${p.pagado?'Pagado':'Pendiente'}</span>
       </div>`).join('');
   },
 
-  proyeccion() {
-    const c = calc();
-    const hist = S.historial||[];
-    const todos = [...hist, {mes:MESES[S.mes]+' (actual)', inversion:c.p10, ahorro:c.ahorro, actual:true}];
-    const totInv = todos.reduce((s,m)=>s+m.inversion,0);
-    const totAho = todos.reduce((s,m)=>s+m.ahorro,0);
+  cartera() {
+    const md = getMesActual();
+    const c = calcMes(md);
+    const invTotal = c.inversion;
 
-    document.getElementById('proy-cards').innerHTML = `
-      <div class="card"><div class="card-accent-line" style="background:var(--accent3)"></div>
-        <div class="card-title">Inversión acumulada</div>
-        <div class="card-val c-pink">€${f2(totInv)}</div>
-        <div class="card-sub">€${f2(totInv/Math.max(1,todos.length))}/mes promedio</div>
-      </div>
-      <div class="card"><div class="card-accent-line" style="background:var(--accent2)"></div>
-        <div class="card-title">Ahorro acumulado</div>
-        <div class="card-val c-purple">€${f2(totAho)}</div>
-        <div class="card-sub">€${f2(totAho/Math.max(1,todos.length))}/mes promedio</div>
-      </div>`;
+    document.getElementById('cards-ai').innerHTML=`
+      <div class="card"><div class="cal" style="background:var(--accent3)"></div>
+        <div class="ct">Inversión (10%)</div>
+        <div class="cv cp">€${f2(invTotal)}</div>
+        <div class="cs">10% de €${f2(c.ing)}</div></div>
+      <div class="card"><div class="cal" style="background:var(--accent2)"></div>
+        <div class="ct">Ahorro (${S.ahorro_pct}%)</div>
+        <div class="cv cb">€${f2(c.ahorro)}</div>
+        <div class="cs">${c.exceso>0?'⚠️ Reducido por exceso 50%':'Sin reducción'}</div></div>`;
 
-    const maxV = Math.max(...todos.map(m=>m.inversion+m.ahorro),1);
-    document.getElementById('proy-grafico').innerHTML =
-      todos.map(m => {
-        const invP = m.inversion/maxV*100;
-        const ahoP = m.ahorro/maxV*100;
-        return `<div class="proy-row">
-          <div class="proy-label">${m.mes.substring(0,3)}</div>
-          <div class="proy-track">
-            <div class="proy-inv" style="width:${invP}%;background:var(--accent3)"></div>
-            <div class="proy-aho" style="left:${invP}%;width:${ahoP}%;background:var(--accent2)"></div>
-          </div>
-          <div class="proy-val" style="color:${m.actual?'var(--accent)':'var(--text2)'}">€${f2(m.inversion+m.ahorro)}</div>
-        </div>`;
-      }).join('') +
-      `<div style="display:flex;gap:16px;margin-top:10px;font-size:11px;color:var(--text3)">
-        <span><span style="display:inline-block;width:10px;height:10px;background:var(--accent3);border-radius:2px;margin-right:4px;vertical-align:middle"></span>Inversión</span>
-        <span><span style="display:inline-block;width:10px;height:10px;background:var(--accent2);border-radius:2px;margin-right:4px;vertical-align:middle"></span>Ahorro</span>
-        <span style="color:var(--accent)">· Actual = proyección</span>
-      </div>`;
-
-    // Proyección futura
-    const avgInv = totInv/Math.max(1,todos.length);
-    const avgAho = totAho/Math.max(1,todos.length);
-    let acI=totInv, acA=totAho;
-    let futHtml = `<div class="alert alert-info" style="margin-bottom:12px">📈 Ritmo: <strong>€${f2(avgInv)}/mes</strong> inv · <strong>€${f2(avgAho)}/mes</strong> ahorro</div>`;
-    for(let i=1;i<=6;i++){
-      const mIdx=(S.mes+i)%12;
-      acI+=avgInv; acA+=avgAho;
-      futHtml+=`<div class="ing-row">
-        <span style="font-weight:700">${MESES[mIdx]}</span>
-        <div style="display:flex;gap:14px;font-size:12px">
-          <span style="color:var(--accent3)">Inv €${f2(acI)}</span>
-          <span style="color:var(--accent2)">Aho €${f2(acA)}</span>
-          <span style="color:var(--text3)">€${f2(acI+acA)}</span>
+    document.getElementById('cartera-items').innerHTML=S.cartera.map((a,i)=>`
+      <div class="cartera-item">
+        <div class="cartera-head">
+          <div class="cartera-nombre" style="color:${a.color}">${a.nombre}</div>
+          <div class="cartera-importe" style="color:${a.color}">€${f2(invTotal*a.pct/100)}</div>
         </div>
-      </div>`;
-    }
-    document.getElementById('proy-futuro').innerHTML = futHtml;
-
-    // Editor
-    document.getElementById('proy-edit').innerHTML = hist.map((m,i)=>`
-      <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;flex-wrap:wrap;background:var(--bg3);padding:10px;border-radius:8px">
-        <span style="font-weight:700;min-width:80px">${m.mes}</span>
-        <input class="inp" type="number" value="${m.inversion.toFixed(2)}" placeholder="Inversión €"
-          style="flex:1;min-width:90px" onchange="editProy(${i},'inversion',this.value)" />
-        <input class="inp" type="number" value="${m.ahorro.toFixed(2)}" placeholder="Ahorro €"
-          style="flex:1;min-width:90px" onchange="editProy(${i},'ahorro',this.value)" />
-        <button class="btn-icon" onclick="delProyMes(${i})">✕</button>
+        <div class="cartera-pct-row">
+          <span class="cartera-pct-label">Porcentaje:</span>
+          <input class="pct-inp" type="number" value="${a.pct}" min="0" max="100"
+            onchange="updateCarteraPct(${i}, this.value)" />
+          <span style="font-size:12px;color:var(--text3)">%</span>
+          <div class="bt" style="flex:1;height:6px;margin-left:10px">
+            <div class="bf" style="width:${a.pct}%;background:${a.color}"></div>
+          </div>
+        </div>
       </div>`).join('');
+
+    const totalPct = S.cartera.reduce((s,a)=>s+a.pct,0);
+    document.getElementById('cartera-total').innerHTML=
+      `€${f2(invTotal)} ${totalPct!==100?`<span style="color:var(--red);font-size:11px">(⚠️ suma ${totalPct}%, debe ser 100%)</span>`:''}`;
+
+    document.getElementById('ahorro-pct').value = S.ahorro_pct;
+    document.getElementById('ahorro-importe').textContent = '€'+f2(c.ahorro);
+
+    // Histórico acumulado
+    const mesesCerrados = Object.entries(S.meses)
+      .filter(([k,m])=>m.cerrado)
+      .map(([k,m])=>{
+        const [a,mo]=k.split('-').map(Number);
+        const cc=calcMes(m);
+        return {label:MESES[mo]+' '+a, inv:cc.inversion, aho:cc.ahorro};
+      });
+
+    if (mesesCerrados.length===0) {
+      document.getElementById('cartera-historico').innerHTML=
+        `<div style="color:var(--text3);font-size:12px;text-align:center;padding:20px">Los meses cerrados aparecerán aquí.</div>`;
+    } else {
+      const totI=mesesCerrados.reduce((s,m)=>s+m.inv,0);
+      const totA=mesesCerrados.reduce((s,m)=>s+m.aho,0);
+      document.getElementById('cartera-historico').innerHTML=
+        mesesCerrados.map(m=>`<div class="ir">
+          <span style="font-weight:700">${m.label}</span>
+          <div style="display:flex;gap:12px;font-size:12px">
+            <span style="color:var(--accent3)">Inv €${f2(m.inv)}</span>
+            <span style="color:var(--accent2)">Aho €${f2(m.aho)}</span>
+          </div></div>`).join('')+
+        `<div class="tr-total tr-hi" style="margin-top:8px">
+          <span>Total acumulado</span>
+          <div style="display:flex;gap:14px">
+            <span style="color:var(--accent3);font-family:var(--display);font-weight:800">Inv €${f2(totI)}</span>
+            <span style="color:var(--accent2);font-family:var(--display);font-weight:800">Aho €${f2(totA)}</span>
+          </div></div>`;
+    }
+  },
+
+  anual() {
+    const mesesCerrados = Object.entries(S.meses)
+      .filter(([k,m])=>m.cerrado)
+      .map(([k,m])=>{
+        const [a,mo]=k.split('-').map(Number);
+        const cc=calcMes(m);
+        return {label:MESES[mo]+' '+a, ...cc, fuel:sumFuel(m.fuel)};
+      });
+
+    if (mesesCerrados.length===0) {
+      document.getElementById('anual-content').innerHTML=
+        `<div style="color:var(--text3);font-size:13px;text-align:center;padding:40px">Cierra el primer mes para ver el resumen anual.</div>`;
+      return;
+    }
+
+    const totIng=mesesCerrados.reduce((s,m)=>s+m.ing,0);
+    const totGas=mesesCerrados.reduce((s,m)=>s+m.gastos,0);
+    const totFuel=mesesCerrados.reduce((s,m)=>s+m.fuel,0);
+    const totInv=mesesCerrados.reduce((s,m)=>s+m.inversion,0);
+    const totAho=mesesCerrados.reduce((s,m)=>s+m.ahorro,0);
+    const tot50=mesesCerrados.reduce((s,m)=>s+m.total50,0);
+
+    document.getElementById('anual-content').innerHTML=`
+      <div class="g2" style="margin-bottom:12px">
+        <div class="card"><div class="cal" style="background:var(--green)"></div>
+          <div class="ct">Ingresos totales</div><div class="cv cg">€${f2(totIng)}</div>
+          <div class="cs">${mesesCerrados.length} meses</div></div>
+        <div class="card"><div class="cal" style="background:var(--red)"></div>
+          <div class="ct">Gastos totales (50%)</div><div class="cv cr">€${f2(tot50)}</div>
+          <div class="cs">${f1(totIng>0?tot50/totIng*100:0)}% promedio</div></div>
+        <div class="card"><div class="cal" style="background:var(--accent3)"></div>
+          <div class="ct">Inversión acumulada</div><div class="cv cp">€${f2(totInv)}</div>
+          <div class="cs">${f1(totIng>0?totInv/totIng*100:0)}% promedio</div></div>
+        <div class="card"><div class="cal" style="background:var(--accent2)"></div>
+          <div class="ct">Ahorro acumulado</div><div class="cv cb">€${f2(totAho)}</div>
+          <div class="cs">${f1(totIng>0?totAho/totIng*100:0)}% promedio</div></div>
+      </div>
+      <div class="card">
+        <div class="ct">Comida + Gasolina acumulado</div>
+        <div style="font-family:var(--display);font-size:22px;font-weight:800;color:var(--yellow);margin-bottom:6px">€${f2(totFuel)}</div>
+        <div style="font-size:11px;color:var(--text3)">Presupuesto total: €${f2(S.presupuesto_fuel*mesesCerrados.length)} · Desviación: €${f2(totFuel-S.presupuesto_fuel*mesesCerrados.length)}</div>
+      </div>
+      <div class="sep"></div>
+      <div class="slabel">Detalle por mes</div>
+      ${mesesCerrados.map(m=>`<div class="anual-row">
+        <span class="anual-label">${m.label}</span>
+        <div style="display:flex;gap:12px;flex-wrap:wrap;font-size:11px">
+          <span class="cg">Ing €${f2(m.ing)}</span>
+          <span class="cr">Gas €${f2(m.total50)}</span>
+          <span class="cp">Inv €${f2(m.inversion)}</span>
+          <span class="cb">Aho €${f2(m.ahorro)}</span>
+          <span class="cy">C/G €${f2(m.fuel)}</span>
+        </div></div>`).join('')}`;
   },
 
   ajustes() {
-    document.getElementById('ajustes-mes-label').textContent = mesNombre();
-    document.getElementById('cfg-fuel-actual').textContent = S.presupuesto_fuel;
-    document.getElementById('cfg-fuel-inp').value = S.presupuesto_fuel;
+    updateHeader();
+    document.getElementById('cfg-fuel-lbl').textContent=S.presupuesto_fuel;
+    document.getElementById('cfg-fuel-inp').value=S.presupuesto_fuel;
 
-    // Gastos fijos
-    document.getElementById('set-gastos-fijos').innerHTML = S.gastos_fijos.map((g,i)=>`
-      <div class="set-item">
-        <div><div class="set-name">${g.nombre} <span class="chip ${g.cat==='fijo'?'chip-dim':'chip-yellow'}">${g.cat}</span></div>
-          <div class="set-meta">€${f2(g.importe)}/mes</div></div>
-        <div class="set-actions">
-          <button class="btn-icon" onclick="setEdit('gastos_fijos',${i})">✏️</button>
-          <button class="btn-icon" onclick="setDel('gastos_fijos',${i})">✕</button>
-        </div>
-      </div>`).join('');
+    const md=getMesActual();
+    document.getElementById('set-gf').innerHTML=md.gastos_fijos.map((g,i)=>`
+      <div class="si"><div><div class="sn">${g.nombre} <span class="chip ${g.cat==='fijo'?'chd':'chy'}">${g.cat}</span></div>
+        <div class="sm">€${f2(g.importe)}/mes</div></div>
+        <div class="sa"><button class="bi" onclick="setEdit('gastos_fijos',${i})">✏️</button>
+          <button class="bi" onclick="setDel('gastos_fijos',${i})">✕</button></div></div>`).join('');
 
-    // Ingenio
-    document.getElementById('set-ingenio').innerHTML = S.ingenio_items.map((g,i)=>`
-      <div class="set-item">
-        <div><div class="set-name">${g.nombre}</div><div class="set-meta">€${f2(g.importe)}</div></div>
-        <div class="set-actions">
-          <button class="btn-icon" onclick="setEdit('ingenio_items',${i})">✏️</button>
-          <button class="btn-icon" onclick="setDel('ingenio_items',${i})">✕</button>
-        </div>
-      </div>`).join('');
+    document.getElementById('set-ing').innerHTML=md.ingenio_items.map((g,i)=>`
+      <div class="si"><div><div class="sn">${g.nombre}</div><div class="sm">€${f2(g.importe)}</div></div>
+        <div class="sa"><button class="bi" onclick="setEdit('ingenio_items',${i})">✏️</button>
+          <button class="bi" onclick="setDel('ingenio_items',${i})">✕</button></div></div>`).join('');
 
-    // Arinaga
-    document.getElementById('set-arinaga').innerHTML = S.arinaga_items.map((g,i)=>`
-      <div class="set-item">
-        <div><div class="set-name">${g.nombre}</div><div class="set-meta">€${f2(g.importe)}</div></div>
-        <div class="set-actions">
-          <button class="btn-icon" onclick="setEdit('arinaga_items',${i})">✏️</button>
-          <button class="btn-icon" onclick="setDel('arinaga_items',${i})">✕</button>
-        </div>
-      </div>`).join('');
+    document.getElementById('set-ari').innerHTML=md.arinaga_items.map((g,i)=>`
+      <div class="si"><div><div class="sn">${g.nombre}</div><div class="sm">€${f2(g.importe)}</div></div>
+        <div class="sa"><button class="bi" onclick="setEdit('arinaga_items',${i})">✏️</button>
+          <button class="bi" onclick="setDel('arinaga_items',${i})">✕</button></div></div>`).join('');
 
-    // Ingresos
-    document.getElementById('set-ingresos').innerHTML = S.ingresos.map((ing,i)=>`
-      <div class="set-item">
-        <div><div class="set-name">${ing.nombre}</div><div class="set-meta">€${f2(ing.importe)}/mes</div></div>
-        <div class="set-actions">
-          <button class="btn-icon" onclick="setEditIngreso(${i})">✏️</button>
-          <button class="btn-icon" onclick="setDelIngreso(${i})">✕</button>
-        </div>
-      </div>`).join('');
+    document.getElementById('set-ing2').innerHTML=md.ingresos.map((g,i)=>`
+      <div class="si"><div><div class="sn">${g.nombre}</div><div class="sm">€${f2(g.importe)}/mes</div></div>
+        <div class="sa"><button class="bi" onclick="setEditIngreso(${i})">✏️</button>
+          <button class="bi" onclick="setDelIngreso(${i})">✕</button></div></div>`).join('');
   }
 };
 
-// ==========================================
+// ============================================================
 // ACCIONES
-// ==========================================
+// ============================================================
 function toggleGasto(arr, idx) {
-  S[arr][idx].cobrado = !S[arr][idx].cobrado;
+  getMesActual()[arr][idx].cobrado=!getMesActual()[arr][idx].cobrado;
   save(); renders.gastos();
 }
 
 function toggleIngreso(idx, isExtra) {
-  if (isExtra) {
-    const ei = idx - S.ingresos.length;
-    S.ingresos_extra[ei].cobrado = !S.ingresos_extra[ei].cobrado;
-  } else {
-    S.ingresos[idx].cobrado = !S.ingresos[idx].cobrado;
-  }
+  const md=getMesActual();
+  if(isExtra){md.ingresos_extra[idx-md.ingresos.length].cobrado=!md.ingresos_extra[idx-md.ingresos.length].cobrado;}
+  else{md.ingresos[idx].cobrado=!md.ingresos[idx].cobrado;}
   save(); renders.ingresos(); renders.dashboard();
 }
 
-function addExtra() {
-  const n = document.getElementById('extra-nombre').value.trim();
-  const v = parseFloat(document.getElementById('extra-importe').value);
-  if (!n || isNaN(v)||v<=0) return;
-  S.ingresos_extra.push({nombre:n, importe:v, cobrado:true, fijo:false});
+function addExtra(){
+  const n=document.getElementById('extra-nombre').value.trim();
+  const v=parseFloat(document.getElementById('extra-importe').value);
+  if(!n||isNaN(v)||v<=0)return;
+  getMesActual().ingresos_extra.push({nombre:n,importe:v,cobrado:true,fijo:false});
   document.getElementById('extra-nombre').value='';
   document.getElementById('extra-importe').value='';
   save(); renders.ingresos(); renders.dashboard();
 }
 
-function delExtra(idx) {
-  S.ingresos_extra.splice(idx,1); save(); renders.ingresos(); renders.dashboard();
+function delExtra(idx){
+  getMesActual().ingresos_extra.splice(idx,1);
+  save(); renders.ingresos(); renders.dashboard();
 }
 
-function addFuel() {
-  const tipo = document.getElementById('fuel-tipo').value;
-  const v = parseFloat(document.getElementById('fuel-importe').value);
-  if (isNaN(v)||v<=0) return;
-  if (!S.fuel[tipo]) S.fuel[tipo]=[];
-  S.fuel[tipo].push(v);
-  document.getElementById('fuel-importe').value='';
+function addFuel(){
+  const t=document.getElementById('fuel-tipo').value;
+  const v=parseFloat(document.getElementById('fuel-imp').value);
+  if(isNaN(v)||v<=0)return;
+  const md=getMesActual();
+  if(!md.fuel[t])md.fuel[t]=[];
+  md.fuel[t].push(v);
+  document.getElementById('fuel-imp').value='';
   save(); renders.combustible(); renders.dashboard();
 }
 
-function delFuel(tipo, idx) {
-  S.fuel[tipo].splice(idx,1); save(); renders.combustible(); renders.dashboard();
+function delFuel(tipo,idx){
+  getMesActual().fuel[tipo].splice(idx,1);
+  save(); renders.combustible(); renders.dashboard();
 }
 
-function addPago() {
-  const n = document.getElementById('pago-nombre').value.trim();
-  const v = parseFloat(document.getElementById('pago-importe').value);
-  if (!n||isNaN(v)||v<=0) return;
-  S.pagos_anuales.push({id:'p_'+Date.now(), nombre:n, importe:v, pagado:false});
+function addPago(){
+  const n=document.getElementById('pago-nombre').value.trim();
+  const v=parseFloat(document.getElementById('pago-imp').value);
+  if(!n||isNaN(v)||v<=0)return;
+  S.pagos_anuales.push({id:'p_'+Date.now(),nombre:n,importe:v,pagado:false});
   document.getElementById('pago-nombre').value='';
-  document.getElementById('pago-importe').value='';
+  document.getElementById('pago-imp').value='';
   save(); renders.pagos(); renders.gastos(); renders.dashboard();
 }
 
-function delPago(idx) {
-  if (!confirm('¿Eliminar este pago anual?')) return;
-  S.pagos_anuales.splice(idx,1); save(); renders.pagos(); renders.gastos(); renders.dashboard();
+function delPago(idx){
+  if(!confirm('¿Eliminar este pago anual?'))return;
+  S.pagos_anuales.splice(idx,1);
+  save(); renders.pagos(); renders.gastos(); renders.dashboard();
 }
 
-function editPago(idx) {
-  const p = S.pagos_anuales[idx];
-  const nv = parseFloat(prompt(`Nuevo importe anual para "${p.nombre}":`, p.importe));
-  if (!isNaN(nv)&&nv>0) { p.importe=nv; save(); renders.pagos(); renders.gastos(); renders.dashboard(); }
+function editPago(idx){
+  const p=S.pagos_anuales[idx];
+  const nv=parseFloat(prompt(`Nuevo importe anual para "${p.nombre}":`,p.importe));
+  if(!isNaN(nv)&&nv>0){p.importe=nv;save();renders.pagos();renders.gastos();renders.dashboard();}
 }
 
-function togglePago(idx) {
-  S.pagos_anuales[idx].pagado = !S.pagos_anuales[idx].pagado;
+function togglePago(idx){
+  S.pagos_anuales[idx].pagado=!S.pagos_anuales[idx].pagado;
   save(); renders.pagos();
 }
 
-function editProy(idx, campo, val) {
-  const v = parseFloat(val);
-  if (!isNaN(v)&&v>=0) { S.historial[idx][campo]=v; save(); renders.proyeccion(); renders.dashboard(); }
+function updateCarteraPct(idx, val){
+  S.cartera[idx].pct=Math.max(0,Math.min(100,parseFloat(val)||0));
+  save(); renders.cartera(); renders.dashboard();
 }
 
-function delProyMes(idx) {
-  S.historial.splice(idx,1); save(); renders.proyeccion(); renders.dashboard();
+function updateAhorro(){
+  S.ahorro_pct=Math.max(0,Math.min(30,parseFloat(document.getElementById('ahorro-pct').value)||10));
+  save(); renders.cartera(); renders.dashboard();
 }
 
-function addProyMes() {
-  const mes = document.getElementById('proy-mes-sel').value;
-  const inv = parseFloat(document.getElementById('proy-inv').value)||0;
-  const aho = parseFloat(document.getElementById('proy-aho').value)||0;
-  S.historial.push({mes, inversion:inv, ahorro:aho});
-  document.getElementById('proy-inv').value='';
-  document.getElementById('proy-aho').value='';
-  save(); renders.proyeccion(); renders.dashboard();
+function setEdit(arr,idx){
+  const md=getMesActual();
+  const item=md[arr][idx];
+  const nv=parseFloat(prompt(`Nuevo importe para "${item.nombre}":`,item.importe));
+  if(!isNaN(nv)&&nv>=0){item.importe=nv;save();renders.ajustes();renders.gastos();renders.dashboard();}
 }
 
-function setEdit(arr, idx) {
-  const item = S[arr][idx];
-  const nv = parseFloat(prompt(`Nuevo importe para "${item.nombre}":`, item.importe));
-  if (!isNaN(nv)&&nv>=0) { item.importe=nv; save(); renders.ajustes(); renders.gastos(); renders.dashboard(); }
-}
-
-function setDel(arr, idx) {
-  if (!confirm('¿Eliminar este concepto?')) return;
-  S[arr].splice(idx,1); save(); renders.ajustes(); renders.gastos(); renders.dashboard();
-}
-
-function setAddGasto() {
-  const n = document.getElementById('set-gf-nombre').value.trim();
-  const v = parseFloat(document.getElementById('set-gf-importe').value);
-  const cat = document.getElementById('set-gf-cat').value;
-  if (!n||isNaN(v)||v<=0) return;
-  S.gastos_fijos.push({id:'g_'+Date.now(), nombre:n, importe:v, cobrado:false, cat});
-  document.getElementById('set-gf-nombre').value='';
-  document.getElementById('set-gf-importe').value='';
+function setDel(arr,idx){
+  if(!confirm('¿Eliminar este concepto?'))return;
+  getMesActual()[arr].splice(idx,1);
   save(); renders.ajustes(); renders.gastos(); renders.dashboard();
 }
 
-function setAddSub(arr, nId, vId) {
-  const n = document.getElementById(nId).value.trim();
-  const v = parseFloat(document.getElementById(vId).value);
-  if (!n||isNaN(v)||v<0) return;
-  S[arr].push({id:'s_'+Date.now(), nombre:n, importe:v, cobrado:false});
-  document.getElementById(nId).value='';
-  document.getElementById(vId).value='';
+function setAddGF(){
+  const n=document.getElementById('sgf-n').value.trim();
+  const v=parseFloat(document.getElementById('sgf-v').value);
+  const cat=document.getElementById('sgf-cat').value;
+  if(!n||isNaN(v)||v<=0)return;
+  getMesActual().gastos_fijos.push({id:'g_'+Date.now(),nombre:n,importe:v,cobrado:false,cat});
+  document.getElementById('sgf-n').value=''; document.getElementById('sgf-v').value='';
   save(); renders.ajustes(); renders.gastos(); renders.dashboard();
 }
 
-function setEditIngreso(idx) {
-  const ing = S.ingresos[idx];
-  const nv = parseFloat(prompt(`Nuevo importe para "${ing.nombre}":`, ing.importe));
-  if (!isNaN(nv)&&nv>=0) { ing.importe=nv; save(); renders.ajustes(); renders.ingresos(); renders.dashboard(); }
+function setAddSub(arr,nId,vId){
+  const n=document.getElementById(nId).value.trim();
+  const v=parseFloat(document.getElementById(vId).value);
+  if(!n||isNaN(v)||v<0)return;
+  getMesActual()[arr].push({id:'s_'+Date.now(),nombre:n,importe:v,cobrado:false});
+  document.getElementById(nId).value=''; document.getElementById(vId).value='';
+  save(); renders.ajustes(); renders.gastos(); renders.dashboard();
 }
 
-function setDelIngreso(idx) {
-  if (!confirm('¿Eliminar este ingreso fijo?')) return;
-  S.ingresos.splice(idx,1); save(); renders.ajustes(); renders.ingresos(); renders.dashboard();
+function setEditIngreso(idx){
+  const md=getMesActual();
+  const ing=md.ingresos[idx];
+  const nv=parseFloat(prompt(`Nuevo importe para "${ing.nombre}":`,ing.importe));
+  if(!isNaN(nv)&&nv>=0){ing.importe=nv;save();renders.ajustes();renders.ingresos();renders.dashboard();}
 }
 
-function setAddIngreso() {
-  const n = document.getElementById('set-i-nombre').value.trim();
-  const v = parseFloat(document.getElementById('set-i-importe').value);
-  if (!n||isNaN(v)||v<=0) return;
-  S.ingresos.push({id:'i_'+Date.now(), nombre:n, importe:v, cobrado:false, fijo:true});
-  document.getElementById('set-i-nombre').value='';
-  document.getElementById('set-i-importe').value='';
+function setDelIngreso(idx){
+  if(!confirm('¿Eliminar este ingreso?'))return;
+  getMesActual().ingresos.splice(idx,1);
   save(); renders.ajustes(); renders.ingresos(); renders.dashboard();
 }
 
-function saveFuelPresupuesto() {
-  const v = parseFloat(document.getElementById('cfg-fuel-inp').value);
-  if (!isNaN(v)&&v>0) { S.presupuesto_fuel=v; save(); renders.ajustes(); renders.dashboard(); renders.combustible(); }
+function setAddIngreso(){
+  const n=document.getElementById('si2-n').value.trim();
+  const v=parseFloat(document.getElementById('si2-v').value);
+  if(!n||isNaN(v)||v<=0)return;
+  getMesActual().ingresos.push({id:'i_'+Date.now(),nombre:n,importe:v,cobrado:false,fijo:true});
+  document.getElementById('si2-n').value=''; document.getElementById('si2-v').value='';
+  save(); renders.ajustes(); renders.ingresos(); renders.dashboard();
 }
 
-function cerrarMes() {
-  if (!confirm(`¿Cerrar ${mesNombre()} y abrir el siguiente mes?`)) return;
-  // Guardar en historial
-  const c = calc();
-  if (!S.historial) S.historial=[];
-  S.historial.push({mes:MESES[S.mes], inversion:c.p10, ahorro:c.ahorro});
-  // Avanzar mes
-  S.mes++; if(S.mes>11){S.mes=0;S.anio++;}
-  // Reset estados
-  S.gastos_fijos.forEach(g=>g.cobrado=false);
-  S.ingresos.forEach(i=>i.cobrado=false);
-  S.ingenio_items.forEach(i=>i.cobrado=false);
-  S.arinaga_items.forEach(i=>i.cobrado=false);
-  S.pagos_anuales.forEach(p=>p.pagado=false);
-  S.ingresos_extra=[];
-  S.fuel={comida:[],yaris:[],honda:[],berlingo:[]};
+function saveFuelPres(){
+  const v=parseFloat(document.getElementById('cfg-fuel-inp').value);
+  if(!isNaN(v)&&v>0){S.presupuesto_fuel=v;save();renders.ajustes();renders.dashboard();renders.combustible();}
+}
+
+function cerrarMes(){
+  if(!confirm(`¿Cerrar ${mesActualNombre()} y abrir el siguiente?`))return;
+  getMesActual().cerrado=true;
+  // Crear mes siguiente con copia de los conceptos actuales (sin cobrar)
+  let {m,a}=S.mes_activo;
+  m++; if(m>11){m=0;a++;}
+  const nuevoKey=mesKey(m,a);
+  const actual=getMesActual();
+  S.meses[nuevoKey]={
+    gastos_fijos: actual.gastos_fijos.map(g=>({...g,cobrado:false})),
+    ingenio_items: actual.ingenio_items.map(g=>({...g,cobrado:false})),
+    arinaga_items: actual.arinaga_items.map(g=>({...g,cobrado:false})),
+    ingresos: actual.ingresos.map(i=>({...i,cobrado:false})),
+    ingresos_extra:[],
+    fuel:{comida:[],yaris:[],honda:[],berlingo:[]},
+    cerrado:false
+  };
+  S.mes_activo={m,a};
   save(); updateHeader(); renders.ajustes();
-  alert(`✅ Mes cerrado. Ahora en: ${mesNombre()}`);
+  alert(`✅ Mes cerrado. Ahora en: ${mesActualNombre()}`);
 }
 
-function exportData() {
-  const b = new Blob([JSON.stringify(S,null,2)],{type:'application/json'});
-  const a = document.createElement('a');
-  a.href = URL.createObjectURL(b);
-  a.download = `krypton_${mesNombre().replace(' ','_')}.json`;
+function exportData(){
+  const b=new Blob([JSON.stringify(S,null,2)],{type:'application/json'});
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(b);
+  a.download=`krypton_${mesActualNombre().replace(' ','_')}.json`;
   a.click();
 }
 
-// ==========================================
-// HELPERS RENDER
-// ==========================================
-function tablaCabecera() {
-  return `<thead><tr><th>Concepto</th><th>Categoría</th><th></th><th style="text-align:right">Importe</th><th style="text-align:center">Estado</th></tr></thead>`;
+function resetAll(){
+  S={mes_activo:{m:5,a:2026},presupuesto_fuel:1100,
+    pagos_anuales:JSON.parse(JSON.stringify(PAGOS_ANUALES_DEFAULT)),
+    cartera:JSON.parse(JSON.stringify(CARTERA_DEFAULT)),
+    ahorro_pct:10, meses:{}};
+  save(); init();
 }
 
-function filaGasto(g, i, arr) {
-  const cats = {fijo:'chip-dim',variable:'chip-yellow',ingenio:'chip-teal',arinaga:'chip-pink',sinking:'chip-purple'};
-  return `<tr>
-    <td class="name">${g.nombre}</td>
-    <td><span class="chip ${cats[g.cat]||'chip-dim'}">${g.cat||''}</span></td>
-    <td></td>
+// ============================================================
+// HELPERS
+// ============================================================
+function tblHead(){return`<thead><tr><th>Concepto</th><th></th><th></th><th style="text-align:right">Importe</th><th style="text-align:center">Estado</th></tr></thead>`;}
+
+function filaG(g,i,arr){
+  const cc={fijo:'chd',variable:'chy'};
+  return`<tr><td class="nm">${g.nombre}</td><td><span class="chip ${cc[g.cat]||'chd'}">${g.cat||''}</span></td><td></td>
     <td class="amt">€${f2(g.importe)}</td>
-    <td style="text-align:center"><span class="badge ${g.cobrado?'badge-si':'badge-no'}" onclick="toggleGasto('${arr}',${i})">${g.cobrado?'SI':'NO'}</span></td>
-  </tr>`;
+    <td style="text-align:center"><span class="badge ${g.cobrado?'bsi':'bno'}" onclick="toggleGasto('${arr}',${i})">${g.cobrado?'SI':'NO'}</span></td></tr>`;
 }
 
-function barra(label, val, max, pct, col, pctTxt) {
-  return `<div class="bar-wrap">
-    <div class="bar-head">
-      <span class="bar-label">${label}</span>
-      <span class="bar-pct" style="color:${col}">${pctTxt}</span>
-    </div>
-    <div class="bar-track"><div class="bar-fill" style="width:${Math.min(100,pct)}%;background:${col}"></div></div>
-    <div class="bar-meta"><span>€${f2(val)}</span><span>de €${f2(max)}</span></div>
-  </div>`;
+function barra(label,val,max,pct,col,pctTxt){
+  return`<div class="bw"><div class="bh"><span class="bl">${label}</span><span class="bp" style="color:${col}">${pctTxt}</span></div>
+    <div class="bt"><div class="bf" style="width:${Math.min(100,pct)}%;background:${col}"></div></div>
+    <div class="bm"><span>€${f2(val)}</span><span>de €${f2(max)}</span></div></div>`;
 }
 
-// FORMAT
-function f1(n) { return (Math.round(n*10)/10).toFixed(1); }
-function f2(n) { return (Math.round(n*100)/100).toFixed(2).replace('.',','); }
-function sum(a) { return (a||[]).reduce((s,v)=>s+v,0); }
+function f1(n){return(Math.round(n*10)/10).toFixed(1);}
+function f2(n){return(Math.round(n*100)/100).toFixed(2).replace('.',',');}
+function sum(a){return(a||[]).reduce((s,v)=>s+v,0);}
 
-
-// Exponer funciones al scope global para los onclick del HTML
-window.nav = nav;
-window.navMes = navMes;
-window.toggleGasto = toggleGasto;
-window.toggleIngreso = toggleIngreso;
-window.addExtra = addExtra;
-window.delExtra = delExtra;
-window.addFuel = addFuel;
-window.delFuel = delFuel;
-window.addPago = addPago;
-window.delPago = delPago;
-window.editPago = editPago;
-window.togglePago = togglePago;
-window.editProy = editProy;
-window.delProyMes = delProyMes;
-window.addProyMes = addProyMes;
-window.setEdit = setEdit;
-window.setDel = setDel;
-window.setAddGasto = setAddGasto;
-window.setAddSub = setAddSub;
-window.setEditIngreso = setEditIngreso;
-window.setDelIngreso = setDelIngreso;
-window.setAddIngreso = setAddIngreso;
-window.saveFuelPresupuesto = saveFuelPresupuesto;
-window.cerrarMes = cerrarMes;
-window.exportData = exportData;
-
-// INIT
-updateHeader();
-renders.dashboard();
+// Exponer funciones globales para onclick en HTML
+window.nav=nav; window.navMes=navMes; window.toggleGasto=toggleGasto;
+window.toggleIngreso=toggleIngreso; window.addExtra=addExtra; window.delExtra=delExtra;
+window.addFuel=addFuel; window.delFuel=delFuel; window.addPago=addPago;
+window.delPago=delPago; window.editPago=editPago; window.togglePago=togglePago;
+window.updateCarteraPct=updateCarteraPct; window.updateAhorro=updateAhorro;
+window.setEdit=setEdit; window.setDel=setDel; window.setAddGF=setAddGF;
+window.setAddSub=setAddSub; window.setEditIngreso=setEditIngreso;
+window.setDelIngreso=setDelIngreso; window.setAddIngreso=setAddIngreso;
+window.saveFuelPres=saveFuelPres; window.cerrarMes=cerrarMes;
+window.exportData=exportData; window.resetAll=resetAll;
 </script>
-</div><!-- /app-screen -->
 </body>
 </html>
