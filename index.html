@@ -238,7 +238,6 @@ body::before{content:'';position:fixed;inset:0;background:repeating-linear-gradi
   <button class="nav-btn" onclick="nav(this,'gastos')">Gastos</button>
   <button class="nav-btn" onclick="nav(this,'ingresos')">Ingresos</button>
   <button class="nav-btn" onclick="nav(this,'combustible')">Comida/Gas</button>
-  <button class="nav-btn" onclick="nav(this,'pagos')">Pagos Anuales</button>
   <button class="nav-btn" onclick="nav(this,'cartera')">Ahorro/Inversión</button>
   <button class="nav-btn" onclick="nav(this,'anual')">Vista Anual</button>
 </nav>
@@ -400,31 +399,6 @@ body::before{content:'';position:fixed;inset:0;background:repeating-linear-gradi
       </div>
     </div>
   </div>
-</div>
-
-<!-- PAGOS ANUALES -->
-<div class="section" id="s-pagos">
-  <div class="stitle">Pagos <span>Anuales</span></div>
-  <div class="alert ai">💡 Cada pago anual se prorratea ÷12 y suma al Sinking Fund mensual automáticamente.</div>
-  <div class="card" style="margin-bottom:10px">
-    <div class="ct">Sinking Fund mensual total: <span id="sf-total-label" style="color:var(--accent)"></span></div>
-    <div id="lista-pagos"></div>
-  </div>
-  <div class="slabel">Añadir pago anual</div>
-  <div class="fr">
-    <input class="inp" id="pago-nombre" placeholder="Concepto (ej. Seguro Yaris)">
-    <input class="inp" type="number" id="pago-imp" placeholder="Importe anual €">
-    <select class="sel" id="pago-grupo" style="max-width:150px">
-      <option value="vehiculos">🚗 Vehículos</option>
-      <option value="ingenio">🏠 Ingenio</option>
-      <option value="arinaga">🏘️ Arinaga</option>
-      <option value="personales">🛡️ Seguros Personales</option>
-    </select>
-    <button class="btn" onclick="addPago()">+ Añadir</button>
-  </div>
-  <div class="sep"></div>
-  <div class="slabel">Estado pagos este año</div>
-  <div id="pagos-estado"></div>
 </div>
 
 <!-- CARTERA / AHORRO INVERSIÓN -->
