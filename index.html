@@ -330,6 +330,12 @@ body::before{content:'';position:fixed;inset:0;background:repeating-linear-gradi
     <div class="fr">
       <input class="inp" id="ssf-n" placeholder="Concepto (ej. Seguro Honda)">
       <input class="inp" type="number" id="ssf-v" placeholder="Importe anual €">
+      <select class="sel" id="ssf-grupo" style="max-width:150px">
+        <option value="vehiculos">🚗 Vehículos</option>
+        <option value="ingenio">🏠 Ingenio</option>
+        <option value="arinaga">🏘️ Arinaga</option>
+        <option value="personales">🛡️ Seguros Personales</option>
+      </select>
       <button class="btn" onclick="addPago2()">+ Añadir</button>
     </div>
   </div>
@@ -408,6 +414,12 @@ body::before{content:'';position:fixed;inset:0;background:repeating-linear-gradi
   <div class="fr">
     <input class="inp" id="pago-nombre" placeholder="Concepto (ej. Seguro Yaris)">
     <input class="inp" type="number" id="pago-imp" placeholder="Importe anual €">
+    <select class="sel" id="pago-grupo" style="max-width:150px">
+      <option value="vehiculos">🚗 Vehículos</option>
+      <option value="ingenio">🏠 Ingenio</option>
+      <option value="arinaga">🏘️ Arinaga</option>
+      <option value="personales">🛡️ Seguros Personales</option>
+    </select>
     <button class="btn" onclick="addPago()">+ Añadir</button>
   </div>
   <div class="sep"></div>
@@ -538,20 +550,20 @@ const PLANTILLA = {
 };
 
 const PAGOS_ANUALES_DEFAULT = [
-  {id:'seg_ari',nombre:'Seguro Arinaga',importe:249,pagado:true},
-  {id:'seg_yar',nombre:'Seguro Yaris',importe:249.02,pagado:false},
-  {id:'seg_ber',nombre:'Seguro Berlingo',importe:239,pagado:false},
-  {id:'seg_hon',nombre:'Seguro Honda',importe:199,pagado:false},
-  {id:'vid_tel',nombre:'Vida Telvi',importe:95.65,pagado:false},
-  {id:'vid_edu',nombre:'Vida Eduardo',importe:106.51,pagado:false},
-  {id:'hog_ing',nombre:'Seg. Hogar Ingenio',importe:156.60,pagado:false},
-  {id:'alq_seg',nombre:'Seg. Alquiler Arinaga',importe:455.04,pagado:false},
-  {id:'ibi_ari',nombre:'IBI Arinaga',importe:165.04,pagado:false},
-  {id:'ibi_ing',nombre:'IBI Ingenio',importe:247,pagado:false},
-  {id:'bas_ing',nombre:'Basura Municipal Ingenio',importe:37.50,pagado:true},
-  {id:'imp_ber',nombre:'Impuesto Berlingo',importe:50.10,pagado:true},
-  {id:'imp_hon',nombre:'Impuesto Honda',importe:28.33,pagado:true},
-  {id:'fun',nombre:'Funeraria',importe:137.89,pagado:false}
+  {id:'seg_yar',nombre:'Seguro Yaris',importe:249.02,pagado:false,grupo:'vehiculos'},
+  {id:'seg_ber',nombre:'Seguro Berlingo',importe:239,pagado:false,grupo:'vehiculos'},
+  {id:'seg_hon',nombre:'Seguro Honda',importe:199,pagado:false,grupo:'vehiculos'},
+  {id:'imp_ber',nombre:'Impuesto Berlingo',importe:50.10,pagado:true,grupo:'vehiculos'},
+  {id:'imp_hon',nombre:'Impuesto Honda',importe:28.33,pagado:true,grupo:'vehiculos'},
+  {id:'hog_ing',nombre:'Seg. Hogar Ingenio',importe:156.60,pagado:false,grupo:'ingenio'},
+  {id:'ibi_ing',nombre:'IBI Ingenio',importe:247,pagado:false,grupo:'ingenio'},
+  {id:'bas_ing',nombre:'Basura Municipal Ingenio',importe:37.50,pagado:true,grupo:'ingenio'},
+  {id:'seg_ari',nombre:'Seguro Arinaga',importe:249,pagado:true,grupo:'arinaga'},
+  {id:'alq_seg',nombre:'Seg. Alquiler Arinaga',importe:455.04,pagado:false,grupo:'arinaga'},
+  {id:'ibi_ari',nombre:'IBI Arinaga',importe:165.04,pagado:false,grupo:'arinaga'},
+  {id:'vid_tel',nombre:'Vida Telvi',importe:95.65,pagado:false,grupo:'personales'},
+  {id:'vid_edu',nombre:'Vida Eduardo',importe:106.51,pagado:false,grupo:'personales'},
+  {id:'fun',nombre:'Funeraria',importe:137.89,pagado:false,grupo:'personales'}
 ];
 
 const CARTERA_DEFAULT = [
@@ -867,10 +879,33 @@ const renders = {
       `<tr><td colspan="3" style="font-weight:700;padding:8px;color:var(--accent3)">Total</td><td class="amt cp" style="font-weight:800">€${f2(tA)}</td><td></td></tr></tbody>`;
 
     const tS = sumSinking();
-    document.getElementById('tbl-sf').innerHTML=
-      `<thead><tr><th>Concepto</th><th>Anual</th><th>Mensual</th><th></th></tr></thead><tbody>`+
-      S.pagos_anuales.map(p=>`<tr><td class="nm">${p.nombre}</td><td class="amt" style="color:var(--text2)">€${f2(p.importe)}</td><td class="amt">€${f2(p.importe/12)}</td><td></td></tr>`).join('')+
-      `<tr><td colspan="2" style="font-weight:700;padding:8px;color:var(--yellow)">Total/mes</td><td class="amt cy" style="font-weight:800">€${f2(tS)}</td><td></td></tr></tbody>`;
+    const grupos = [
+      {key:'vehiculos', label:'🚗 Vehículos'},
+      {key:'ingenio',   label:'🏠 Ingenio'},
+      {key:'arinaga',   label:'🏘️ Arinaga'},
+      {key:'personales',label:'🛡️ Seguros Personales'}
+    ];
+    let sfHtml = '<thead><tr><th>Concepto</th><th>Anual</th><th>Mensual</th><th></th></tr></thead><tbody>';
+    grupos.forEach(g => {
+      const items = S.pagos_anuales.filter(p=>(p.grupo||'personales')===g.key);
+      if (items.length === 0) return;
+      const totGrupo = items.reduce((s,p)=>s+p.importe/12,0);
+      sfHtml += `<tr><td colspan="4" style="padding:8px 9px 4px;font-family:var(--display);font-size:9px;font-weight:700;letter-spacing:1.5px;color:var(--text3);text-transform:uppercase;border-bottom:1px solid var(--border2)">${g.label} — €${f2(totGrupo)}/mes</td></tr>`;
+      items.forEach((p,gi) => {
+        const realIdx = S.pagos_anuales.indexOf(p);
+        sfHtml += `<tr>
+          <td class="nm" style="padding-left:16px">${p.nombre}</td>
+          <td class="amt" style="color:var(--text2)">€${f2(p.importe)}</td>
+          <td class="amt">€${f2(p.importe/12)}</td>
+          <td style="white-space:nowrap">
+            <button class="bi" style="padding:2px 6px;font-size:11px" onclick="editPago(${realIdx})">✏️</button>
+            <button class="bi" style="padding:2px 6px;font-size:11px" onclick="delPago2(${realIdx})">✕</button>
+          </td>
+        </tr>`;
+      });
+    });
+    sfHtml += `<tr><td colspan="2" style="font-weight:700;padding:10px 9px 8px;color:var(--yellow)">Total Sinking/mes</td><td class="amt cy" style="font-weight:800">€${f2(tS)}</td><td></td></tr></tbody>`;
+    document.getElementById('tbl-sf').innerHTML = sfHtml;
 
     const tot = sumArr(md.gastos_fijos)+sumArr(md.ingenio_items)+sumArr(md.arinaga_items)+tS;
     document.getElementById('total-gastos').textContent='€'+f2(tot);
@@ -934,17 +969,31 @@ const renders = {
 
   pagos() {
     document.getElementById('sf-total-label').textContent='€'+f2(sumSinking())+'/mes';
-    document.getElementById('lista-pagos').innerHTML=S.pagos_anuales.map((p,i)=>`
-      <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 12px;background:var(--bg3);border-radius:7px;margin-bottom:3px;border:1px solid var(--border)">
-        <div><div style="font-weight:700;font-size:13px">${p.nombre}</div>
-          <div style="font-size:11px;color:var(--text3)">€${f2(p.importe/12)}/mes</div></div>
-        <div style="display:flex;align-items:center;gap:8px">
-          <div style="text-align:right"><div style="font-family:var(--display);font-size:13px;font-weight:700">€${f2(p.importe)}</div>
-            <div style="font-size:10px;color:var(--text3)">anual</div></div>
-          <button class="bi" onclick="editPago(${i})">✏️</button>
-          <button class="bi" onclick="delPago(${i})">✕</button>
-        </div>
-      </div>`).join('');
+    const gps = [
+      {key:'vehiculos', label:'🚗 Vehículos'},
+      {key:'ingenio',   label:'🏠 Ingenio'},
+      {key:'arinaga',   label:'🏘️ Arinaga'},
+      {key:'personales',label:'🛡️ Seguros Personales'}
+    ];
+    let pagosHtml = '';
+    gps.forEach(g => {
+      const items = S.pagos_anuales.filter(p=>(p.grupo||'personales')===g.key);
+      if (!items.length) return;
+      pagosHtml += `<div style="font-family:var(--display);font-size:9px;font-weight:700;letter-spacing:1.5px;color:var(--text3);text-transform:uppercase;padding:10px 0 6px;border-bottom:1px solid var(--border2);margin-bottom:6px">${g.label}</div>`;
+      items.forEach(p => {
+        const i = S.pagos_anuales.indexOf(p);
+        pagosHtml += `<div style="display:flex;justify-content:space-between;align-items:center;padding:9px 12px;background:var(--bg3);border-radius:7px;margin-bottom:3px;border:1px solid var(--border)">
+          <div><div style="font-weight:700;font-size:13px">${p.nombre}</div>
+            <div style="font-size:11px;color:var(--text3)">€${f2(p.importe/12)}/mes</div></div>
+          <div style="display:flex;align-items:center;gap:8px">
+            <div style="text-align:right"><div style="font-family:var(--display);font-size:13px;font-weight:700">€${f2(p.importe)}</div>
+              <div style="font-size:10px;color:var(--text3)">anual</div></div>
+            <button class="bi" onclick="editPago(${i})">✏️</button>
+            <button class="bi" onclick="delPago(${i})">✕</button>
+          </div></div>`;
+      });
+    });
+    document.getElementById('lista-pagos').innerHTML = pagosHtml;
 
     document.getElementById('pagos-estado').innerHTML=S.pagos_anuales.map((p,i)=>`
       <div class="ir"><span style="font-weight:700;font-size:13px">${p.nombre} — €${f2(p.importe)}</span>
@@ -1096,7 +1145,7 @@ const renders = {
 
     const md=getMesActual();
     document.getElementById('set-gf').innerHTML=md.gastos_fijos.map((g,i)=>`
-      <div class="si"><div><div class="sn">${g.nombre} <span class="chip ${g.cat==='fijo'?'chd':'chy'}">${g.cat}</span></div>
+      <div class="si"><div><div class="sn">${g.nombre} </div>
         <div class="sm">€${f2(g.importe)}/mes</div></div>
         <div class="sa"><button class="bi" onclick="setEdit2('gastos_fijos',${i})">✏️</button>
           <button class="bi" onclick="setDel2('gastos_fijos',${i},'')">✕</button></div></div>`).join('');
@@ -1167,8 +1216,9 @@ function delFuel(tipo,idx){
 function addPago(){
   const n=document.getElementById('pago-nombre').value.trim();
   const v=parseFloat(document.getElementById('pago-imp').value);
+  const gr=document.getElementById('pago-grupo').value;
   if(!n||isNaN(v)||v<=0)return;
-  S.pagos_anuales.push({id:'p_'+Date.now(),nombre:n,importe:v,pagado:false});
+  S.pagos_anuales.push({id:'p_'+Date.now(),nombre:n,importe:v,pagado:false,grupo:gr});
   document.getElementById('pago-nombre').value='';
   document.getElementById('pago-imp').value='';
   save(); renders.pagos(); renders.gastos(); renders.dashboard();
@@ -1264,10 +1314,9 @@ function resetAll(){
 function tblHead(){return`<thead><tr><th>Concepto</th><th></th><th></th><th style="text-align:right">Importe</th><th style="text-align:center">Estado</th></tr></thead>`;}
 
 function filaG(g,i,arr){
-  const cc={fijo:'chd',variable:'chy'};
   return`<tr>
     <td class="nm">${g.nombre}</td>
-    <td><span class="chip ${cc[g.cat]||'chd'}">${g.cat||''}</span></td>
+    <td></td>
     <td style="white-space:nowrap">
       <button class="bi" style="padding:2px 6px;font-size:11px" onclick="setEdit2('${arr}',${i})">✏️</button>
       <button class="bi" style="padding:2px 6px;font-size:11px" onclick="setDel2('${arr}',${i},'')">✕</button>
@@ -1304,7 +1353,7 @@ function renderGestionInline(id) {
   const md = getMesActual();
   if (id === 'g-gf') {
     document.getElementById('set-gf-inline').innerHTML = md.gastos_fijos.map((g,i)=>`
-      <div class="si"><div><div class="sn">${g.nombre} <span class="chip ${g.cat==='fijo'?'chd':'chy'}">${g.cat}</span></div>
+      <div class="si"><div><div class="sn">${g.nombre} </div>
         <div class="sm">€${f2(g.importe)}/mes</div></div>
         <div class="sa">
           <button class="bi" onclick="setEdit2('gastos_fijos',${i})">✏️</button>
@@ -1384,8 +1433,9 @@ function setAddSub(arr, nId, vId, inline=false) {
 function addPago2() {
   const n = document.getElementById('ssf-n').value.trim();
   const v = parseFloat(document.getElementById('ssf-v').value);
+  const gr = document.getElementById('ssf-grupo').value;
   if (!n || isNaN(v) || v <= 0) return;
-  S.pagos_anuales.push({id:'p_'+Date.now(), nombre:n, importe:v, pagado:false});
+  S.pagos_anuales.push({id:'p_'+Date.now(), nombre:n, importe:v, pagado:false, grupo:gr});
   document.getElementById('ssf-n').value=''; document.getElementById('ssf-v').value='';
   save(); renders.gastos(); renders.pagos(); renders.dashboard();
   renderGestionInline('g-sf');
