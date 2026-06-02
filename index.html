@@ -12,6 +12,7 @@
 <meta name="apple-mobile-web-app-title" content="Krypton">
 <meta name="theme-color" content="#080810">
 <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Unbounded:wght@300;400;600;800;900&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 <style>
 :root {
   --bg:#080810; --bg2:#0e0e1a; --bg3:#161626; --bg4:#1e1e30;
@@ -1455,6 +1456,101 @@ function saveFuelPres2() {
     S.presupuesto_fuel = v; save();
     renders.combustible(); renders.dashboard();
   }
+}
+
+// ============================================================
+// GRÁFICAS VISTA ANUAL
+// ============================================================
+let chartBarras = null, chartDona = null;
+
+function renderCharts(meses) {
+  const labels = meses.map(m => m.label.split(' ')[0]); // Solo nombre del mes
+  const colores = {
+    ing: 'rgba(0,240,200,0.8)',
+    gas: 'rgba(255,77,109,0.8)',
+    inv: 'rgba(255,107,157,0.8)',
+    aho: 'rgba(41,121,255,0.8)',
+    fuel: 'rgba(247,201,72,0.8)'
+  };
+
+  const chartDefaults = {
+    plugins: { legend: { labels: { color: '#8888aa', font: { family: 'Space Mono', size: 10 } } } },
+    scales: {
+      x: { ticks: { color: '#8888aa', font: { size: 10 } }, grid: { color: 'rgba(255,255,255,0.04)' } },
+      y: { ticks: { color: '#8888aa', font: { size: 10 }, callback: v => '€'+v.toLocaleString('es') }, grid: { color: 'rgba(255,255,255,0.06)' } }
+    }
+  };
+
+  // BARRAS — ingresos vs gastos vs inversión vs ahorro
+  const ctxB = document.getElementById('chart-barras');
+  if (Chart.getChart(ctxB)) Chart.getChart(ctxB).destroy();
+  chartBarras = new Chart(ctxB, {
+    type: 'bar',
+    data: {
+      labels,
+      datasets: [
+        { label: 'Ingresos', data: meses.map(m=>Math.round(m.ing)), backgroundColor: colores.ing, borderRadius: 4 },
+        { label: 'Gastos 50%', data: meses.map(m=>Math.round(m.total50)), backgroundColor: colores.gas, borderRadius: 4 },
+        { label: 'Inversión', data: meses.map(m=>Math.round(m.inversion)), backgroundColor: colores.inv, borderRadius: 4 },
+        { label: 'Ahorro', data: meses.map(m=>Math.round(m.ahorro)), backgroundColor: colores.aho, borderRadius: 4 }
+      ]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: { legend: { labels: { color: '#8888aa', font: { family: 'Space Mono', size: 10 }, boxWidth: 12 } } },
+      scales: {
+        x: { ticks: { color: '#8888aa', font: { size: 9 } }, grid: { color: 'rgba(255,255,255,0.04)' } },
+        y: { ticks: { color: '#8888aa', font: { size: 9 }, callback: v => '€'+v.toLocaleString('es') }, grid: { color: 'rgba(255,255,255,0.06)' } }
+      }
+    }
+  });
+
+  // DONA — distribución total del año
+  const totIng = meses.reduce((s,m)=>s+m.ing,0);
+  const totGas = meses.reduce((s,m)=>s+m.total50,0);
+  const totInv = meses.reduce((s,m)=>s+m.inversion,0);
+  const totAho = meses.reduce((s,m)=>s+m.ahorro,0);
+  const totFuel = meses.reduce((s,m)=>s+m.fuel,0);
+  // Ocio estimado = ingresos - gastos - inversión - ahorro
+  const totOcio = Math.max(0, totIng - totGas - totInv - totAho);
+
+  const ctxD = document.getElementById('chart-dona');
+  if (Chart.getChart(ctxD)) Chart.getChart(ctxD).destroy();
+  chartDona = new Chart(ctxD, {
+    type: 'doughnut',
+    data: {
+      labels: ['Gastos fijos', 'C/G incluida', 'Inversión', 'Ahorro', 'Ocio'],
+      datasets: [{
+        data: [
+          Math.round(totGas - totFuel),
+          Math.round(totFuel),
+          Math.round(totInv),
+          Math.round(totAho),
+          Math.round(totOcio)
+        ],
+        backgroundColor: [
+          'rgba(255,77,109,0.85)',
+          'rgba(247,201,72,0.85)',
+          'rgba(255,107,157,0.85)',
+          'rgba(41,121,255,0.85)',
+          'rgba(123,94,167,0.85)'
+        ],
+        borderColor: '#080810',
+        borderWidth: 3,
+        hoverOffset: 8
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      cutout: '68%',
+      plugins: {
+        legend: { position: 'bottom', labels: { color: '#8888aa', font: { family: 'Space Mono', size: 9 }, boxWidth: 12, padding: 10 } },
+        tooltip: { callbacks: { label: ctx => ` ${ctx.label}: €${ctx.raw.toLocaleString('es')}` } }
+      }
+    }
+  });
 }
 
 // Exponer funciones globales para onclick en HTML
