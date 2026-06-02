@@ -207,7 +207,11 @@ body::before{content:'';position:fixed;inset:0;background:repeating-linear-gradi
     <div class="logo-text">KRYPTON FINANCE'S</div>
   </div>
   <div class="header-right">
-    <div class="mes-pill">Mes: <strong id="mes-label">—</strong></div>
+    <div style="display:flex;align-items:center;gap:5px">
+      <button class="mnb" onclick="navMes(-1)" style="padding:3px 9px;font-size:10px">←</button>
+      <div class="mes-pill">Mes: <strong id="mes-label">—</strong></div>
+      <button class="mnb" onclick="navMes(1)" style="padding:3px 9px;font-size:10px">→</button>
+    </div>
     <button class="btn bg bsm" id="btn-logout">Salir</button>
   </div>
 </div>
@@ -504,7 +508,8 @@ const PLANTILLA = {
     {id:'edu',nombre:'Nómina Eduardo',importe:2514.24,cobrado:false,fijo:true},
     {id:'alq',nombre:'Alquiler Arinaga',importe:800,cobrado:false,fijo:true},
     {id:'alq_agua',nombre:'Agua Arinaga (inquilina)',importe:38.60,cobrado:false,fijo:false},
-    {id:'alq_luz',nombre:'Luz Arinaga (inquilina)',importe:29.88,cobrado:false,fijo:false}
+    {id:'alq_luz',nombre:'Luz Arinaga (inquilina)',importe:29.88,cobrado:false,fijo:false},
+    {id:'apuestas',nombre:'Matched Betting',importe:0,cobrado:false,fijo:false}
   ]
 };
 
@@ -534,12 +539,59 @@ const CARTERA_DEFAULT = [
 
 // S = estado global
 let S = {
-  mes_activo: {m:5, a:2026}, // junio 2026 (0-based)
+  mes_activo: {m:5, a:2026},
   presupuesto_fuel: 1100,
   pagos_anuales: JSON.parse(JSON.stringify(PAGOS_ANUALES_DEFAULT)),
   cartera: JSON.parse(JSON.stringify(CARTERA_DEFAULT)),
   ahorro_pct: 10,
-  meses: {} // clave: "2026-5" → datos del mes
+  meses: {
+    '2026-5': {
+      gastos_fijos: [
+        {id:'clases',nombre:'Clases Asier',importe:29,cobrado:true,cat:'fijo'},
+        {id:'ingles',nombre:'Inglés Zoe',importe:60,cobrado:true,cat:'fijo'},
+        {id:'gull',nombre:'Gull Telvi',importe:10,cobrado:true,cat:'fijo'},
+        {id:'ninjitsu',nombre:'Ninjitsu Asier',importe:40,cobrado:true,cat:'fijo'},
+        {id:'comedor',nombre:'Comedor',importe:70.45,cobrado:false,cat:'fijo'},
+        {id:'heriberto',nombre:'Heriberto',importe:40,cobrado:true,cat:'fijo'},
+        {id:'limpieza',nombre:'Limpieza',importe:120,cobrado:true,cat:'fijo'},
+        {id:'yaris',nombre:'Yaris',importe:318.16,cobrado:false,cat:'fijo'},
+        {id:'dkv',nombre:'DKV Telvi',importe:57.73,cobrado:true,cat:'fijo'},
+        {id:'balonmano',nombre:'Balonmano Zoe',importe:25,cobrado:false,cat:'fijo'},
+        {id:'amb',nombre:'AMB',importe:15,cobrado:false,cat:'fijo'},
+        {id:'gimnasio',nombre:'Gimnasio',importe:80,cobrado:false,cat:'variable'}
+      ],
+      ingenio_items: [
+        {id:'hip_i',nombre:'Hipoteca',importe:432.60,cobrado:true},
+        {id:'com_i',nombre:'Comunidad',importe:30,cobrado:true},
+        {id:'jaz_i',nombre:'Jazztel',importe:83.92,cobrado:true},
+        {id:'luz_i',nombre:'Luz',importe:51.97,cobrado:true},
+        {id:'agu_i',nombre:'Agua',importe:0,cobrado:false}
+      ],
+      arinaga_items: [
+        {id:'hip_a',nombre:'Hipoteca',importe:374.19,cobrado:true},
+        {id:'com_a',nombre:'Comunidad',importe:47.03,cobrado:true},
+        {id:'der_a',nombre:'Derrama',importe:33.78,cobrado:true},
+        {id:'agu_a',nombre:'Agua',importe:38.60,cobrado:true},
+        {id:'luz_a',nombre:'Luz',importe:29.88,cobrado:false}
+      ],
+      ingresos: [
+        {id:'telvi',nombre:'Nómina Telvi',importe:2293.21,cobrado:true,fijo:true},
+        {id:'edu',nombre:'Nómina Eduardo',importe:2514.24,cobrado:true,fijo:true},
+        {id:'alq',nombre:'Alquiler Arinaga',importe:800,cobrado:true,fijo:true},
+        {id:'alq_agua',nombre:'Agua Arinaga (inquilina)',importe:38.60,cobrado:false,fijo:false},
+        {id:'alq_luz',nombre:'Luz Arinaga (inquilina)',importe:29.88,cobrado:false,fijo:false},
+        {id:'apuestas',nombre:'Matched Betting',importe:477.48,cobrado:true,fijo:false}
+      ],
+      ingresos_extra: [],
+      fuel: {
+        comida:[196.63,58.79,164.67],
+        yaris:[37.01],
+        honda:[13.01,12.01],
+        berlingo:[15.00]
+      },
+      cerrado: false
+    }
+  }
 };
 
 function mesKey(m, a) { return `${a}-${m}`; }
@@ -681,8 +733,12 @@ function navMes(dir) {
   S.mes_activo = {m, a};
   save();
   updateHeader();
-  renders.ajustes?.();
-  renders.dashboard?.();
+  // Refrescar el apartado activo actual
+  const activeSection = document.querySelector('.section.active');
+  if (activeSection) {
+    const id = activeSection.id.replace('s-','');
+    renders[id]?.();
+  }
 }
 
 // ============================================================
