@@ -228,6 +228,7 @@ body::before{content:'';position:fixed;inset:0;background:repeating-linear-gradi
       <div class="mes-pill">Mes: <strong id="mes-label">—</strong></div>
       <button class="mnb" onclick="navMes(1)" style="padding:3px 9px;font-size:10px">→</button>
     </div>
+    <button class="btn bsm" style="background:var(--bg3);color:var(--text2);border:1px solid var(--border2);font-size:8px" onclick="cerrarMes()">Cerrar mes</button>
     <button class="btn bg bsm" id="btn-logout">Salir</button>
   </div>
 </div>
@@ -240,7 +241,6 @@ body::before{content:'';position:fixed;inset:0;background:repeating-linear-gradi
   <button class="nav-btn" onclick="nav(this,'pagos')">Pagos Anuales</button>
   <button class="nav-btn" onclick="nav(this,'cartera')">Ahorro/Inversión</button>
   <button class="nav-btn" onclick="nav(this,'anual')">Vista Anual</button>
-  <button class="nav-btn" onclick="nav(this,'ajustes')">Ajustes</button>
 </nav>
 
 <div class="main">
@@ -293,47 +293,44 @@ body::before{content:'';position:fixed;inset:0;background:repeating-linear-gradi
     <span class="amt ca" id="total-50"></span>
   </div>
 
-  <!-- GESTIÓN INLINE GASTOS -->
-  <div style="margin-top:16px">
-    <button class="gestion-toggle" onclick="toggleGestion('g-gf')">⬛ Gestionar Gastos Fijos <span class="arrow">▼</span></button>
-    <div class="gestion-body" id="g-gf">
-      <div id="set-gf-inline"></div>
-      <div class="fr" style="margin-top:8px">
-        <input class="inp" id="sgf-n2" placeholder="Nombre">
-        <input class="inp" type="number" id="sgf-v2" placeholder="€/mes">
-        <select class="sel" style="max-width:110px" id="sgf-cat2"><option value="fijo">Fijo</option><option value="variable">Variable</option></select>
-        <button class="btn" onclick="setAddGF2()">+ Añadir</button>
-      </div>
+  <!-- AÑADIR GASTOS FIJOS -->
+  <div class="card" style="margin-top:12px">
+    <div class="ct">+ Añadir gasto fijo</div>
+    <div class="fr">
+      <input class="inp" id="sgf-n2" placeholder="Nombre">
+      <input class="inp" type="number" id="sgf-v2" placeholder="€/mes">
+      <select class="sel" style="max-width:110px" id="sgf-cat2"><option value="fijo">Fijo</option><option value="variable">Variable</option></select>
+      <button class="btn" onclick="setAddGF2()">+ Añadir</button>
     </div>
+  </div>
 
-    <button class="gestion-toggle" onclick="toggleGestion('g-ing')">🏠 Gestionar Ingenio <span class="arrow">▼</span></button>
-    <div class="gestion-body" id="g-ing">
-      <div id="set-ing-inline"></div>
-      <div class="fr" style="margin-top:8px">
-        <input class="inp" id="si-n2" placeholder="Concepto">
-        <input class="inp" type="number" id="si-v2" placeholder="€">
-        <button class="btn" onclick="setAddSub('ingenio_items','si-n2','si-v2',true)">+ Añadir</button>
-      </div>
+  <!-- AÑADIR INGENIO -->
+  <div class="card" style="margin-top:8px">
+    <div class="ct">+ Añadir componente Ingenio</div>
+    <div class="fr">
+      <input class="inp" id="si-n2" placeholder="Concepto">
+      <input class="inp" type="number" id="si-v2" placeholder="€">
+      <button class="btn" onclick="setAddSub('ingenio_items','si-n2','si-v2',false)">+ Añadir</button>
     </div>
+  </div>
 
-    <button class="gestion-toggle" onclick="toggleGestion('g-ari')">🏘️ Gestionar Arinaga <span class="arrow">▼</span></button>
-    <div class="gestion-body" id="g-ari">
-      <div id="set-ari-inline"></div>
-      <div class="fr" style="margin-top:8px">
-        <input class="inp" id="sa-n2" placeholder="Concepto">
-        <input class="inp" type="number" id="sa-v2" placeholder="€">
-        <button class="btn" onclick="setAddSub('arinaga_items','sa-n2','sa-v2',true)">+ Añadir</button>
-      </div>
+  <!-- AÑADIR ARINAGA -->
+  <div class="card" style="margin-top:8px">
+    <div class="ct">+ Añadir componente Arinaga</div>
+    <div class="fr">
+      <input class="inp" id="sa-n2" placeholder="Concepto">
+      <input class="inp" type="number" id="sa-v2" placeholder="€">
+      <button class="btn" onclick="setAddSub('arinaga_items','sa-n2','sa-v2',false)">+ Añadir</button>
     </div>
+  </div>
 
-    <button class="gestion-toggle" onclick="toggleGestion('g-sf')">🔒 Gestionar Sinking Fund <span class="arrow">▼</span></button>
-    <div class="gestion-body" id="g-sf">
-      <div id="set-sf-inline"></div>
-      <div class="fr" style="margin-top:8px">
-        <input class="inp" id="ssf-n" placeholder="Concepto (ej. Seguro Honda)">
-        <input class="inp" type="number" id="ssf-v" placeholder="Importe anual €">
-        <button class="btn" onclick="addPago2()">+ Añadir</button>
-      </div>
+  <!-- AÑADIR SINKING FUND -->
+  <div class="card" style="margin-top:8px">
+    <div class="ct">+ Añadir pago anual (Sinking Fund)</div>
+    <div class="fr">
+      <input class="inp" id="ssf-n" placeholder="Concepto (ej. Seguro Honda)">
+      <input class="inp" type="number" id="ssf-v" placeholder="Importe anual €">
+      <button class="btn" onclick="addPago2()">+ Añadir</button>
     </div>
   </div>
 </div>
@@ -355,16 +352,13 @@ body::before{content:'';position:fixed;inset:0;background:repeating-linear-gradi
   </div>
   <div id="lista-extras"></div>
 
-  <!-- GESTIÓN INLINE INGRESOS -->
-  <div style="margin-top:16px">
-    <button class="gestion-toggle" onclick="toggleGestion('g-ing2')">📥 Gestionar Ingresos Fijos <span class="arrow">▼</span></button>
-    <div class="gestion-body" id="g-ing2">
-      <div id="set-ing2-inline"></div>
-      <div class="fr" style="margin-top:8px">
-        <input class="inp" id="si2-n2" placeholder="Nombre ingreso">
-        <input class="inp" type="number" id="si2-v2" placeholder="€/mes">
-        <button class="btn" onclick="setAddIngreso2()">+ Añadir</button>
-      </div>
+  <!-- AÑADIR INGRESO FIJO -->
+  <div class="card" style="margin-top:12px">
+    <div class="ct">+ Añadir ingreso fijo</div>
+    <div class="fr">
+      <input class="inp" id="si2-n2" placeholder="Nombre ingreso">
+      <input class="inp" type="number" id="si2-v2" placeholder="€/mes">
+      <button class="btn" onclick="setAddIngreso2()">+ Añadir</button>
     </div>
   </div>
 </div>
@@ -473,71 +467,7 @@ body::before{content:'';position:fixed;inset:0;background:repeating-linear-gradi
   <div id="anual-content"></div>
 </div>
 
-<!-- AJUSTES -->
-<div class="section" id="s-ajustes">
-  <div class="stitle">Ajustes <span>& Conceptos</span></div>
 
-  <div class="card" style="margin-bottom:12px">
-    <div class="ct">Mes económico activo</div>
-    <div class="mnav">
-      <button class="mnb" onclick="navMes(-1)">← Anterior</button>
-      <div class="mnl" id="ajustes-mes-label"></div>
-      <button class="mnb" onclick="navMes(1)">Siguiente →</button>
-      <button class="btn bsm" onclick="cerrarMes()">Cerrar mes → nuevo</button>
-    </div>
-  </div>
-
-  <div class="slabel">⬛ Gastos Fijos del mes</div>
-  <div id="set-gf"></div>
-  <div class="fr" style="margin-top:7px">
-    <input class="inp" id="sgf-n" placeholder="Nombre">
-    <input class="inp" type="number" id="sgf-v" placeholder="€/mes">
-    <select class="sel" style="max-width:120px" id="sgf-cat">
-      <option value="fijo">Fijo</option>
-      <option value="variable">Variable</option>
-    </select>
-    <button class="btn" onclick="setAddGF()">+ Añadir</button>
-  </div>
-
-  <div class="slabel" style="margin-top:14px">🏠 Componentes Ingenio</div>
-  <div id="set-ing"></div>
-  <div class="fr" style="margin-top:7px">
-    <input class="inp" id="si-n" placeholder="Concepto">
-    <input class="inp" type="number" id="si-v" placeholder="€">
-    <button class="btn" onclick="setAddSub('ingenio_items','si-n','si-v')">+ Añadir</button>
-  </div>
-
-  <div class="slabel" style="margin-top:14px">🏘️ Componentes Arinaga</div>
-  <div id="set-ari"></div>
-  <div class="fr" style="margin-top:7px">
-    <input class="inp" id="sa-n" placeholder="Concepto">
-    <input class="inp" type="number" id="sa-v" placeholder="€">
-    <button class="btn" onclick="setAddSub('arinaga_items','sa-n','sa-v')">+ Añadir</button>
-  </div>
-
-  <div class="slabel" style="margin-top:14px">📥 Ingresos Fijos</div>
-  <div id="set-ing2"></div>
-  <div class="fr" style="margin-top:7px">
-    <input class="inp" id="si2-n" placeholder="Nombre ingreso">
-    <input class="inp" type="number" id="si2-v" placeholder="€/mes">
-    <button class="btn" onclick="setAddIngreso()">+ Añadir</button>
-  </div>
-
-  <div class="slabel" style="margin-top:14px">⚙️ Configuración</div>
-  <div class="si" style="margin-bottom:10px">
-    <div>
-      <div class="sn">Presupuesto Comida + Gasolina</div>
-      <div class="sm">Actualmente <span id="cfg-fuel-lbl"></span> €/mes</div>
-    </div>
-    <div class="sa">
-      <input class="inp" type="number" id="cfg-fuel-inp" style="width:90px">
-      <button class="btn bsm" onclick="saveFuelPres()">Guardar</button>
-    </div>
-  </div>
-  <div style="display:flex;gap:7px;flex-wrap:wrap">
-    <button class="btn bg bsm" onclick="exportData()">📤 Exportar JSON</button>
-    <button class="btn br bsm" onclick="if(confirm('¿Reiniciar todos los datos?')){resetAll();}">⚠️ Reiniciar</button>
-  </div>
 </div>
 
 </div><!-- /main -->
@@ -956,7 +886,11 @@ const renders = {
         <div class="irr">
           <span class="ia">€${f2(ing.importe)}</span>
           <span class="badge ${ing.cobrado?'bsi':'bno'}" onclick="toggleIngreso(${idx},${!!ing._extra})">${ing.cobrado?'SI':'NO'}</span>
-          ${ing._extra?`<button class="bi" onclick="delExtra(${ing._idx})">✕</button>`:''}
+          ${ing._extra
+            ? `<button class="bi" onclick="delExtra(${ing._idx})">✕</button>`
+            : `<button class="bi" style="padding:2px 6px;font-size:11px" onclick="setEditIngreso2(${idx})">✏️</button>
+               <button class="bi" style="padding:2px 6px;font-size:11px" onclick="setDelIngreso2(${idx})">✕</button>`
+          }
         </div>
       </div>`).join('');
     document.getElementById('total-ingresos').textContent='€'+f2(sumArr(md.ingresos)+sumArr(md.ingresos_extra));
@@ -1331,9 +1265,16 @@ function tblHead(){return`<thead><tr><th>Concepto</th><th></th><th></th><th styl
 
 function filaG(g,i,arr){
   const cc={fijo:'chd',variable:'chy'};
-  return`<tr><td class="nm">${g.nombre}</td><td><span class="chip ${cc[g.cat]||'chd'}">${g.cat||''}</span></td><td></td>
+  return`<tr>
+    <td class="nm">${g.nombre}</td>
+    <td><span class="chip ${cc[g.cat]||'chd'}">${g.cat||''}</span></td>
+    <td style="white-space:nowrap">
+      <button class="bi" style="padding:2px 6px;font-size:11px" onclick="setEdit2('${arr}',${i})">✏️</button>
+      <button class="bi" style="padding:2px 6px;font-size:11px" onclick="setDel2('${arr}',${i},'')">✕</button>
+    </td>
     <td class="amt">€${f2(g.importe)}</td>
-    <td style="text-align:center"><span class="badge ${g.cobrado?'bsi':'bno'}" onclick="toggleGasto('${arr}',${i})">${g.cobrado?'SI':'NO'}</span></td></tr>`;
+    <td style="text-align:center"><span class="badge ${g.cobrado?'bsi':'bno'}" onclick="toggleGasto('${arr}',${i})">${g.cobrado?'SI':'NO'}</span></td>
+  </tr>`;
 }
 
 function barra(label,val,max,pct,col,pctTxt){
