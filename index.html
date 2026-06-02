@@ -1164,23 +1164,23 @@ const renders = {
     document.getElementById('set-gf').innerHTML=md.gastos_fijos.map((g,i)=>`
       <div class="si"><div><div class="sn">${g.nombre} <span class="chip ${g.cat==='fijo'?'chd':'chy'}">${g.cat}</span></div>
         <div class="sm">€${f2(g.importe)}/mes</div></div>
-        <div class="sa"><button class="bi" onclick="setEdit('gastos_fijos',${i})">✏️</button>
-          <button class="bi" onclick="setDel('gastos_fijos',${i})">✕</button></div></div>`).join('');
+        <div class="sa"><button class="bi" onclick="setEdit2('gastos_fijos',${i})">✏️</button>
+          <button class="bi" onclick="setDel2('gastos_fijos',${i},'')">✕</button></div></div>`).join('');
 
     document.getElementById('set-ing').innerHTML=md.ingenio_items.map((g,i)=>`
       <div class="si"><div><div class="sn">${g.nombre}</div><div class="sm">€${f2(g.importe)}</div></div>
-        <div class="sa"><button class="bi" onclick="setEdit('ingenio_items',${i})">✏️</button>
-          <button class="bi" onclick="setDel('ingenio_items',${i})">✕</button></div></div>`).join('');
+        <div class="sa"><button class="bi" onclick="setEdit2('ingenio_items',${i})">✏️</button>
+          <button class="bi" onclick="setDel2('ingenio_items',${i},'')">✕</button></div></div>`).join('');
 
     document.getElementById('set-ari').innerHTML=md.arinaga_items.map((g,i)=>`
       <div class="si"><div><div class="sn">${g.nombre}</div><div class="sm">€${f2(g.importe)}</div></div>
-        <div class="sa"><button class="bi" onclick="setEdit('arinaga_items',${i})">✏️</button>
-          <button class="bi" onclick="setDel('arinaga_items',${i})">✕</button></div></div>`).join('');
+        <div class="sa"><button class="bi" onclick="setEdit2('arinaga_items',${i})">✏️</button>
+          <button class="bi" onclick="setDel2('arinaga_items',${i},'')">✕</button></div></div>`).join('');
 
     document.getElementById('set-ing2').innerHTML=md.ingresos.map((g,i)=>`
       <div class="si"><div><div class="sn">${g.nombre}</div><div class="sm">€${f2(g.importe)}/mes</div></div>
-        <div class="sa"><button class="bi" onclick="setEditIngreso(${i})">✏️</button>
-          <button class="bi" onclick="setDelIngreso(${i})">✕</button></div></div>`).join('');
+        <div class="sa"><button class="bi" onclick="setEditIngreso2(${i})">✏️</button>
+          <button class="bi" onclick="setDelIngreso2(${i})">✕</button></div></div>`).join('');
   }
 };
 
@@ -1267,59 +1267,19 @@ function updateAhorro(){
   save(); renders.cartera(); renders.dashboard();
 }
 
-function setEdit(arr,idx){
-  const md=getMesActual();
-  const item=md[arr][idx];
-  const nv=parseFloat(prompt(`Nuevo importe para "${item.nombre}":`,item.importe));
-  if(!isNaN(nv)&&nv>=0){item.importe=nv;save();renders.ajustes();renders.gastos();renders.dashboard();}
-}
+// setEdit: ver setEdit2 en gestión inline
 
-function setDel(arr,idx){
-  if(!confirm('¿Eliminar este concepto?'))return;
-  getMesActual()[arr].splice(idx,1);
-  save(); renders.ajustes(); renders.gastos(); renders.dashboard();
-}
+// setDel: ver setDel2 en gestión inline
 
-function setAddGF(){
-  const n=document.getElementById('sgf-n').value.trim();
-  const v=parseFloat(document.getElementById('sgf-v').value);
-  const cat=document.getElementById('sgf-cat').value;
-  if(!n||isNaN(v)||v<=0)return;
-  getMesActual().gastos_fijos.push({id:'g_'+Date.now(),nombre:n,importe:v,cobrado:false,cat});
-  document.getElementById('sgf-n').value=''; document.getElementById('sgf-v').value='';
-  save(); renders.ajustes(); renders.gastos(); renders.dashboard();
-}
+// setAddGF: ver versión 2 en gestión inline
 
-function setAddSub(arr,nId,vId){
-  const n=document.getElementById(nId).value.trim();
-  const v=parseFloat(document.getElementById(vId).value);
-  if(!n||isNaN(v)||v<0)return;
-  getMesActual()[arr].push({id:'s_'+Date.now(),nombre:n,importe:v,cobrado:false});
-  document.getElementById(nId).value=''; document.getElementById(vId).value='';
-  save(); renders.ajustes(); renders.gastos(); renders.dashboard();
-}
+// setAddSub: ver versión extendida en gestión inline
 
-function setEditIngreso(idx){
-  const md=getMesActual();
-  const ing=md.ingresos[idx];
-  const nv=parseFloat(prompt(`Nuevo importe para "${ing.nombre}":`,ing.importe));
-  if(!isNaN(nv)&&nv>=0){ing.importe=nv;save();renders.ajustes();renders.ingresos();renders.dashboard();}
-}
+// setEditIngreso: ver setEditIngreso2
 
-function setDelIngreso(idx){
-  if(!confirm('¿Eliminar este ingreso?'))return;
-  getMesActual().ingresos.splice(idx,1);
-  save(); renders.ajustes(); renders.ingresos(); renders.dashboard();
-}
+// setDelIngreso: ver setDelIngreso2
 
-function setAddIngreso(){
-  const n=document.getElementById('si2-n').value.trim();
-  const v=parseFloat(document.getElementById('si2-v').value);
-  if(!n||isNaN(v)||v<=0)return;
-  getMesActual().ingresos.push({id:'i_'+Date.now(),nombre:n,importe:v,cobrado:false,fijo:true});
-  document.getElementById('si2-n').value=''; document.getElementById('si2-v').value='';
-  save(); renders.ajustes(); renders.ingresos(); renders.dashboard();
-}
+// setAddIngreso: ver setAddIngreso2
 
 function saveFuelPres(){
   const v=parseFloat(document.getElementById('cfg-fuel-inp').value);
@@ -1538,9 +1498,9 @@ window.toggleIngreso=toggleIngreso; window.addExtra=addExtra; window.delExtra=de
 window.addFuel=addFuel; window.delFuel=delFuel; window.addPago=addPago;
 window.delPago=delPago; window.editPago=editPago; window.togglePago=togglePago;
 window.updateCarteraPct=updateCarteraPct; window.updateAhorro=updateAhorro;
-window.setEdit=setEdit; window.setDel=setDel; window.setAddGF=setAddGF;
-window.setAddSub=setAddSub; window.setEditIngreso=setEditIngreso;
-window.setDelIngreso=setDelIngreso; window.setAddIngreso=setAddIngreso;
+window.setEdit=setEdit2; window.setDel=setDel2; window.setAddGF=setAddGF2;
+window.setAddSub=setAddSub; window.setEditIngreso=setEditIngreso2;
+window.setDelIngreso=setDelIngreso2; window.setAddIngreso=setAddIngreso2;
 window.saveFuelPres=saveFuelPres; window.cerrarMes=cerrarMes;
 window.exportData=exportData; window.resetAll=resetAll;
 window.toggleGestion=toggleGestion;
