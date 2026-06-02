@@ -679,6 +679,11 @@ async function loadData() {
       if (!S.cartera) S.cartera = JSON.parse(JSON.stringify(CARTERA_DEFAULT));
       if (!S.meses) S.meses = {};
       if (!S.ahorro_pct) S.ahorro_pct = 10;
+      // MIGRACIÓN: fusionar campos nuevos (mes, grupo) desde DEFAULT si faltan en datos guardados
+      S.pagos_anuales = S.pagos_anuales.map(p => {
+        const defP = PAGOS_ANUALES_DEFAULT.find(d => d.id === p.id);
+        return defP ? { ...defP, ...p, mes: p.mes || defP.mes || '—', grupo: p.grupo || defP.grupo || 'personales' } : p;
+      });
     } else {
       await saveData();
     }
