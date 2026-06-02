@@ -684,9 +684,11 @@ async function loadData() {
         'Funeraria':'Octubre'
       };
       if (S.pagos_anuales) {
+        let actualizado=false;
         S.pagos_anuales.forEach(p=>{
-          if(!p.mes && mesesPorDefecto[p.nombre]) p.mes = mesesPorDefecto[p.nombre];
+          if(!p.mes && mesesPorDefecto[p.nombre]) { p.mes = mesesPorDefecto[p.nombre]; actualizado=true; }
         });
+        if(actualizado) await saveData();
       }
     } else {
       await saveData();
