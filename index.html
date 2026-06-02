@@ -676,17 +676,15 @@ async function loadData() {
       if (!S.meses) S.meses = {};
       if (!S.ahorro_pct) S.ahorro_pct = 10;
       const mesesPorDefecto = {
-        'Seguro Arinaga':'Mayo','Seguro Yaris':'Octubre','Seguro Berlingo':'Octubre',
-        'Seguro Honda':'Octubre','Vida Telvi':'Septiembre','Vida Eduardo':'Septiembre',
-        'Seg. Hogar Ingenio':'Septiembre','Seg. Alquiler Arinaga':'Octubre',
-        'IBI Arinaga':'Julio','IBI Ingenio':'Abril',
-        'Impuesto Berlingo':'Abril','Impuesto Honda':'Abril',
-        'Funeraria':'Octubre'
+        seg_ari:'Mayo', seg_yar:'Octubre', seg_ber:'Octubre', seg_hon:'Octubre',
+        vid_tel:'Septiembre', vid_edu:'Septiembre', hog_ing:'Septiembre',
+        alq_seg:'Octubre', ibi_ari:'Julio', ibi_ing:'Abril',
+        imp_ber:'Abril', imp_hon:'Abril', fun:'Octubre'
       };
       if (S.pagos_anuales) {
         let actualizado=false;
         S.pagos_anuales.forEach(p=>{
-          if(!p.mes && mesesPorDefecto[p.nombre]) { p.mes = mesesPorDefecto[p.nombre]; actualizado=true; }
+          if(!p.mes && mesesPorDefecto[p.id]) { p.mes = mesesPorDefecto[p.id]; actualizado=true; }
         });
         if(actualizado) await saveData();
       }
