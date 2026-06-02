@@ -182,6 +182,22 @@ body::before{content:'';position:fixed;inset:0;background:repeating-linear-gradi
 .anual-row{display:flex;justify-content:space-between;align-items:center;padding:11px 14px;background:var(--bg3);border-radius:8px;margin-bottom:5px;border:1px solid var(--border);}
 .anual-label{font-size:13px;font-weight:700;}
 .anual-val{font-family:var(--display);font-size:15px;font-weight:800;}
+
+/* GESTIÓN INLINE */
+.gestión { margin-top:14px; }
+.gestion-toggle {
+  display:flex; align-items:center; gap:8px; cursor:pointer;
+  padding:8px 12px; background:var(--bg3); border-radius:7px;
+  border:1px solid var(--border); font-family:var(--display);
+  font-size:9px; font-weight:700; letter-spacing:1.5px; color:var(--text3);
+  text-transform:uppercase; transition:all 0.2s; width:100%;
+  margin-bottom:4px;
+}
+.gestion-toggle:hover { border-color:var(--accent); color:var(--accent); }
+.gestion-toggle .arrow { margin-left:auto; transition:transform 0.2s; }
+.gestion-toggle.open .arrow { transform:rotate(180deg); }
+.gestion-body { display:none; padding:12px; background:var(--bg3); border-radius:7px; border:1px solid var(--border); margin-bottom:8px; }
+.gestion-body.open { display:block; }
 </style>
 </head>
 <body>
@@ -276,6 +292,50 @@ body::before{content:'';position:fixed;inset:0;background:repeating-linear-gradi
     <span>Total 50% (gastos + presupuesto comida/gas)</span>
     <span class="amt ca" id="total-50"></span>
   </div>
+
+  <!-- GESTIÓN INLINE GASTOS -->
+  <div style="margin-top:16px">
+    <button class="gestion-toggle" onclick="toggleGestion('g-gf')">⬛ Gestionar Gastos Fijos <span class="arrow">▼</span></button>
+    <div class="gestion-body" id="g-gf">
+      <div id="set-gf-inline"></div>
+      <div class="fr" style="margin-top:8px">
+        <input class="inp" id="sgf-n2" placeholder="Nombre">
+        <input class="inp" type="number" id="sgf-v2" placeholder="€/mes">
+        <select class="sel" style="max-width:110px" id="sgf-cat2"><option value="fijo">Fijo</option><option value="variable">Variable</option></select>
+        <button class="btn" onclick="setAddGF2()">+ Añadir</button>
+      </div>
+    </div>
+
+    <button class="gestion-toggle" onclick="toggleGestion('g-ing')">🏠 Gestionar Ingenio <span class="arrow">▼</span></button>
+    <div class="gestion-body" id="g-ing">
+      <div id="set-ing-inline"></div>
+      <div class="fr" style="margin-top:8px">
+        <input class="inp" id="si-n2" placeholder="Concepto">
+        <input class="inp" type="number" id="si-v2" placeholder="€">
+        <button class="btn" onclick="setAddSub('ingenio_items','si-n2','si-v2',true)">+ Añadir</button>
+      </div>
+    </div>
+
+    <button class="gestion-toggle" onclick="toggleGestion('g-ari')">🏘️ Gestionar Arinaga <span class="arrow">▼</span></button>
+    <div class="gestion-body" id="g-ari">
+      <div id="set-ari-inline"></div>
+      <div class="fr" style="margin-top:8px">
+        <input class="inp" id="sa-n2" placeholder="Concepto">
+        <input class="inp" type="number" id="sa-v2" placeholder="€">
+        <button class="btn" onclick="setAddSub('arinaga_items','sa-n2','sa-v2',true)">+ Añadir</button>
+      </div>
+    </div>
+
+    <button class="gestion-toggle" onclick="toggleGestion('g-sf')">🔒 Gestionar Sinking Fund <span class="arrow">▼</span></button>
+    <div class="gestion-body" id="g-sf">
+      <div id="set-sf-inline"></div>
+      <div class="fr" style="margin-top:8px">
+        <input class="inp" id="ssf-n" placeholder="Concepto (ej. Seguro Honda)">
+        <input class="inp" type="number" id="ssf-v" placeholder="Importe anual €">
+        <button class="btn" onclick="addPago2()">+ Añadir</button>
+      </div>
+    </div>
+  </div>
 </div>
 
 <!-- INGRESOS -->
@@ -294,6 +354,19 @@ body::before{content:'';position:fixed;inset:0;background:repeating-linear-gradi
     <button class="btn" onclick="addExtra()">+ Añadir</button>
   </div>
   <div id="lista-extras"></div>
+
+  <!-- GESTIÓN INLINE INGRESOS -->
+  <div style="margin-top:16px">
+    <button class="gestion-toggle" onclick="toggleGestion('g-ing2')">📥 Gestionar Ingresos Fijos <span class="arrow">▼</span></button>
+    <div class="gestion-body" id="g-ing2">
+      <div id="set-ing2-inline"></div>
+      <div class="fr" style="margin-top:8px">
+        <input class="inp" id="si2-n2" placeholder="Nombre ingreso">
+        <input class="inp" type="number" id="si2-v2" placeholder="€/mes">
+        <button class="btn" onclick="setAddIngreso2()">+ Añadir</button>
+      </div>
+    </div>
+  </div>
 </div>
 
 <!-- COMBUSTIBLE -->
@@ -315,6 +388,18 @@ body::before{content:'';position:fixed;inset:0;background:repeating-linear-gradi
     <button class="btn" onclick="addFuel()">+ Añadir</button>
   </div>
   <div class="g2" id="fuel-tarjetas"></div>
+
+  <!-- GESTIÓN INLINE COMBUSTIBLE -->
+  <div style="margin-top:16px">
+    <button class="gestion-toggle" onclick="toggleGestion('g-fuel')">⚙️ Modificar presupuesto Comida/Gas <span class="arrow">▼</span></button>
+    <div class="gestion-body" id="g-fuel">
+      <div class="fr" style="align-items:center">
+        <span style="font-size:13px;color:var(--text2)">Presupuesto mensual:</span>
+        <input class="inp" type="number" id="cfg-fuel-inp2" style="max-width:120px">
+        <button class="btn" onclick="saveFuelPres2()">Guardar</button>
+      </div>
+    </div>
+  </div>
 </div>
 
 <!-- PAGOS ANUALES -->
@@ -1301,6 +1386,152 @@ function f1(n){return(Math.round(n*10)/10).toFixed(1);}
 function f2(n){return(Math.round(n*100)/100).toFixed(2).replace('.',',');}
 function sum(a){return(a||[]).reduce((s,v)=>s+v,0);}
 
+
+// ============================================================
+// GESTIÓN INLINE
+// ============================================================
+function toggleGestion(id) {
+  const body = document.getElementById(id);
+  const btn = body.previousElementSibling;
+  body.classList.toggle('open');
+  btn.classList.toggle('open');
+  // Rellenar contenido al abrir
+  if (body.classList.contains('open')) renderGestionInline(id);
+}
+
+function renderGestionInline(id) {
+  const md = getMesActual();
+  if (id === 'g-gf') {
+    document.getElementById('set-gf-inline').innerHTML = md.gastos_fijos.map((g,i)=>`
+      <div class="si"><div><div class="sn">${g.nombre} <span class="chip ${g.cat==='fijo'?'chd':'chy'}">${g.cat}</span></div>
+        <div class="sm">€${f2(g.importe)}/mes</div></div>
+        <div class="sa">
+          <button class="bi" onclick="setEdit2('gastos_fijos',${i})">✏️</button>
+          <button class="bi" onclick="setDel2('gastos_fijos',${i},'g-gf')">✕</button>
+        </div></div>`).join('');
+  } else if (id === 'g-ing') {
+    document.getElementById('set-ing-inline').innerHTML = md.ingenio_items.map((g,i)=>`
+      <div class="si"><div><div class="sn">${g.nombre}</div><div class="sm">€${f2(g.importe)}</div></div>
+        <div class="sa">
+          <button class="bi" onclick="setEdit2('ingenio_items',${i})">✏️</button>
+          <button class="bi" onclick="setDel2('ingenio_items',${i},'g-ing')">✕</button>
+        </div></div>`).join('');
+  } else if (id === 'g-ari') {
+    document.getElementById('set-ari-inline').innerHTML = md.arinaga_items.map((g,i)=>`
+      <div class="si"><div><div class="sn">${g.nombre}</div><div class="sm">€${f2(g.importe)}</div></div>
+        <div class="sa">
+          <button class="bi" onclick="setEdit2('arinaga_items',${i})">✏️</button>
+          <button class="bi" onclick="setDel2('arinaga_items',${i},'g-ari')">✕</button>
+        </div></div>`).join('');
+  } else if (id === 'g-sf') {
+    document.getElementById('set-sf-inline').innerHTML = S.pagos_anuales.map((p,i)=>`
+      <div class="si"><div><div class="sn">${p.nombre}</div><div class="sm">€${f2(p.importe)} anual · €${f2(p.importe/12)}/mes</div></div>
+        <div class="sa">
+          <button class="bi" onclick="editPago(${i});renderGestionInline('g-sf')">✏️</button>
+          <button class="bi" onclick="delPago2(${i})">✕</button>
+        </div></div>`).join('');
+  } else if (id === 'g-ing2') {
+    document.getElementById('set-ing2-inline').innerHTML = getMesActual().ingresos.map((g,i)=>`
+      <div class="si"><div><div class="sn">${g.nombre}</div><div class="sm">€${f2(g.importe)}/mes</div></div>
+        <div class="sa">
+          <button class="bi" onclick="setEditIngreso2(${i})">✏️</button>
+          <button class="bi" onclick="setDelIngreso2(${i})">✕</button>
+        </div></div>`).join('');
+  } else if (id === 'g-fuel') {
+    document.getElementById('cfg-fuel-inp2').value = S.presupuesto_fuel;
+  }
+}
+
+function setEdit2(arr, idx) {
+  const item = getMesActual()[arr][idx];
+  const nv = parseFloat(prompt(`Nuevo importe para "${item.nombre}":`, item.importe));
+  if (!isNaN(nv) && nv >= 0) {
+    item.importe = nv; save();
+    renders.gastos();
+    renders.dashboard();
+    renderGestionInline(arr==='gastos_fijos'?'g-gf':arr==='ingenio_items'?'g-ing':'g-ari');
+  }
+}
+
+function setDel2(arr, idx, gid) {
+  if (!confirm('¿Eliminar este concepto?')) return;
+  getMesActual()[arr].splice(idx, 1);
+  save(); renders.gastos(); renders.dashboard();
+  renderGestionInline(gid);
+}
+
+function setAddGF2() {
+  const n = document.getElementById('sgf-n2').value.trim();
+  const v = parseFloat(document.getElementById('sgf-v2').value);
+  const cat = document.getElementById('sgf-cat2').value;
+  if (!n || isNaN(v) || v <= 0) return;
+  getMesActual().gastos_fijos.push({id:'g_'+Date.now(), nombre:n, importe:v, cobrado:false, cat});
+  document.getElementById('sgf-n2').value=''; document.getElementById('sgf-v2').value='';
+  save(); renders.gastos(); renders.dashboard(); renderGestionInline('g-gf');
+}
+
+function setAddSub(arr, nId, vId, inline=false) {
+  const n = document.getElementById(nId).value.trim();
+  const v = parseFloat(document.getElementById(vId).value);
+  if (!n || isNaN(v) || v < 0) return;
+  getMesActual()[arr].push({id:'s_'+Date.now(), nombre:n, importe:v, cobrado:false});
+  document.getElementById(nId).value=''; document.getElementById(vId).value='';
+  save(); renders.gastos(); renders.dashboard();
+  if (inline) renderGestionInline(arr==='ingenio_items'?'g-ing':'g-ari');
+}
+
+function addPago2() {
+  const n = document.getElementById('ssf-n').value.trim();
+  const v = parseFloat(document.getElementById('ssf-v').value);
+  if (!n || isNaN(v) || v <= 0) return;
+  S.pagos_anuales.push({id:'p_'+Date.now(), nombre:n, importe:v, pagado:false});
+  document.getElementById('ssf-n').value=''; document.getElementById('ssf-v').value='';
+  save(); renders.gastos(); renders.pagos(); renders.dashboard();
+  renderGestionInline('g-sf');
+}
+
+function delPago2(idx) {
+  if (!confirm('¿Eliminar este pago anual?')) return;
+  S.pagos_anuales.splice(idx, 1);
+  save(); renders.gastos(); renders.pagos(); renders.dashboard();
+  renderGestionInline('g-sf');
+}
+
+function setEditIngreso2(idx) {
+  const ing = getMesActual().ingresos[idx];
+  const nv = parseFloat(prompt(`Nuevo importe para "${ing.nombre}":`, ing.importe));
+  if (!isNaN(nv) && nv >= 0) {
+    ing.importe = nv; save();
+    renders.ingresos(); renders.dashboard();
+    renderGestionInline('g-ing2');
+  }
+}
+
+function setDelIngreso2(idx) {
+  if (!confirm('¿Eliminar este ingreso?')) return;
+  getMesActual().ingresos.splice(idx, 1);
+  save(); renders.ingresos(); renders.dashboard();
+  renderGestionInline('g-ing2');
+}
+
+function setAddIngreso2() {
+  const n = document.getElementById('si2-n2').value.trim();
+  const v = parseFloat(document.getElementById('si2-v2').value);
+  if (!n || isNaN(v) || v <= 0) return;
+  getMesActual().ingresos.push({id:'i_'+Date.now(), nombre:n, importe:v, cobrado:false, fijo:true});
+  document.getElementById('si2-n2').value=''; document.getElementById('si2-v2').value='';
+  save(); renders.ingresos(); renders.dashboard();
+  renderGestionInline('g-ing2');
+}
+
+function saveFuelPres2() {
+  const v = parseFloat(document.getElementById('cfg-fuel-inp2').value);
+  if (!isNaN(v) && v > 0) {
+    S.presupuesto_fuel = v; save();
+    renders.combustible(); renders.dashboard();
+  }
+}
+
 // Exponer funciones globales para onclick en HTML
 window.nav=nav; window.navMes=navMes; window.toggleGasto=toggleGasto;
 window.toggleIngreso=toggleIngreso; window.addExtra=addExtra; window.delExtra=delExtra;
@@ -1312,6 +1543,18 @@ window.setAddSub=setAddSub; window.setEditIngreso=setEditIngreso;
 window.setDelIngreso=setDelIngreso; window.setAddIngreso=setAddIngreso;
 window.saveFuelPres=saveFuelPres; window.cerrarMes=cerrarMes;
 window.exportData=exportData; window.resetAll=resetAll;
+window.toggleGestion=toggleGestion;
+window.setEdit2=setEdit2;
+window.setDel2=setDel2;
+window.setAddGF2=setAddGF2;
+window.setAddSub=setAddSub;
+window.addPago2=addPago2;
+window.delPago2=delPago2;
+window.setEditIngreso2=setEditIngreso2;
+window.setDelIngreso2=setDelIngreso2;
+window.setAddIngreso2=setAddIngreso2;
+window.saveFuelPres2=saveFuelPres2;
+window.renderGestionInline=renderGestionInline;
 </script>
 </body>
 </html>
