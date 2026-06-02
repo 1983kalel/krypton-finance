@@ -6,7 +6,10 @@
 <title>KRYPTON FINANCE'S</title>
 <link rel="icon" type="image/png" href="logo.png">
 <link rel="apple-touch-icon" href="logo.png">
-<link rel="manifest" href="data:application/json,{&quot;name&quot;:&quot;KRYPTON FINANCE'S&quot;,&quot;short_name&quot;:&quot;Krypton&quot;,&quot;icons&quot;:[{&quot;src&quot;:&quot;logo.png&quot;,&quot;sizes&quot;:&quot;512x512&quot;,&quot;type&quot;:&quot;image/png&quot;}],&quot;start_url&quot;:&quot;/&quot;,&quot;display&quot;:&quot;standalone&quot;,&quot;background_color&quot;:&quot;#080810&quot;,&quot;theme_color&quot;:&quot;#00f0c8&quot;}">
+<link rel="manifest" href="data:application/json,{&quot;name&quot;:&quot;KRYPTON FINANCE'S&quot;,&quot;short_name&quot;:&quot;Krypton&quot;,&quot;icons&quot;:[{&quot;src&quot;:&quot;logo.png&quot;,&quot;sizes&quot;:&quot;192x192 512x512&quot;,&quot;type&quot;:&quot;image/png&quot;,&quot;purpose&quot;:&quot;any maskable&quot;}],&quot;start_url&quot;:&quot;/&quot;,&quot;display&quot;:&quot;standalone&quot;,&quot;background_color&quot;:&quot;#080810&quot;,&quot;theme_color&quot;:&quot;#00f0c8&quot;}">
+<link rel="apple-touch-icon" sizes="180x180" href="logo.png">
+<link rel="apple-touch-icon" sizes="152x152" href="logo.png">
+<link rel="apple-touch-icon" sizes="120x120" href="logo.png">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Krypton">
@@ -330,13 +333,14 @@ body::before{content:'';position:fixed;inset:0;background:repeating-linear-gradi
     <div class="fr">
       <input class="inp" id="ssf-n" placeholder="Concepto (ej. Seguro Honda)">
       <input class="inp" type="number" id="ssf-v" placeholder="Importe anual €">
-      <select class="sel" id="ssf-grupo" style="max-width:150px">
+      <select class="sel" id="ssf-grupo" style="max-width:140px">
         <option value="vehiculos">🚗 Vehículos</option>
         <option value="ingenio">🏠 Ingenio</option>
         <option value="arinaga">🏘️ Arinaga</option>
         <option value="personales">🛡️ Seguros Personales</option>
       </select>
       <select class="sel" id="ssf-mes" style="max-width:130px">
+        <option value="">Mes cobro</option>
         <option>Enero</option><option>Febrero</option><option>Marzo</option>
         <option>Abril</option><option>Mayo</option><option>Junio</option>
         <option>Julio</option><option>Agosto</option><option>Septiembre</option>
@@ -526,25 +530,25 @@ const PLANTILLA = {
     {id:'alq',nombre:'Alquiler Arinaga',importe:800,cobrado:false,fijo:true},
     {id:'alq_agua',nombre:'Agua Arinaga (inquilina)',importe:38.60,cobrado:false,fijo:false},
     {id:'alq_luz',nombre:'Luz Arinaga (inquilina)',importe:29.88,cobrado:false,fijo:false},
-    {id:'apuestas',nombre:'Matched Betting',importe:0,cobrado:false,fijo:false}
+    {id:'apuestas',nombre:'Apuestas',importe:0,cobrado:false,fijo:false}
   ]
 };
 
 const PAGOS_ANUALES_DEFAULT = [
-  {id:'seg_yar',nombre:'Seguro Yaris',importe:249.02,pagado:false,grupo:'vehiculos'},
-  {id:'seg_ber',nombre:'Seguro Berlingo',importe:239,pagado:false,grupo:'vehiculos'},
-  {id:'seg_hon',nombre:'Seguro Honda',importe:199,pagado:false,grupo:'vehiculos'},
-  {id:'imp_ber',nombre:'Impuesto Berlingo',importe:50.10,pagado:true,grupo:'vehiculos'},
-  {id:'imp_hon',nombre:'Impuesto Honda',importe:28.33,pagado:true,grupo:'vehiculos'},
-  {id:'hog_ing',nombre:'Seg. Hogar Ingenio',importe:156.60,pagado:false,grupo:'ingenio'},
-  {id:'ibi_ing',nombre:'IBI Ingenio',importe:247,pagado:false,grupo:'ingenio'},
-  {id:'bas_ing',nombre:'Basura Municipal Ingenio',importe:37.50,pagado:true,grupo:'ingenio'},
-  {id:'seg_ari',nombre:'Seguro Arinaga',importe:249,pagado:true,grupo:'arinaga'},
-  {id:'alq_seg',nombre:'Seg. Alquiler Arinaga',importe:455.04,pagado:false,grupo:'arinaga'},
-  {id:'ibi_ari',nombre:'IBI Arinaga',importe:165.04,pagado:false,grupo:'arinaga'},
-  {id:'vid_tel',nombre:'Vida Telvi',importe:95.65,pagado:false,grupo:'personales'},
-  {id:'vid_edu',nombre:'Vida Eduardo',importe:106.51,pagado:false,grupo:'personales'},
-  {id:'fun',nombre:'Funeraria',importe:137.89,pagado:false,grupo:'personales'}
+  {id:'seg_yar',nombre:'Seguro Yaris',importe:249.02,pagado:false,grupo:'vehiculos',mes:'Octubre'},
+  {id:'seg_ber',nombre:'Seguro Berlingo',importe:239,pagado:false,grupo:'vehiculos',mes:'Octubre'},
+  {id:'seg_hon',nombre:'Seguro Honda',importe:199,pagado:false,grupo:'vehiculos',mes:'Octubre'},
+  {id:'imp_ber',nombre:'Impuesto Berlingo',importe:50.10,pagado:true,grupo:'vehiculos',mes:'Abril'},
+  {id:'imp_hon',nombre:'Impuesto Honda',importe:28.33,pagado:true,grupo:'vehiculos',mes:'Abril'},
+  {id:'hog_ing',nombre:'Seg. Hogar Ingenio',importe:156.60,pagado:false,grupo:'ingenio',mes:'Diciembre'},
+  {id:'ibi_ing',nombre:'IBI Ingenio',importe:247,pagado:false,grupo:'ingenio',mes:'Septiembre'},
+  {id:'bas_ing',nombre:'Basura Municipal Ingenio',importe:37.50,pagado:true,grupo:'ingenio',mes:'Mayo'},
+  {id:'seg_ari',nombre:'Seguro Arinaga',importe:249,pagado:true,grupo:'arinaga',mes:'Mayo'},
+  {id:'alq_seg',nombre:'Seg. Alquiler Arinaga',importe:455.04,pagado:false,grupo:'arinaga',mes:'Octubre'},
+  {id:'ibi_ari',nombre:'IBI Arinaga',importe:165.04,pagado:false,grupo:'arinaga',mes:'Noviembre'},
+  {id:'vid_tel',nombre:'Vida Telvi',importe:95.65,pagado:false,grupo:'personales',mes:'Agosto'},
+  {id:'vid_edu',nombre:'Vida Eduardo',importe:106.51,pagado:false,grupo:'personales',mes:'Agosto'},
+  {id:'fun',nombre:'Funeraria',importe:137.89,pagado:false,grupo:'personales',mes:'Marzo'}
 ];
 
 const CARTERA_DEFAULT = [
@@ -597,7 +601,7 @@ let S = {
         {id:'alq',nombre:'Alquiler Arinaga',importe:800,cobrado:true,fijo:true},
         {id:'alq_agua',nombre:'Agua Arinaga (inquilina)',importe:38.60,cobrado:false,fijo:false},
         {id:'alq_luz',nombre:'Luz Arinaga (inquilina)',importe:29.88,cobrado:false,fijo:false},
-        {id:'apuestas',nombre:'Matched Betting',importe:477.48,cobrado:true,fijo:false}
+        {id:'apuestas',nombre:'Apuestas',importe:477.48,cobrado:true,fijo:false}
       ],
       ingresos_extra: [],
       fuel: {
@@ -675,19 +679,6 @@ async function loadData() {
       if (!S.cartera) S.cartera = JSON.parse(JSON.stringify(CARTERA_DEFAULT));
       if (!S.meses) S.meses = {};
       if (!S.ahorro_pct) S.ahorro_pct = 10;
-      const mesesPorDefecto = {
-        seg_ari:'Mayo', seg_yar:'Octubre', seg_ber:'Octubre', seg_hon:'Octubre',
-        vid_tel:'Septiembre', vid_edu:'Septiembre', hog_ing:'Septiembre',
-        alq_seg:'Octubre', ibi_ari:'Julio', ibi_ing:'Abril',
-        imp_ber:'Abril', imp_hon:'Abril', fun:'Octubre'
-      };
-      if (S.pagos_anuales) {
-        let actualizado=false;
-        S.pagos_anuales.forEach(p=>{
-          if(!p.mes && mesesPorDefecto[p.id]) { p.mes = mesesPorDefecto[p.id]; actualizado=true; }
-        });
-        if(actualizado) await saveData();
-      }
     } else {
       await saveData();
     }
@@ -888,7 +879,7 @@ const renders = {
       items.forEach((p,gi) => {
         const realIdx = S.pagos_anuales.indexOf(p);
         sfHtml += `<tr>
-          <td class="nm" style="padding-left:16px">${p.nombre}${p.mes ? ` (${p.mes})` : ''}</td>
+          <td class="nm" style="padding-left:16px">${p.nombre}</td>
           <td class="amt" style="color:var(--text2)">€${f2(p.importe)}</td>
           <td class="amt">€${f2(p.importe/12)}</td>
           <td style="white-space:nowrap">
@@ -977,7 +968,7 @@ const renders = {
       items.forEach(p => {
         const i = S.pagos_anuales.indexOf(p);
         pagosHtml += `<div style="display:flex;justify-content:space-between;align-items:center;padding:9px 12px;background:var(--bg3);border-radius:7px;margin-bottom:3px;border:1px solid var(--border)">
-          <div><div style="font-weight:700;font-size:13px">${p.nombre}${p.mes ? ` (${p.mes})` : ''}</div>
+          <div><div style="font-weight:700;font-size:13px">${p.nombre}</div>
             <div style="font-size:11px;color:var(--text3)">€${f2(p.importe/12)}/mes</div></div>
           <div style="display:flex;align-items:center;gap:8px">
             <div style="text-align:right"><div style="font-family:var(--display);font-size:13px;font-weight:700">€${f2(p.importe)}</div>
@@ -1212,7 +1203,7 @@ function addPago(){
   const v=parseFloat(document.getElementById('pago-imp').value);
   const gr=document.getElementById('pago-grupo').value;
   if(!n||isNaN(v)||v<=0)return;
-  S.pagos_anuales.push({id:'p_'+Date.now(),nombre:n,importe:v,pagado:false,grupo:gr, mes:mes});
+  S.pagos_anuales.push({id:'p_'+Date.now(),nombre:n,importe:v,pagado:false,grupo:gr});
   document.getElementById('pago-nombre').value='';
   document.getElementById('pago-imp').value='';
   save(); renders.pagos(); renders.gastos(); renders.dashboard();
@@ -1369,7 +1360,7 @@ function renderGestionInline(id) {
         </div></div>`).join('');
   } else if (id === 'g-sf') {
     document.getElementById('set-sf-inline').innerHTML = S.pagos_anuales.map((p,i)=>`
-      <div class="si"><div><div class="sn">${p.nombre}${p.mes ? ` (${p.mes})` : ''}</div><div class="sm">€${f2(p.importe)} anual · €${f2(p.importe/12)}/mes</div></div>
+      <div class="si"><div><div class="sn">${p.nombre}</div><div class="sm">€${f2(p.importe)} anual · €${f2(p.importe/12)}/mes</div></div>
         <div class="sa">
           <button class="bi" onclick="editPago(${i});renderGestionInline('g-sf')">✏️</button>
           <button class="bi" onclick="delPago2(${i})">✕</button>
@@ -1430,7 +1421,7 @@ function addPago2() {
   const gr = document.getElementById('ssf-grupo').value;
   const mes = document.getElementById('ssf-mes').value;
   if (!n || isNaN(v) || v <= 0) return;
-  S.pagos_anuales.push({id:'p_'+Date.now(), nombre:n, importe:v, pagado:false, grupo:gr, mes:mes});
+  S.pagos_anuales.push({id:'p_'+Date.now(), nombre:n, importe:v, pagado:false, grupo:gr, mes:mes||'—'});
   document.getElementById('ssf-n').value=''; document.getElementById('ssf-v').value='';
   save(); renders.gastos(); renders.pagos(); renders.dashboard();
   renderGestionInline('g-sf');
