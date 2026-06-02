@@ -336,6 +336,20 @@ body::before{content:'';position:fixed;inset:0;background:repeating-linear-gradi
         <option value="arinaga">🏘️ Arinaga</option>
         <option value="personales">🛡️ Seguros Personales</option>
       </select>
+      <select class="sel" id="ssf-mes" style="max-width:130px">
+        <option value="Enero">Enero</option>
+        <option value="Febrero">Febrero</option>
+        <option value="Marzo">Marzo</option>
+        <option value="Abril">Abril</option>
+        <option value="Mayo">Mayo</option>
+        <option value="Junio">Junio</option>
+        <option value="Julio">Julio</option>
+        <option value="Agosto">Agosto</option>
+        <option value="Septiembre">Septiembre</option>
+        <option value="Octubre">Octubre</option>
+        <option value="Noviembre">Noviembre</option>
+        <option value="Diciembre">Diciembre</option>
+      </select>
       <button class="btn" onclick="addPago2()">+ Añadir</button>
     </div>
   </div>
@@ -1409,8 +1423,9 @@ function addPago2() {
   const n = document.getElementById('ssf-n').value.trim();
   const v = parseFloat(document.getElementById('ssf-v').value);
   const gr = document.getElementById('ssf-grupo').value;
+  const mes = document.getElementById('ssf-mes').value;
   if (!n || isNaN(v) || v <= 0) return;
-  S.pagos_anuales.push({id:'p_'+Date.now(), nombre:n, importe:v, pagado:false, grupo:gr});
+  S.pagos_anuales.push({id:'p_'+Date.now(), nombre:n, importe:v, pagado:false, grupo:gr, mes:mes});
   document.getElementById('ssf-n').value=''; document.getElementById('ssf-v').value='';
   save(); renders.gastos(); renders.pagos(); renders.dashboard();
   renderGestionInline('g-sf');
