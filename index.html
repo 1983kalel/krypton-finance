@@ -460,12 +460,23 @@ body::before{content:'';position:fixed;inset:0;background:repeating-linear-gradi
       </div>
     </div>
     <div class="sep"></div>
-    <div class="slabel" style="margin-top:10px">Registrar retirada</div>
-    <div class="fr" style="margin-top:8px;align-items:center">
-      <input class="inp" type="number" id="ahorro-retiro-imp" placeholder="€ importe retirado" style="max-width:200px">
-      <button class="btn" style="background:var(--red)" onclick="addRetiroAhorro()">- Retirar</button>
+    <div style="display:flex;gap:10px;margin-top:10px;flex-wrap:wrap">
+      <div style="flex:1;min-width:160px">
+        <div class="slabel">+ Registrar entrada</div>
+        <div class="fr" style="margin-top:8px;align-items:center">
+          <input class="inp" type="number" id="ahorro-entrada-imp" placeholder="€ importe" style="max-width:160px">
+          <button class="btn" style="background:var(--green)" onclick="addEntradaAhorro()">+ Añadir</button>
+        </div>
+      </div>
+      <div style="flex:1;min-width:160px">
+        <div class="slabel">− Registrar retirada</div>
+        <div class="fr" style="margin-top:8px;align-items:center">
+          <input class="inp" type="number" id="ahorro-retiro-imp" placeholder="€ importe" style="max-width:160px">
+          <button class="btn" style="background:var(--red)" onclick="addRetiroAhorro()">- Retirar</button>
+        </div>
+      </div>
     </div>
-    <div id="ahorro-retiros-lista" style="margin-top:10px"></div>
+    <div id="ahorro-movimientos-lista" style="margin-top:12px"></div>
   </div>
 
   <div class="card">
@@ -580,6 +591,7 @@ let S = {
   mes_activo: {m:5, a:2026},
   presupuesto_fuel: 1200,
   ahorro_retiros: [],
+  ahorro_entradas: [],
   pagos_anuales: JSON.parse(JSON.stringify(PAGOS_ANUALES_DEFAULT)),
   cartera: JSON.parse(JSON.stringify(CARTERA_DEFAULT)),
   ahorro_pct: 10,
@@ -706,6 +718,7 @@ async function loadData() {
       if (!S.meses) S.meses = {};
       if (!S.ahorro_pct) S.ahorro_pct = 10;
       if (!S.ahorro_retiros) S.ahorro_retiros = [];
+      if (!S.ahorro_entradas) S.ahorro_entradas = [];
       // MIGRACIÓN: fusionar campos nuevos (mes, grupo) desde DEFAULT si faltan en datos guardados
       S.pagos_anuales = S.pagos_anuales.map(p => {
         const defP = PAGOS_ANUALES_DEFAULT.find(d => d.id === p.id);
@@ -1083,21 +1096,34 @@ const renders = {
 
     // Bolsa de ahorro acumulado
     const saldo = calcSaldoAhorro();
-    const totalEntradas = calcTotalEntradasAhorro();
+    const totalAuto = calcTotalEntradasAhorro();
+    const totalManuales = (S.ahorro_entradas||[]).reduce((s,r)=>s+r,0);
+    const totalEntradas = totalAuto + totalManuales;
     const totalRetiros = (S.ahorro_retiros||[]).reduce((s,r)=>s+r,0);
     document.getElementById('ahorro-saldo-total').textContent = '€'+f2(saldo);
     document.getElementById('ahorro-entrada-total').textContent = '€'+f2(totalEntradas);
     document.getElementById('ahorro-retirado-total').textContent = '€'+f2(totalRetiros);
 
-    const retiros = S.ahorro_retiros||[];
-    document.getElementById('ahorro-retiros-lista').innerHTML = retiros.length===0
-      ? '<div style="color:var(--text3);font-size:11px;padding:4px 0">Sin retiradas registradas</div>'
-      : retiros.map((r,i)=>`<div class="ir" style="padding:6px 0">
-          <span style="color:var(--text2);font-size:13px">Retirada #${i+1}</span>
-          <div style="display:flex;gap:8px;align-items:center">
-            <span style="color:var(--red);font-family:var(--display);font-weight:700">-€${f2(r)}</span>
-            <button class="bi" style="padding:2px 6px;font-size:11px" onclick="delRetiroAhorro(${i})">✕</button>
-          </div></div>`).join('');
+    // Lista unificada de movimientos (entradas manuales + retiradas)
+    const entradas = (S.ahorro_entradas||[]).map((r,i)=>({tipo:'entrada',imp:r,idx:i}));
+    const retiros = (S.ahorro_retiros||[]).map((r,i)=>({tipo:'retiro',imp:r,idx:i}));
+    const movs = [...entradas, ...retiros];
+    document.getElementById('ahorro-movimientos-lista').innerHTML = movs.length===0
+      ? '<div style="color:var(--text3);font-size:11px;padding:4px 0">Sin movimientos manuales registrados. Las entradas automáticas se calculan del 20% mensual.</div>'
+      : movs.map(mv => mv.tipo==='entrada'
+          ? `<div class="ir" style="padding:6px 0">
+              <span style="color:var(--text2);font-size:13px">➕ Entrada manual</span>
+              <div style="display:flex;gap:8px;align-items:center">
+                <span style="color:var(--green);font-family:var(--display);font-weight:700">+€${f2(mv.imp)}</span>
+                <button class="bi" style="padding:2px 6px;font-size:11px" onclick="delEntradaAhorro(${mv.idx})">✕</button>
+              </div></div>`
+          : `<div class="ir" style="padding:6px 0">
+              <span style="color:var(--text2);font-size:13px">➖ Retirada</span>
+              <div style="display:flex;gap:8px;align-items:center">
+                <span style="color:var(--red);font-family:var(--display);font-weight:700">-€${f2(mv.imp)}</span>
+                <button class="bi" style="padding:2px 6px;font-size:11px" onclick="delRetiroAhorro(${mv.idx})">✕</button>
+              </div></div>`
+        ).join('');
 
     // Histórico acumulado
     const mesesCerrados = Object.entries(S.meses)
@@ -1336,9 +1362,24 @@ function calcTotalEntradasAhorro() {
 }
 
 function calcSaldoAhorro() {
-  const entradas = calcTotalEntradasAhorro();
+  const auto = calcTotalEntradasAhorro();
+  const manuales = (S.ahorro_entradas||[]).reduce((s,r)=>s+r,0);
   const retiros = (S.ahorro_retiros||[]).reduce((s,r)=>s+r,0);
-  return entradas - retiros;
+  return auto + manuales - retiros;
+}
+
+function addEntradaAhorro() {
+  const v = parseFloat(document.getElementById('ahorro-entrada-imp').value);
+  if(isNaN(v)||v<=0) return;
+  if(!S.ahorro_entradas) S.ahorro_entradas = [];
+  S.ahorro_entradas.push(v);
+  document.getElementById('ahorro-entrada-imp').value = '';
+  save(); renders.cartera(); renders.dashboard();
+}
+
+function delEntradaAhorro(idx) {
+  S.ahorro_entradas.splice(idx, 1);
+  save(); renders.cartera(); renders.dashboard();
 }
 
 function addRetiroAhorro() {
@@ -1395,6 +1436,7 @@ function exportData(){
 function resetAll(){
   S={mes_activo:{m:5,a:2026},presupuesto_fuel:1200,
     ahorro_retiros:[],
+    ahorro_entradas:[],
     pagos_anuales:JSON.parse(JSON.stringify(PAGOS_ANUALES_DEFAULT)),
     cartera:JSON.parse(JSON.stringify(CARTERA_DEFAULT)),
     ahorro_pct:10, meses:{}};
@@ -1698,6 +1740,8 @@ window.saveFuelPres2=saveFuelPres2;
 window.renderGestionInline=renderGestionInline;
 window.addRetiroAhorro=addRetiroAhorro;
 window.delRetiroAhorro=delRetiroAhorro;
+window.addEntradaAhorro=addEntradaAhorro;
+window.delEntradaAhorro=delEntradaAhorro;
 </script>
 </body>
 </html>
